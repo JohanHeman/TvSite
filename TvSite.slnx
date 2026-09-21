@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="TvSite.Application/TvSite.Application.csproj" />
+  <Project Path="TvSite.Domain/TvSite.Domain.csproj" />
+  <Project Path="TvSite.Infrastructure/TvSite.Infrastructure.csproj" />
   <Project Path="TvSite.Presentation/TvSite.Presentation.csproj" />
 </Solution>
