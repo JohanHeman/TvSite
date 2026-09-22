@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TvSite.Domain\TvSite.Domain.csproj" />
+      <ProjectReference Include="..\TvSite.Infrastructure\TvSite.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
