@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using TvSite.Infrastructure.Data;
 using TvSite.Presentation.Components.Account.Pages;
 using TvSite.Presentation.Components.Account.Pages.Manage;
-using TvSite.Presentation.Data;
 
-namespace Microsoft.AspNetCore.Routing;
+namespace TvSite.Presentation.Components.Account;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {

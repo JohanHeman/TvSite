@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using TvSite.Presentation.Data;
+using TvSite.Infrastructure.Data;
 
 namespace TvSite.Presentation.Components.Account;
 
