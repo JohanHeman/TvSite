@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TvSite.Domain.Entities;
 
 public class Comment
