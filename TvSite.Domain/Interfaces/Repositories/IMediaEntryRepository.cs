@@ -8,5 +8,5 @@ public interface IMediaEntryRepository
     public Task<List<MediaEntity>> GetMediaListByUserId(string userId, ListStateEnum.ListState listState);
 
     public Task CreateMediaEntry(MediaEntry userMediaEntry);
-    public Task UpdateMediaEntryState(MediaEntry userMediaEntry)
+    public Task UpdateMediaEntryState(MediaEntry userMediaEntry);
 }
