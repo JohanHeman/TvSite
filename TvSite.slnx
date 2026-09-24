@@ -3,4 +3,5 @@
   <Project Path="TvSite.Domain/TvSite.Domain.csproj" />
   <Project Path="TvSite.Infrastructure/TvSite.Infrastructure.csproj" />
   <Project Path="TvSite.Presentation/TvSite.Presentation.csproj" />
+  <Project Path="TvSite.Tests/TvSite.Tests.csproj" Id="c22b8e80-0c6b-424a-8b33-fc20b7f4a405" />
 </Solution>

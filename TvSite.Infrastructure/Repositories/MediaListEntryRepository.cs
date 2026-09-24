@@ -29,7 +29,7 @@ namespace TvSite.Infrastructure.Repositories
         public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(string userId, ListStateEnum.ListState listState)
         {
             return await _set
-                .Where(entry  => entry.UserId == userId)
+                .Where(entry  => entry.ApplicationUserId == userId)
                 .Where(entry => entry.ListState == ((int)listState))
                 .ToListAsync();
         }
