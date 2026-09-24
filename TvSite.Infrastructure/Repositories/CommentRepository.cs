@@ -28,7 +28,7 @@ public class CommentRepository : ICommentRepository
 
     public async Task CreateCommentAsync(Comment comment)
     {
-        _set.Add(comment);
+        await _set.AddAsync(comment);
         await _dbContext.SaveChangesAsync();
     }
 

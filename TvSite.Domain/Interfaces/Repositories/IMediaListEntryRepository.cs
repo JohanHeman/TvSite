@@ -5,7 +5,7 @@ namespace TvSite.Domain.Interfaces.Repositories;
 
 public interface IMediaListEntryRepository
 {
-    public Task<List<MediaListEntry>> GetMediaListByUserId(string userId, ListStateEnum.ListState listState);
-    public Task CreateMediaListEntry(MediaListEntry userMediaListEntry);
-    public Task UpdateMediaListEntryState(MediaListEntry userMediaListEntry);
+    public Task<List<MediaListEntry>> GetMediaListByUserIdAsync(string userId, ListStateEnum.ListState listState);
+    public Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry);
+    public Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry);
 }

@@ -20,13 +20,13 @@ namespace TvSite.Infrastructure.Repositories
             _set = dbContext.MediaListEntry;
         }
 
-        public async Task CreateMediaListEntry(MediaListEntry userMediaListEntry)
+        public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
         {
-            _set.Add(userMediaListEntry);
+            await _set.AddAsync(userMediaListEntry);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<MediaListEntry>> GetMediaListByUserId(string userId, ListStateEnum.ListState listState)
+        public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(string userId, ListStateEnum.ListState listState)
         {
             return await _set
                 .Where(entry  => entry.UserId == userId)
@@ -34,7 +34,7 @@ namespace TvSite.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task UpdateMediaListEntryState(MediaListEntry userMediaListEntry)
+        public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
         {
             _set.Update(userMediaListEntry);
             await _dbContext.SaveChangesAsync();
