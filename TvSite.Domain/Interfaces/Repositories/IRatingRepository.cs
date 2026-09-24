@@ -2,9 +2,9 @@
 
 namespace TvSite.Domain.Interfaces.Repositories;
 
-public interface IRatingRepositroy
+public interface IRatingRepository
 {
-    public Task<Rating> GetAvrageRatingByMediaIdAsync(string mediaId);
+    public Task<Rating> GetAverageRatingByMediaIdAsync(string mediaId);
 
     public Task CreateRatingAsync(Rating rating);
     public Task DeleteRatingAsync(Rating rating);
