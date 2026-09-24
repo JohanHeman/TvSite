@@ -4,7 +4,7 @@ namespace TvSite.Domain.Interfaces.Repositories;
 
 public interface ICommentRepository
 {
-    public Task<Comment> GetCommentByIdAsync(string commentId);
+    public Task<Comment?> GetCommentByIdAsync(string commentId);
     public Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId);
 
     public Task CreateCommentAsync(Comment comment);

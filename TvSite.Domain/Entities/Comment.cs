@@ -7,5 +7,5 @@ public class Comment
     public string UserId { get; set; }
     public ApplicationUser ApplicationUser{ get; set; }
     public string MediaId{ get; set; }
-    // Media media 
+    public MediaEntity MediaEntity { get; set; }
 }
