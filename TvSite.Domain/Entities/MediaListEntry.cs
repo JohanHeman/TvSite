@@ -1,6 +1,6 @@
 namespace TvSite.Domain.Entities;
 
-public class MediaEntry
+public class MediaListEntry
 {
     public string Id { get; set; }
     public MediaEntity Media { get; set; }

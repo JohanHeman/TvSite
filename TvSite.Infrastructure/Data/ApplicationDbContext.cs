@@ -10,7 +10,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
-    public DbSet<MediaEntry> MediaEntry { get; set; }
+    public DbSet<MediaListEntry> MediaListEntry { get; set; }
     
     
 }
