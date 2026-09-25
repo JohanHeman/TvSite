@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
+using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
 using TvSite.Presentation.Components;
 using TvSite.Presentation.Components.Account;
@@ -39,6 +41,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddTransient<ICommentService, ICommentService>();
+builder.Services.AddTransient<ICommentRepository, ICommentRepository>();
 
 var app = builder.Build();
 

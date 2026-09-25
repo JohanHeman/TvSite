@@ -8,9 +8,8 @@ namespace TvSite.Tests.UnitTests.ServiceTests;
 
 public class CommentServiceTests
 {
-    private readonly ICommentService _commentService;
+    private readonly ICommentService _sut;
     private readonly ICommentRepository _commentRepository;
-    private readonly CommentService _sut;
 
     public CommentServiceTests()
     {
