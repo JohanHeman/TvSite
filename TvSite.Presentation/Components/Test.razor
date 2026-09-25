@@ -1,0 +1,26 @@
+<h3>Test</h3>
+@page "/test"
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+@inject IAPIService service
+@rendermode InteractiveServer
+
+
+
+@foreach (var item in list)
+{
+    <p>@item.Title</p>
+}
+
+
+@code {
+
+    private List<SearchResult> list = new List<SearchResult>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        list = await service.GetMediasByTitle("H");
+    }
+
+
+}
