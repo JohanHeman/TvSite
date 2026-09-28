@@ -7,11 +7,11 @@ public class Rating
     private int _stars;
     public int Stars { get { return _stars; } set 
         {
-            if (value < _minStars)
-                throw new ArgumentException($"Stars cannot be below {_minStars}", "Stars");
+            if (value < ApplicationSettings.StarsMin)
+                throw new ArgumentException($"Stars cannot be below {ApplicationSettings.StarsMin}", "Stars");
 
-            if (value > _maxStars)
-                throw new ArgumentException($"Stars cannot be above {_maxStars}", "Stars");
+            if (value > ApplicationSettings.StarsMax)
+                throw new ArgumentException($"Stars cannot be above {ApplicationSettings.StarsMax}", "Stars");
 
             _stars = value;
         }
@@ -20,10 +20,4 @@ public class Rating
     public ApplicationUser ApplicationUser{ get; set; }
     public string MediaId{ get; set; }
     public Media Media{ get; set; }
-
-
-    // Stars constraints
-    private int _minStars = 0;
-    private int _maxStars = 10;
-     
 }

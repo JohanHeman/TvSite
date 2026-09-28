@@ -14,10 +14,10 @@ public class MediaListEntry
             // Checks that input is not out of range
             var enumCount = ((ListStateEnum[])Enum.GetValues(typeof(ListStateEnum))).Distinct().Count();
             if (_listState > enumCount)
-                throw new ArgumentOutOfRangeException($"List input is to large", "ListState");
+                throw new ArgumentOutOfRangeException($"List input is to large");
 
             if (_listState < 0)
-                throw new ArgumentOutOfRangeException($"List input cannot be below zero", "ListState");
+                throw new ArgumentOutOfRangeException($"List input cannot be below zero");
 
             _listState = value;
         } }

@@ -12,7 +12,7 @@ public class Comment
         set
         {
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentException("Text cannot be null or empty", "Text");
+                throw new ArgumentException("Text cannot be null or empty");
             _text = value;
         }
     }

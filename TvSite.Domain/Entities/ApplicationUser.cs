@@ -9,22 +9,18 @@ public class ApplicationUser : IdentityUser
         get { return _displayName; } 
         set {
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentException($"DisplayName cannot be null or empty", "DisplayName");
+                throw new ArgumentException($"DisplayName cannot be null or empty");
 
-            if (value.Length < _minLength)
-                throw new ArgumentException($"DisplayName length cannot be below {_minLength}", "DisplayName");
+            if (value.Length < ApplicationSettings.DisplayNameMinLength)
+                throw new ArgumentException($"DisplayName length cannot be below {ApplicationSettings.DisplayNameMinLength}");
 
-            if (value.Length > _maxLength)
-                throw new ArgumentException($"DisplayName length cannot be longer than {_maxLength}", "DisplayName");
+            if (value.Length > ApplicationSettings.DisplayNameMaxLength)
+                throw new ArgumentException($"DisplayName length cannot be longer than {ApplicationSettings.DisplayNameMaxLength}");
 
             if (!char.IsUpper(value[0]))
-                throw new ArgumentException($"First letter must be uppercase", "DisplayName");
+                throw new ArgumentException($"First letter must be uppercase");
 
             _displayName = value;
         } }
     public string? ProfileImage{ get; set; }
-
-    //DisplayName constraints
-    private int _minLength = 3;
-    private int _maxLength = 16;
 }
