@@ -12,7 +12,7 @@ public class Comment
         set
         {
             if (string.IsNullOrEmpty(value))
-                throw new Exception("The text can not be empty");
+                throw new ArgumentException("Text cannot be null or empty", "Text");
             _text = value;
         }
     }
@@ -22,8 +22,4 @@ public class Comment
     public string MediaId{ get; set; }
     public Media Media { get; set; }
     
-    public Comment()
-    {
-        
-    }
 }
