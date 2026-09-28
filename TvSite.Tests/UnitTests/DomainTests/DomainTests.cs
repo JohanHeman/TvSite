@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TvSite.Domain;
 using TvSite.Domain.Entities;
 
 namespace TvSite.Tests.UnitTests.DomainTests
@@ -15,8 +16,12 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData("")]
         public void Set_DisplayName_ThrowsArgumentException_WhenIsNullOrEmpty(string input)
         {
-            // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>( () => _user.DisplayName = input);
+            // Arrange
+            var expectedMessage = $"DisplayName cannot be null or empty";
+            // Act
+            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            // Assert
+            Assert.Equal(actual.Message, expectedMessage);
 
         }
 
@@ -26,8 +31,12 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData(" s")]
         public void Set_DisplayName_ThrowsArgumentException_WhenLengthIsBelowThree(string input)
         {
-            // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            // Arrange
+            var expectedMessage = $"DisplayName length cannot be below {ApplicationSettings.DisplayNameMinLength}";
+            // Act
+            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            // Assert
+            Assert.Equal(actual.Message, expectedMessage);
 
         }
 
@@ -36,8 +45,12 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData("asdfgasdfgasdfggg")]
         public void Set_DisplayName_ThrowsArgumentException_WhenLengthIsAboveSixteen(string input)
         {
-            // Arrange & Act & Assert
-            Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            // Arrange
+            var expectedMessage = $"DisplayName length cannot be longer than {ApplicationSettings.DisplayNameMaxLength}";
+            // Act
+            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            // Assert
+            Assert.Equal(actual.Message, expectedMessage);
 
         }
 
