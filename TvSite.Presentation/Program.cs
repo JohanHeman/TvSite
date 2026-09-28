@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 using TvSite.Application.Service;
 using TvSite.Application.ServiceAPI;
 using TvSite.Domain.Entities;
@@ -19,6 +20,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Get client with IHttpClientFactory.CreateClient();
+builder.Services.AddHttpClient("TmdbApiClient", client =>
+{
+    //Get token from user secrets
+    var accessToken = builder.Configuration["Tmdb:AccessToken"];
+
+    client.DefaultRequestHeaders.Add("accept", "application/json");
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+    client.BaseAddress = new Uri("https://api.themoviedb.org/3/");
+});
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
