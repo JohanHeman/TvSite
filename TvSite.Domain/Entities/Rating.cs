@@ -2,7 +2,7 @@ namespace TvSite.Domain.Entities;
 
 public class Rating
 {
-    public string Id{ get; set; }
+    public Guid Id{ get; set; }
 
     private int _stars;
     public int Stars { get { return _stars; } set 
@@ -16,7 +16,7 @@ public class Rating
             _stars = value;
         }
     }
-    public string ApplicationUserId { get; set; }
+    public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser{ get; set; }
     public string MediaId{ get; set; }
     public Media Media{ get; set; }

@@ -7,7 +7,7 @@ namespace TvSite.Domain.Interfaces.Services
 {
     public interface ICommentService
     {
-        public Task<Comment?> GetCommentByIdAsync(string commentId);
+        public Task<Comment?> GetCommentByIdAsync(Guid commentId);
         public Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId);
 
         public Task CreateCommentAsync(Comment comment);
