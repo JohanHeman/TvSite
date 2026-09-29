@@ -8,7 +8,7 @@ public class Comment
     private string _text;
     public string Text
     {
-        get { return _text; }
+        get =>  _text;
         set
         {
             if (string.IsNullOrEmpty(value))
