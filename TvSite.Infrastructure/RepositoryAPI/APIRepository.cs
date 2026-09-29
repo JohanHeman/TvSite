@@ -48,4 +48,37 @@ public class APIRepository : IAPIRepository
         return searchResults;
     }
 
+    public async Task<List<Media>> GetMovieDiscoverListAsync()
+    {
+        var endpoint = _client.BaseAddress + "discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
+        List<Media> movies = new List<Media>();
+        var response = await _client.GetAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                var responseString  = await response.Content.ReadAsStringAsync();
+                var results = JsonSerializer.Deserialize<DiscoverMovieResult>(responseString);
+                foreach (var movie in results.Results)
+                {
+                    Media media = new Media
+                    {
+                        Id = movie.Id.ToString(),
+                        Title = movie.Title,
+                        Description = movie.Description,
+                        Directors = movie.Directors,
+                        Actors = movie.Actors,
+                        AirDate =  movie.AirDate,
+                        MediaImage = movie.MediaImage
+                    };
+                    movies.Add(media);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("API could not get discover movie-list");
+            }
+        }
+        return movies;
+    }
 }

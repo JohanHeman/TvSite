@@ -5,4 +5,5 @@ namespace TvSite.Domain.InterfacesAPI.Repositories;
 public interface IAPIRepository
 {
     public Task<List<SearchResult>> GetTvShowsSearchResult(string title);
+    public Task<List<Media>> GetMovieDiscoverListAsync();
 }

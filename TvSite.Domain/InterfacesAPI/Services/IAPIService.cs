@@ -5,4 +5,5 @@ namespace TvSite.Domain.InterfacesAPI.Services;
 public interface IAPIService
 {
     public Task<List<SearchResult>> GetMediasByTitle(string title);
+    public Task<List<Media>> GetMoviesFromDiscover();
 }
