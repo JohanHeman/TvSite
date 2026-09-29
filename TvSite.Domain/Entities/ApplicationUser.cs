@@ -8,8 +8,8 @@ public class ApplicationUser : IdentityUser<Guid>
     public string DisplayName{ 
         get { return _displayName; } 
         set {
-            if (string.IsNullOrEmpty(value))
-                throw new ArgumentException($"DisplayName cannot be null or empty");
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException($"DisplayName cannot be null or whitespace");
 
             if (value.Length < ApplicationSettings.DisplayNameMinLength)
                 throw new ArgumentException($"DisplayName length cannot be below {ApplicationSettings.DisplayNameMinLength}");
