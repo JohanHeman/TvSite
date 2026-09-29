@@ -26,7 +26,7 @@ namespace TvSite.Application.Service
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(string userId, ListStateEnum.ListState listState)
+        public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
         {
             return await _set
                 .Where(entry => entry.ApplicationUserId == userId)

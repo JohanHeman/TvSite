@@ -4,7 +4,7 @@ namespace TvSite.Domain.Entities;
 
 public class MediaListEntry
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     public string MediaId { get; set; }
     public Media Media { get; set; }
     private int _listState;
@@ -25,6 +25,6 @@ public class MediaListEntry
 
             _listState = value;
         } }
-    public string ApplicationUserId { get; set; }
+    public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser { get; set; }
 }

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TvSite.Domain.Entities;
 
-public class ApplicationUser : IdentityUser
+public class ApplicationUser : IdentityUser<Guid>
 {
     private string _displayName;
     public string DisplayName{ 

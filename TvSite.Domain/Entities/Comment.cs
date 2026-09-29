@@ -4,7 +4,7 @@ namespace TvSite.Domain.Entities;
 
 public class Comment
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     private string _text;
     public string Text
     {
@@ -17,7 +17,7 @@ public class Comment
         }
     }
     
-    public string ApplicationUserId { get; set; }
+    public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser{ get; set; }
     public string MediaId{ get; set; }
     public Media Media { get; set; }

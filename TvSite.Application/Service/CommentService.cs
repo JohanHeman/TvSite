@@ -17,9 +17,9 @@ public class CommentService : ICommentService
 
     public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
     {
-        return await _set.Include(c => c.ApplicationUser).Where(c => c.Id == mediaId).ToListAsync();
+        return await _set.Include(c => c.ApplicationUser).Where(c => c.MediaId == mediaId).ToListAsync();
     }
-    public async Task<Comment?> GetCommentByIdAsync(string commentId)
+    public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
         return await _set.Include(c => c.ApplicationUser).FirstOrDefaultAsync(c => c.Id == commentId);
     }
