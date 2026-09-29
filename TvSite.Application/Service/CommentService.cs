@@ -23,10 +23,15 @@ public class CommentService : ICommentService
 
     public async Task CreateCommentAsync(Comment comment)
     {
+<<<<<<< Updated upstream
         if (string.IsNullOrWhiteSpace(comment.Text))
             throw new Exception("The comment must have a text");
 
         await _commentRepository.CreateCommentAsync(comment);
+=======
+        await _set.AddAsync(comment);
+        await _dbContext.SaveChangesAsync();
+>>>>>>> Stashed changes
     }
 
     public Task DeleteCommentAsync(Comment comment)

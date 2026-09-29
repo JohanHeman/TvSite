@@ -20,33 +20,30 @@ public class APIRepository : IAPIRepository
     {
         var searchResults = new List<SearchResult>();
 
-        using (_client)
-        {
-            var endPoint = _client.BaseAddress + $"search/tv?query={Uri.EscapeDataString(title)}&include_adult=false&language=en-US&page=1";
+        var endPoint = _client.BaseAddress + $"search/tv?query={Uri.EscapeDataString(title)}&include_adult=false&language=en-US&page=1";
 
-            HttpResponseMessage response = await _client.GetAsync(endPoint);
-            try
+        HttpResponseMessage response = await _client.GetAsync(endPoint);
+        try
+        {
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
+                string responseString = await response.Content.ReadAsStringAsync();
+                var results = JsonSerializer.Deserialize<TvShowSearchResultDTO>(responseString);
+                // Extract search results
+                foreach (var show in results.Results)
                 {
-                    string responseString = await response.Content.ReadAsStringAsync();
-                    var results = JsonSerializer.Deserialize<TvShowSearchResultDTO>(responseString);
-                    // Extract search results
-                    foreach (var show in results.Results)
+                    var searchResult = new SearchResult
                     {
-                        var searchResult = new SearchResult
-                        {
-                            MediaId = show.MediaId,
-                            Title = show.Title
-                        };
-                        searchResults.Add(searchResult); 
-                    }
+                        MediaId = show.MediaId,
+                        Title = show.Title
+                    };
+                    searchResults.Add(searchResult);
                 }
             }
-            catch
-            {
-                throw new Exception("API could not get website");
-            }
+        }
+        catch
+        {
+            throw new Exception("API could not get tv-list");
         }
         return searchResults;
     }
