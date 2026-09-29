@@ -1,0 +1,27 @@
+@page "/HomePage"
+@using TvSite.Application.ServiceAPI
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+@rendermode InteractiveServer
+@inject IAPIService apiService
+<h3>HomePage</h3>
+
+
+@foreach (var movie in movies)
+{
+    <p>@movie.Title</p> 
+}
+
+
+
+@code {
+    
+    List<Media> movies = new List<Media>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        movies = await apiService.GetMoviesFromDiscover();
+    }
+    
+    
+}
