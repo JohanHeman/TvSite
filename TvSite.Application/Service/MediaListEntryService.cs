@@ -4,17 +4,17 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
 using TvSite.Domain.Enums;
-using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
 
-namespace TvSite.Infrastructure.Repositories
+namespace TvSite.Application.Service
 {
-    public class MediaListEntryRepository : IMediaListEntryRepository
+    public class MediaListEntryService : IMediaListEntryService
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly DbSet<MediaListEntry> _set;
 
-        public MediaListEntryRepository(ApplicationDbContext dbContext)
+        public MediaListEntryService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _set = dbContext.MediaListEntry;
@@ -29,7 +29,7 @@ namespace TvSite.Infrastructure.Repositories
         public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(string userId, ListStateEnum.ListState listState)
         {
             return await _set
-                .Where(entry  => entry.ApplicationUserId == userId)
+                .Where(entry => entry.ApplicationUserId == userId)
                 .Where(entry => entry.ListState == ((int)listState))
                 .ToListAsync();
         }

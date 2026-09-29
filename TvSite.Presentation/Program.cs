@@ -5,12 +5,10 @@ using System.Net.Http.Headers;
 using TvSite.Application.Service;
 using TvSite.Application.ServiceAPI;
 using TvSite.Domain.Entities;
-using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Repositories;
 using TvSite.Domain.InterfacesAPI.Services;
 using TvSite.Infrastructure.Data;
-using TvSite.Infrastructure.Repositories;
 using TvSite.Infrastructure.RepositoryAPI;
 using TvSite.Presentation.Components;
 using TvSite.Presentation.Components.Account;
@@ -60,7 +58,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<IMediaListEntryService, MediaListEntryService>();
+builder.Services.AddTransient<IRatingService, RatingService>();
 builder.Services.AddTransient<IAPIRepository, APIRepository>();
 builder.Services.AddTransient<IAPIService, APIService>();
 
