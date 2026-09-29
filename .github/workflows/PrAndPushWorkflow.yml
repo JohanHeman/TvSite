@@ -1,0 +1,26 @@
+name: pull_request_and_push_workflow
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+  workflow_dispatch: 
+
+jobs:
+  build-project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v6
+      - run: dotnet restore ../../TvSite.Presentation/TvSite.Presentation.csproj
+      - run: dotnet test ../../TvSite.Presentation/TvSite.Presentation.csproj
+      - run: dotnet build ../../TvSite.Presentation/TvSite.Presentation.csproj
+ 
+
+  
+
+
+
