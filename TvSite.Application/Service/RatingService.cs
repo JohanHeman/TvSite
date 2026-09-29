@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
-using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
 
-namespace TvSite.Infrastructure.Repositories
+namespace TvSite.Application.Service
 {
-    public class RatingRepository : IRatingRepository
+    public class RatingService : IRatingService
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly DbSet<Rating> _set;
 
-        public RatingRepository(ApplicationDbContext dbContext)
+        public RatingService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _set = dbContext.Ratings;
