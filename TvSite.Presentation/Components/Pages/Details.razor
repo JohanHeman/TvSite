@@ -16,7 +16,6 @@
         <img src='@_media.MediaImage' class="mb-1" />
     </div>
 
-
     <div>
         <h4>Directors</h4>
         <p>
@@ -30,26 +29,19 @@
 
     <div>
         <h2>Seasons</h2>
-        <div class="d-flex flex-column gap-1">
+        <div class="d-flex flex-column gap-2">
             @foreach (var season in _media.Seasons)
             {
                 <div class="border border-1 p-2">
-                    <div class="d-flex gap-1">
+                    <div class="d-flex gap-2">
                         <p>@season.SeasonName</p>
-                        <p> | </p>
-                        <p>Episodes: @season.EpisodeCount</p>
-                        <p> | </p>
                         <p>@season.AirDate</p>
+                        <p>Episodes: @season.EpisodeCount</p>
                     </div>
 
-                    <div class="mb-1 d-flex gap-1">
-                        <div>
-
-                            <img src="@season.ImagePath" />
-                        </div>
-
+                    <div class="mb-1 d-flex gap-2">
+                        <img src="@season.ImagePath"/>
                         <p>@season.Description</p>
-
                     </div>
             </div>
 
@@ -69,5 +61,4 @@
     {
         _media = await ApiService.GetTvShowDetailsById(MediaId);
     }
-
 }
