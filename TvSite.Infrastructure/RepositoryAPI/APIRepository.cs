@@ -34,7 +34,7 @@ public class APIRepository : IAPIRepository
                 {
                     var searchResult = new SearchResult
                     {
-                        MediaId = show.MediaId,
+                        MediaId = show.MediaId.ToString(),
                         Title = show.Title
                     };
                     searchResults.Add(searchResult);
