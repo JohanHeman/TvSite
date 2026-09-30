@@ -6,4 +6,5 @@ public interface IAPIService
 {
     public Task<List<SearchResult>> GetMediasByTitle(string title);
     public Task<List<DisplayMedia>> GetTvShowsFromDiscover();
+    public Task<Media> GetTvShowDetailsById(string mediaId);
 }

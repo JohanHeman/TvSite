@@ -1,0 +1,52 @@
+﻿@page "/details"
+@rendermode InteractiveServer
+
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+
+@inject IAPIService ApiService
+
+<h3>Details</h3>
+
+@if(_media != null)
+{
+    <div>
+
+    </div>
+    string[] imageSize = { "w92", "w154", "w185", "w342", "w500", "w780" };
+    <h1>@_media.Name</h1>
+    <p>@_media.Description</p>
+    <img src='@($"https://image.tmdb.org/t/p/{imageSize[2]}/{_media.MediaImage}")' class="mb-1" />
+
+    <div>
+        <h4>Directors</h4>
+        <p>
+            @foreach (var director in _media.Directors)
+            {
+                @director<br />
+            }
+        </p>
+         
+    </div>
+
+    <div>
+        <h2>Seasons</h2>
+        <div class="bg-body-secondary">
+
+        </div>
+    </div>
+
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    public string MediaId { get; set; } = "";
+
+    private Media _media = null!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _media = await ApiService.GetTvShowDetailsById(MediaId);
+    }
+
+}

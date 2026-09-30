@@ -81,4 +81,34 @@ public class APIRepository : IAPIRepository
         }
         return tvShows;
     }
+
+    public async Task<Media> GetTvShowDetails(string mediaId)
+    {
+        var media = new Media();
+
+        var endpoint = _client.BaseAddress + $"tv/{mediaId}";
+        var response = await _client.GetAsync(endpoint);
+
+        try
+        {
+            if (response.IsSuccessStatusCode) 
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                
+                var tvShowDetails = JsonSerializer.Deserialize<TvShowDetailsDTO>(responseString);
+                if (tvShowDetails != null) 
+                {
+                    media.Id = tvShowDetails.Id.ToString();
+                    media.Name = tvShowDetails.Title;
+                    media.Description = tvShowDetails.Description;
+                    media.Directors = tvShowDetails.Directors.Select(director => director.Name).ToArray();
+                    media.MediaImage = tvShowDetails.ImagePath;
+                    media.AirDate = tvShowDetails.AirDate;
+                }
+            }
+        }
+        catch { throw new Exception("Api could not get TvShowDetails"); }
+
+        return media;
+    }
 }

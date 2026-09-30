@@ -23,4 +23,12 @@ public class APIService : IAPIService
     {
         return await _repository.GetTvShowDiscoverListAsync();
     }
+
+    public async Task<Media> GetTvShowDetailsById(string mediaId)
+    {
+        if (string.IsNullOrWhiteSpace(mediaId))
+            return null!;
+        
+        return await _repository.GetTvShowDetails(mediaId);
+    }
 }
