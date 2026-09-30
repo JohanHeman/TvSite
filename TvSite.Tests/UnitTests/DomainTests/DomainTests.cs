@@ -9,11 +9,6 @@ namespace TvSite.Tests.UnitTests.DomainTests
 {
     public class DomainTests
     {
-        ApplicationUser _user = new ApplicationUser() {DisplayName = "Johan"};
-        Comment _comment = new Comment();
-        Rating _rating = new Rating();
-        MediaListEntry _mediaListEntry = new MediaListEntry();
-
         // ApplicationUser
         [Theory]
         [InlineData(null)]
@@ -22,9 +17,10 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Set_DisplayName_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string input)
         {
             // Arrange
+            ApplicationUser user = new ApplicationUser();
             var expectedMessage = $"DisplayName cannot be null or whitespace";
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            var actual = Assert.Throws<ArgumentException>(() => user.DisplayName = input);
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
 
@@ -37,9 +33,10 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Set_DisplayName_ThrowsArgumentException_WhenLengthIsBelowThree(string input)
         {
             // Arrange
+            ApplicationUser user = new ApplicationUser();
             var expectedMessage = $"DisplayName length cannot be below {ApplicationSettings.DisplayNameMinLength}";
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            var actual = Assert.Throws<ArgumentException>(() => user.DisplayName = input);
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
 
@@ -51,9 +48,10 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Set_DisplayName_ThrowsArgumentException_WhenLengthIsAboveSixteen(string input)
         {
             // Arrange
+            ApplicationUser user = new ApplicationUser();
             var expectedMessage = $"DisplayName length cannot be longer than {ApplicationSettings.DisplayNameMaxLength}";
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            var actual = Assert.Throws<ArgumentException>(() => user.DisplayName = input);
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
 
@@ -66,10 +64,11 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Set_DisplayName_ThrowsArgumentException_WhenFirstLetterIsNotUpperCase(string input)
         {
             // Arrange
+            ApplicationUser _user = new ApplicationUser();
             var expectedMessage = $"First letter must be uppercase";
 
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _user.DisplayName = input);
+            var actual = Assert.Throws<ArgumentException>(() => user.DisplayName = input);
 
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
@@ -83,10 +82,11 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void CommentText_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string input)
         {
             // Arrange
+            Comment comment = new Comment();
             var expectedMessage = $"Text cannot be null or whitespace";
             
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _comment.Text = input);
+            var actual = Assert.Throws<ArgumentException>(() => comment.Text = input);
             
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
@@ -98,10 +98,11 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Stars_ThrowsArgumentException_WhenBelowMinValue(int stars)
         {
             // Arrange
+            Rating rating = new Rating();
             var expectedMessage = $"Stars cannot be below {ApplicationSettings.StarsMin}";
             
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _rating.Stars = stars);
+            var actual = Assert.Throws<ArgumentException>(() => rating.Stars = stars);
             
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
@@ -112,10 +113,11 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Stars_ThrowsArgumentException_WhenAboveMinValue(int stars)
         {
             // Arrange
+            Rating rating = new Rating();
             var expectedMessage = $"Stars cannot be above {ApplicationSettings.StarsMax}";
 
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _rating.Stars = stars);
+            var actual = Assert.Throws<ArgumentException>(() => rating.Stars = stars);
 
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
@@ -129,10 +131,11 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void ListState_ThrowsArgumentExeption_WhenListStateDoesNotExist(int input)
         {
             // Arrange
+            MediaListEntry mediaListEntry = new MediaListEntry();
             var expectedMessage = $"List state does not exist";
 
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => _mediaListEntry.ListState = input);
+            var actual = Assert.Throws<ArgumentException>(() => mediaListEntry.ListState = input);
 
             // Assert
             Assert.Equal(actual.Message , expectedMessage);
