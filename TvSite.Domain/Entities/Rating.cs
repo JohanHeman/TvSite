@@ -8,10 +8,10 @@ public class Rating
     public int Stars { get { return _stars; } set 
         {
             if (value < ApplicationSettings.StarsMin)
-                throw new ArgumentException($"Stars cannot be below {ApplicationSettings.StarsMin}", "Stars");
+                throw new ArgumentException($"Stars cannot be below {ApplicationSettings.StarsMin}");
 
             if (value > ApplicationSettings.StarsMax)
-                throw new ArgumentException($"Stars cannot be above {ApplicationSettings.StarsMax}", "Stars");
+                throw new ArgumentException($"Stars cannot be above {ApplicationSettings.StarsMax}");
 
             _stars = value;
         }

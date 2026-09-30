@@ -11,8 +11,8 @@ public class Comment
         get =>  _text;
         set
         {
-            if (string.IsNullOrEmpty(value))
-                throw new ArgumentException("Text cannot be null or empty");
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Text cannot be null or whitespace");
             _text = value;
         }
     }
