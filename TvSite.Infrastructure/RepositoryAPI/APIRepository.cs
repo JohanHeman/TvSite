@@ -53,7 +53,7 @@ public class APIRepository : IAPIRepository
     public record DiscoverTvShowResultDTO([property: JsonPropertyName("results")]List<HomeScreenMediaDTO> Results);
     public async Task<List<DisplayMedia>> GetTvShowDiscoverListAsync()
     {
-        var baseImgUrl = "https://image.tmdb.org/t/p/w92";
+        var baseImgUrl = "https://image.tmdb.org/t/p/w154";
         var endpoint = _client.BaseAddress + "discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc";
         List<DisplayMedia> tvShows= new List<DisplayMedia>();
         var response = await _client.GetAsync(endpoint);
