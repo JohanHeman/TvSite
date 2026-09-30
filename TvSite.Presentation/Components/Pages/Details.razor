@@ -11,12 +11,11 @@
 @if(_media != null)
 {
     <div>
-
+        <h1>@_media.Name</h1>
+        <p>@_media.Description</p>
+        <img src='@_media.MediaImage' class="mb-1" />
     </div>
-    string[] imageSize = { "w92", "w154", "w185", "w342", "w500", "w780" };
-    <h1>@_media.Name</h1>
-    <p>@_media.Description</p>
-    <img src='@($"https://image.tmdb.org/t/p/{imageSize[2]}/{_media.MediaImage}")' class="mb-1" />
+
 
     <div>
         <h4>Directors</h4>
@@ -31,8 +30,30 @@
 
     <div>
         <h2>Seasons</h2>
-        <div class="bg-body-secondary">
+        <div class="d-flex flex-column gap-1">
+            @foreach (var season in _media.Seasons)
+            {
+                <div class="border border-1 p-2">
+                    <div class="d-flex gap-1">
+                        <p>@season.SeasonName</p>
+                        <p> | </p>
+                        <p>Episodes: @season.EpisodeCount</p>
+                        <p> | </p>
+                        <p>@season.AirDate</p>
+                    </div>
 
+                    <div class="mb-1 d-flex gap-1">
+                        <div>
+
+                            <img src="@season.ImagePath" />
+                        </div>
+
+                        <p>@season.Description</p>
+
+                    </div>
+            </div>
+
+            }
         </div>
     </div>
 

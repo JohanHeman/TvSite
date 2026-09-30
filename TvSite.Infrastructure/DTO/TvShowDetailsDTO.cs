@@ -48,6 +48,12 @@ namespace TvSite.Infrastructure.DTO
 
         [JsonPropertyName("poster_path")]
         public string ImagePath { get; set; }
+
+        [JsonPropertyName("overview")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("air_date")]
+        public DateOnly AirDate { get; set; }
     }
 
     public class TvShowDetailsDirectorDTO

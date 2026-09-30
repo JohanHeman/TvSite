@@ -85,6 +85,8 @@ public class APIRepository : IAPIRepository
     public async Task<Media> GetTvShowDetails(string mediaId)
     {
         var media = new Media();
+        var baseImgUrlTvSeries = "https://image.tmdb.org/t/p/w154";
+        var baseImgUrlSeason = "https://image.tmdb.org/t/p/w92";
 
         var endpoint = _client.BaseAddress + $"tv/{mediaId}";
         var response = await _client.GetAsync(endpoint);
@@ -102,8 +104,18 @@ public class APIRepository : IAPIRepository
                     media.Name = tvShowDetails.Title;
                     media.Description = tvShowDetails.Description;
                     media.Directors = tvShowDetails.Directors.Select(director => director.Name).ToArray();
-                    media.MediaImage = tvShowDetails.ImagePath;
+                    media.MediaImage = baseImgUrlTvSeries + tvShowDetails.ImagePath;
                     media.AirDate = tvShowDetails.AirDate;
+
+                    media.Seasons = tvShowDetails.Seasons.Select(season => new TvSeriesSeason() {
+                        MediaId = season.Id.ToString(),
+                        SeasonNumber = season.SeasonNumber,
+                        SeasonName = season.Title,
+                        ImagePath = baseImgUrlSeason + season.ImagePath,
+                        Description = season.Description,
+                        EpisodeCount = season.EpisodeCount,
+                        AirDate = season.AirDate,
+                    }).ToList();
                 }
             }
         }
