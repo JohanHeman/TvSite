@@ -19,8 +19,8 @@ public class APIService : IAPIService
         return await _repository.GetTvShowsSearchResult(title);
     }
 
-    public async Task<List<Media>> GetMoviesFromDiscover()
+    public async Task<List<DisplayMedia>> GetTvShowsFromDiscover()
     {
-        return await _repository.GetMovieDiscoverListAsync();
+        return await _repository.GetTvShowDiscoverListAsync();
     }
 }

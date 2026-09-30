@@ -1,4 +1,5 @@
 @page "/HomePage"
+@using Humanizer
 @using TvSite.Application.ServiceAPI
 @using TvSite.Domain.Entities
 @using TvSite.Domain.InterfacesAPI.Services
@@ -7,21 +8,20 @@
 <h3>HomePage</h3>
 
 
-@foreach (var movie in movies)
+@foreach (var show in tvShows)
 {
-    <p>@movie.Title</p> 
+    <p>@show.Name</p> 
 }
 
 
 
 @code {
     
-    List<Media> movies = new List<Media>();
+    List<DisplayMedia> tvShows = new List<DisplayMedia>();
     
     protected override async Task OnInitializedAsync()
     {
-        movies = await apiService.GetMoviesFromDiscover();
+        tvShows = await apiService.GetTvShowsFromDiscover();
     }
-    
     
 }

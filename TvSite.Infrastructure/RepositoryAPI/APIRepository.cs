@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using TvSite.Domain.Entities;
 using TvSite.Domain.InterfacesAPI.Repositories;
 using TvSite.Infrastructure.DTO;
@@ -15,7 +16,8 @@ public class APIRepository : IAPIRepository
         // Client config setup in Program.cs
         _client = httpFactory.CreateClient("TmdbApiClient");
     }
-
+    
+    
     public async Task<List<SearchResult>> GetTvShowsSearchResult(string title)
     {
         var searchResults = new List<SearchResult>();
@@ -48,30 +50,27 @@ public class APIRepository : IAPIRepository
         return searchResults;
     }
 
-    public async Task<List<Media>> GetMovieDiscoverListAsync()
+    public record DiscoverTvShowResultDTO([property: JsonPropertyName("results")]List<HomeScreenMediaDTO> Results);
+    public async Task<List<DisplayMedia>> GetTvShowDiscoverListAsync()
     {
-        var endpoint = _client.BaseAddress + "discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc";
-        List<Media> movies = new List<Media>();
+        var endpoint = _client.BaseAddress + "discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc";
+        List<DisplayMedia> tvShows= new List<DisplayMedia>();
         var response = await _client.GetAsync(endpoint);
         if (response.IsSuccessStatusCode)
         {
             try
             {
                 var responseString  = await response.Content.ReadAsStringAsync();
-                var results = JsonSerializer.Deserialize<DiscoverMovieResult>(responseString);
-                foreach (var movie in results.Results)
+                var results = JsonSerializer.Deserialize<DiscoverTvShowResultDTO>(responseString);
+                foreach (var show in results.Results)
                 {
-                    Media media = new Media
+                    DisplayMedia media = new DisplayMedia
                     {
-                        Id = movie.Id.ToString(),
-                        Title = movie.Title,
-                        Description = movie.Description,
-                        Directors = movie.Directors,
-                        Actors = movie.Actors,
-                        AirDate =  movie.AirDate,
-                        MediaImage = movie.MediaImage
+                        Id = show.Id.ToString(),
+                        Name = show.Name,
+                        Image = show.Image
                     };
-                    movies.Add(media);
+                    tvShows.Add(media);
                 }
             }
             catch (Exception e)
@@ -79,6 +78,6 @@ public class APIRepository : IAPIRepository
                 throw new Exception("API could not get discover movie-list");
             }
         }
-        return movies;
+        return tvShows;
     }
 }
