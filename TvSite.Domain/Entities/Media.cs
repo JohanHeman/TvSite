@@ -8,7 +8,7 @@ namespace TvSite.Domain.Entities
     public class Media
     {
         public string Id { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public string[] Directors { get; set; }
         public string[] Actors { get; set; }

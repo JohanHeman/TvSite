@@ -1,0 +1,27 @@
+@page "/HomePage"
+@using Humanizer
+@using TvSite.Application.ServiceAPI
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+@rendermode InteractiveServer
+@inject IAPIService apiService
+<h3>HomePage</h3>
+
+
+@foreach (var show in tvShows)
+{
+    <p>@show.Name</p> 
+}
+
+
+
+@code {
+    
+    List<DisplayMedia> tvShows = new List<DisplayMedia>();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        tvShows = await apiService.GetTvShowsFromDiscover();
+    }
+    
+}
