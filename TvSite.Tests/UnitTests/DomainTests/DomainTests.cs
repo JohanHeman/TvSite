@@ -64,7 +64,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
         public void Set_DisplayName_ThrowsArgumentException_WhenFirstLetterIsNotUpperCase(string input)
         {
             // Arrange
-            ApplicationUser _user = new ApplicationUser();
+            ApplicationUser user = new ApplicationUser();
             var expectedMessage = $"First letter must be uppercase";
 
             // Act
