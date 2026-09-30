@@ -1,0 +1,55 @@
+﻿@page "/searchmedia"
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+@rendermode InteractiveServer
+
+@inject IAPIService ApiService;
+
+@* Example: Load 10x titles. Clicking a title gets you to the detail page *@
+<div class="position-relative">
+    <div class="mb-1">
+        <input type="text" @bind="curentSearchText"/>
+        <button @onclick="SearchByTitleAsync">Search</button>
+    </div>
+
+
+    <div class="border border-1 position-absolute">
+        @foreach (var result in searchResults)
+        {
+            <div class="bg-light p-1 border-bottom hover-overlay">
+                <a href="@GetMediaUrl(result.MediaId)">@result.Title</a>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    string curentSearchText = "";
+    string previousSearch = "";
+
+    List<SearchResult> searchResults = new List<SearchResult>();
+
+    private async Task SearchByTitleAsync()
+    {
+        // Only search if not the same as last search
+        if (!string.IsNullOrWhiteSpace(curentSearchText) && curentSearchText != previousSearch)
+        {
+            searchResults = await ApiService.GetMediasByTitle(curentSearchText);
+            previousSearch = curentSearchText;
+            return;
+        }
+
+        // Clear Search Resutls if search text empty
+        if (string.IsNullOrWhiteSpace(curentSearchText) && searchResults.Count > 0)
+        {
+            searchResults = new List<SearchResult>();
+            previousSearch = "";
+            return;
+        }
+    }
+
+    private string GetMediaUrl(string mediaId)
+    {
+        return "https://www.themoviedb.org/tv/" + mediaId;
+    }
+}
