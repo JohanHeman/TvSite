@@ -10,6 +10,8 @@ namespace TvSite.Infrastructure.DTO.SeasonDetailsDTO
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+        [JsonPropertyName("name")]
+        public string Title { get; set; }
 
         [JsonPropertyName("season_number")]
         public int SeasonNumber { get; set; }
@@ -18,13 +20,16 @@ namespace TvSite.Infrastructure.DTO.SeasonDetailsDTO
         public string Description { get; set; }
 
         [JsonPropertyName("air_date")]
-        public DateOnly DateOnly { get; set; }
+        public DateOnly AirDate { get; set; }
 
         [JsonPropertyName("poster_path")]
         public string ImagePath { get; set; }
 
+
+
         [JsonPropertyName("episodes")]
         public List<SeasonEpisodeDTO> Episodes { get; set; } = new();
+
 
     }
 }
