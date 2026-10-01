@@ -11,10 +11,10 @@ namespace TvSite.Tests.UnitTests
         [InlineData("alexandra", "Alexandra")]
         [InlineData("aLEX", "ALEX")]
         [InlineData("tv Johan", "Tv Johan")]
-        public void MakeFirstLetterToUpper_ShouldReturn_FirstLetterUpperCase(string input, string expected)
+        public void SetFirstLetterToUpper_ShouldReturn_FirstLetterUpperCased_WhenFirstLetterIsLowerCase(string input, string expected)
         {
             // Act
-            var actual = TextFormatingHelpers.MakeFirstLetterToUpper(input);
+            var actual = TextFormatingHelpers.SetFirstLetterToUpper(input);
 
             // Assert
             Assert.Equal(expected, actual);
@@ -24,10 +24,10 @@ namespace TvSite.Tests.UnitTests
         [InlineData("", "")]
         [InlineData(" ", " ")]
         [InlineData("  ", "  ")]
-        public void MakeFirstLetterToUpper_ShouldReturn_InputWhenStringIsNullOrWhiteSpace(string input, string expected)
+        public void SetFirstLetterToUpper_ShouldReturn_InputWhenStringIsNullOrWhiteSpace(string input, string expected)
         {
             // Act
-            var actual = TextFormatingHelpers.MakeFirstLetterToUpper(input);
+            var actual = TextFormatingHelpers.SetFirstLetterToUpper(input);
 
             // Assert
             Assert.Equal(expected, actual);
