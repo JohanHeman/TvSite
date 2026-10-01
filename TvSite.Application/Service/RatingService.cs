@@ -3,37 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
+using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
+using TvSite.Infrastructure.Repositories;
 
 namespace TvSite.Application.Service
 {
     public class RatingService : IRatingService
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly DbSet<Rating> _set;
-
-        public RatingService(ApplicationDbContext dbContext)
+        private readonly IRatingRepository _repository;
+        
+        public RatingService(IRatingRepository repository)
         {
-            _dbContext = dbContext;
-            _set = dbContext.Ratings;
+            _repository = repository;
         }
 
         public async Task CreateRatingAsync(Rating rating)
         {
-            await _set.AddAsync(rating);
-            await _dbContext.SaveChangesAsync();
+            await _repository.CreateRatingAsync(rating);
         }
 
         public async Task DeleteRatingAsync(Rating rating)
         {
-            _set.Remove(rating);
-            await _dbContext.SaveChangesAsync();
+            await _repository.DeleteRatingAsync(rating);
         }
 
-        public Task<float> GetAverageRatingByMediaIdAsync(string mediaId)
+        public async Task<double> GetAverageRatingByMediaIdAsync(string mediaId)
         {
-            throw new NotImplementedException();
+            var ratings = await _repository.GetAverageRating(mediaId);
+            return ratings.Average(r => r.Stars);
         }
     }
 }
