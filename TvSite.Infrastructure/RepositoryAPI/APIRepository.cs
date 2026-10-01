@@ -98,8 +98,8 @@ public class APIRepository : IAPIRepository
             if (response.IsSuccessStatusCode) 
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                
                 var tvShowDetails = JsonSerializer.Deserialize<TvShowDetailsDTO>(responseString);
+
                 if (tvShowDetails != null) 
                 {
                     media.Id = tvShowDetails.Id.ToString();
@@ -127,13 +127,13 @@ public class APIRepository : IAPIRepository
     }
 
 
-    public async Task<TvSeriesSeason> GetSeasonDetails(string seriesId, int seasonNumber)
+    public async Task<TvSeriesSeason> GetSeasonDetails(string showId, int seasonNumber)
     {
         var tvSeriesSeason = new TvSeriesSeason();
         var baseImgUrlTvSeason = "https://image.tmdb.org/t/p/w154";
         var baseImgUrlEpisode = "https://image.tmdb.org/t/p/w92";
 
-        var endPoint = _client.BaseAddress + $"tv/{seriesId}/season/{seasonNumber}";
+        var endPoint = _client.BaseAddress + $"tv/{showId}/season/{seasonNumber}";
         var response = await _client.GetAsync(endPoint);
 
         try

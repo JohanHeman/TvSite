@@ -1,0 +1,65 @@
+﻿@page "/tvshow/season"
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+@rendermode InteractiveServer
+
+@inject IAPIService ApiService
+
+<h3>Season</h3>
+@if(_season != null)
+{
+    <h1>@_season.SeasonName</h1>
+    <div class="d-flex gap-3 mb-4">
+        <img src="@_season.ImagePath" />
+
+        <p>@_season.Description</p>
+    </div>
+
+
+    <h1>Episodes</h1>
+    <div class="d-flex flex-column gap-3">
+        @foreach (var episode in _season.Episodes)
+        {
+            <div class="d-flex border border-1 p-1 gap-3 bg-body-tertiary">
+                <div>
+                    <p>Episode: @episode.EpisodeNumber</p>
+                    <img src="@episode.ImagePath"/>
+                </div>
+                <div>
+                    
+                    <p>@episode.Title | @episode.AirDate</p>
+                    <p>@episode.Description</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private TvSeriesSeason _season;
+
+    [SupplyParameterFromQuery]
+    public int SeasonNumber { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string ShowId { get; set; } = "";
+
+    // Vars for preventing calling the api multiple times
+    private int _loadedSeasonNumber;
+    private string? _loadedShowId;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrWhiteSpace(ShowId))
+            return;
+
+        // Prevent loading calling the api twice. OnParametersSetAsync can triggers multiple times
+        if (_loadedShowId == ShowId && _loadedSeasonNumber == SeasonNumber)
+            return;
+        
+        _loadedShowId = ShowId;
+        _loadedSeasonNumber = SeasonNumber;
+
+        _season = await ApiService.GetSeasonDetails(ShowId, SeasonNumber);
+    }
+}
