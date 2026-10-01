@@ -5,7 +5,7 @@ using System.Text;
 namespace TvSite.Domain.Entities
 {
     // API FILTER ENTITY
-    public class Media
+    public class TvSeries
     {
         public string Id { get; set; }
         public string Name { get; set; }

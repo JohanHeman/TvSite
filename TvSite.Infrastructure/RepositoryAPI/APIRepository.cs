@@ -18,14 +18,13 @@ public class APIRepository : IAPIRepository
         // Client config setup in Program.cs
         _client = httpFactory.CreateClient("TmdbApiClient");
     }
-    
-    
+
+    public record TvShowSearchResultDTO([property: JsonPropertyName("results")] List<TvShowSearchResult> Results);
     public async Task<List<SearchResult>> GetTvShowsSearchResult(string title)
     {
         var searchResults = new List<SearchResult>();
 
         var endPoint = _client.BaseAddress + $"search/tv?query={Uri.EscapeDataString(title)}&include_adult=false&language=en-US&page=1";
-
         HttpResponseMessage response = await _client.GetAsync(endPoint);
         try
         {
@@ -84,9 +83,9 @@ public class APIRepository : IAPIRepository
         return tvShows;
     }
 
-    public async Task<Media> GetTvShowDetails(string mediaId)
+    public async Task<TvSeries> GetTvShowDetails(string mediaId)
     {
-        var media = new Media();
+        var media = new TvSeries();
         var baseImgUrlTvSeries = "https://image.tmdb.org/t/p/w154";
         var baseImgUrlSeason = "https://image.tmdb.org/t/p/w92";
 
