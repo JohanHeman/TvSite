@@ -20,7 +20,13 @@
     protected override async Task OnInitializedAsync()
     {
         list = await service.GetMediasByTitle("H");
+
+
+        var media = await service.GetTvShowDetailsById("1399");
+        Console.WriteLine();
     }
+
+ 
 
 
 }

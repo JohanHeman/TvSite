@@ -1,0 +1,64 @@
+﻿@page "/details"
+@rendermode InteractiveServer
+
+@using TvSite.Domain.Entities
+@using TvSite.Domain.InterfacesAPI.Services
+
+@inject IAPIService ApiService
+
+<h3>Details</h3>
+
+@if(_media != null)
+{
+    <div>
+        <h1>@_media.Name</h1>
+        <p>@_media.Description</p>
+        <img src='@_media.MediaImage' class="mb-1" />
+    </div>
+
+    <div>
+        <h4>Directors</h4>
+        <p>
+            @foreach (var director in _media.Directors)
+            {
+                @director<br />
+            }
+        </p>
+         
+    </div>
+
+    <div>
+        <h2>Seasons</h2>
+        <div class="d-flex flex-column gap-2">
+            @foreach (var season in _media.Seasons)
+            {
+                <div class="border border-1 p-2">
+                    <div class="d-flex gap-2">
+                        <p>@season.SeasonName</p>
+                        <p>@season.AirDate</p>
+                        <p>Episodes: @season.EpisodeCount</p>
+                    </div>
+
+                    <div class="mb-1 d-flex gap-2">
+                        <img src="@season.ImagePath"/>
+                        <p>@season.Description</p>
+                    </div>
+            </div>
+
+            }
+        </div>
+    </div>
+
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    public string MediaId { get; set; } = "";
+
+    private Media _media = null!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _media = await ApiService.GetTvShowDetailsById(MediaId);
+    }
+}
