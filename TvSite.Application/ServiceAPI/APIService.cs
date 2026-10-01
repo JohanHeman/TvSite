@@ -31,4 +31,12 @@ public class APIService : IAPIService
         
         return await _repository.GetTvShowDetails(mediaId);
     }
+
+    public async Task<TvSeriesSeason> GetSeasonDetails(string showId, int seasonNumber)
+    {
+        if (string.IsNullOrWhiteSpace(showId))
+            return null!;
+
+        return await _repository.GetSeasonDetails(showId, seasonNumber);
+    }
 }

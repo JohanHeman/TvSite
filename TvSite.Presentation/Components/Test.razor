@@ -16,5 +16,7 @@
     protected override async Task OnInitializedAsync()
     {
         list = await service.GetMediasByTitle("H");
+
+        //await service.GetSeasonDetails("1399", 1);
     }
 }

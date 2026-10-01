@@ -1,8 +1,10 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TvSite.Domain.Entities;
 using TvSite.Domain.InterfacesAPI.Repositories;
 using TvSite.Infrastructure.DTO;
+using TvSite.Infrastructure.DTO.SeasonDetailsDTO;
 
 namespace TvSite.Infrastructure.RepositoryAPI;
 
@@ -96,8 +98,8 @@ public class APIRepository : IAPIRepository
             if (response.IsSuccessStatusCode) 
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                
                 var tvShowDetails = JsonSerializer.Deserialize<TvShowDetailsDTO>(responseString);
+
                 if (tvShowDetails != null) 
                 {
                     media.Id = tvShowDetails.Id.ToString();
@@ -122,5 +124,48 @@ public class APIRepository : IAPIRepository
         catch { throw new Exception("Api could not get TvShowDetails"); }
 
         return media;
+    }
+
+
+    public async Task<TvSeriesSeason> GetSeasonDetails(string showId, int seasonNumber)
+    {
+        var tvSeriesSeason = new TvSeriesSeason();
+        var baseImgUrlTvSeason = "https://image.tmdb.org/t/p/w154";
+        var baseImgUrlEpisode = "https://image.tmdb.org/t/p/w92";
+
+        var endPoint = _client.BaseAddress + $"tv/{showId}/season/{seasonNumber}";
+        var response = await _client.GetAsync(endPoint);
+
+        try
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var season = JsonSerializer.Deserialize<SeasonDetailsDTO>(responseString);
+
+                if(season != null)
+                {
+                    tvSeriesSeason.MediaId = season.Id.ToString();
+                    tvSeriesSeason.SeasonName = season.Title;
+                    tvSeriesSeason.Description = season.Description;
+                    tvSeriesSeason.SeasonNumber = season.SeasonNumber;
+                    tvSeriesSeason.ImagePath = baseImgUrlTvSeason + season.ImagePath;
+                    tvSeriesSeason.AirDate = season.AirDate;
+
+                    tvSeriesSeason.Episodes = season.Episodes.Select(episode => new TvSeriesEpisode()
+                    {
+                        Id = episode.Id.ToString(),
+                        Title = episode.Title,
+                        Description = episode.Description,
+                        AirDate = episode.AirDate,
+                        EpisodeNumber = episode.EpisodeNumber,
+                        ImagePath = baseImgUrlEpisode + episode.ImagePath
+                    }).ToList();
+                }
+            }
+        }
+        catch { throw new Exception("Api could not get TvSeasonDetails"); }
+
+        return tvSeriesSeason;
     }
 }
