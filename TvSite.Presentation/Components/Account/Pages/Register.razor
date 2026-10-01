@@ -5,6 +5,7 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using TvSite.Domain
 @using TvSite.Domain.Entities
 @using TvSite.Infrastructure.Data
 
@@ -27,7 +28,11 @@
             <DataAnnotationsValidator/>
             <h2>Create a new account.</h2>
             <hr/>
-            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.DisplayName" id="Input.DisplayName" class="form-control" autocomplete="username" aria-required="true" placeholder="Display name" />
+                <label for="Input.DisplayName">Display name</label>
+                <ValidationMessage For="() => Input.DisplayName" class="text-danger" />
+            </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
                 <label for="Input.Email">Email</label>
@@ -73,6 +78,8 @@
     {
         var user = CreateUser();
 
+        user.DisplayName = MakeFirstLetterInDisplayNameToUpper(Input.DisplayName);
+
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -108,6 +115,11 @@
         }
     }
 
+    private string MakeFirstLetterInDisplayNameToUpper(string input)
+    {
+        return char.ToUpper(input[0]) + input.Substring(1);
+    }
+
     private ApplicationUser CreateUser()
     {
         try
@@ -133,6 +145,12 @@
 
     private sealed class InputModel
     {
+        [Required]
+        [Display(Name = "Display name")]
+        [MaxLength(ApplicationSettings.DisplayNameMaxLength, ErrorMessage = "Display name can't contain more than 16 letters")]
+        [MinLength(ApplicationSettings.DisplayNameMinLength, ErrorMessage = "Display name can't contain less than 3 letters")]
+        public string DisplayName { get; set; } = "";
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
