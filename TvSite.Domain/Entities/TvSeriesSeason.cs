@@ -13,5 +13,6 @@ namespace TvSite.Domain.Entities
         public string ImagePath { get; set; }
         public int EpisodeCount { get; set; }
         public DateOnly AirDate { get; set; }
+        List<TvSeriesEpisode> Episodes { get; set; } = new();
     }
 }
