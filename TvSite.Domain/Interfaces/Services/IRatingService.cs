@@ -7,8 +7,7 @@ namespace TvSite.Domain.Interfaces.Services
 {
     public interface IRatingService
     {
-        public Task<float> GetAverageRatingByMediaIdAsync(string mediaId);
-
+        public Task<Double> GetAverageRatingByMediaIdAsync(string mediaId);
         public Task CreateRatingAsync(Rating rating);
         public Task DeleteRatingAsync(Rating rating);
     }
