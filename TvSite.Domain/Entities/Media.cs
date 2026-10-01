@@ -14,5 +14,7 @@ namespace TvSite.Domain.Entities
         public string[] Actors { get; set; }
         public DateOnly AirDate { get; set; }
         public string MediaImage { get; set; }
+
+        public List<TvSeriesSeason> Seasons { get; set; } = new();
     }
 }
