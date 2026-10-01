@@ -6,7 +6,6 @@ public class MediaListEntry
 {
     public Guid Id { get; set; }
     public string MediaId { get; set; }
-    public Media Media { get; set; }
     private int _listState;
     public int ListState { get { return _listState; } 
         set 
