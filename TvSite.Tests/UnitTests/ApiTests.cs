@@ -1,5 +1,6 @@
 using Moq;
 using TvSite.Application.ServiceAPI;
+using TvSite.Domain.Entities;
 using TvSite.Domain.InterfacesAPI.Repositories;
 
 namespace TvSite.Tests.UnitTests;
@@ -15,7 +16,42 @@ public class ApiTests
         _mockRepository = new Mock<IAPIRepository>();
         _sut = new APIService(_mockRepository.Object);
     }
-    
-    
-    
+
+    [Fact]
+    public async Task GetTvShowsSearchResult_ShouldReturn_ListOfTvShows_WhenValidSearch()
+    {
+        // Arrange
+        var input = "breaking";
+        var expected = "Breaking Bad";
+        _mockRepository.Setup(r => r.GetTvShowsSearchResult(input))
+            .ReturnsAsync(new List<SearchResult>()
+            {
+                new SearchResult()
+                {
+                    MediaId = "23",
+                    Title = "Breaking Bad",
+                }
+            });
+
+        // Act
+        var actual = await _sut.GetMediasByTitle(input);
+
+        // Assert
+        
+        Assert.Equal(expected, actual[0].Title);
+    }
+
+    [Fact]
+    public async Task GetTvShowsFromDiscover_ShouldReturn_EmptyList_WhenNoResults()
+    {
+        var input = "";
+        _mockRepository.Setup(r => r.GetTvShowsSearchResult(input))
+            .ReturnsAsync(new List<SearchResult>());
+        
+        var expected = new List<SearchResult>();
+        
+        var actual = await _sut.GetMediasByTitle(input);
+        
+        Assert.Equal(expected, actual);
+    }
 }
