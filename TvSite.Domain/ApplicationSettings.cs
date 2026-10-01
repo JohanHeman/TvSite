@@ -6,11 +6,11 @@ namespace TvSite.Domain
 {
     public static class ApplicationSettings
     {
-        public static readonly int DisplayNameMinLength = 3;
-        public static readonly int DisplayNameMaxLength = 16;
+        public const int DisplayNameMinLength = 3;
+        public const int DisplayNameMaxLength = 16;
 
-        public static readonly int StarsMin = 0;
-        public static readonly int StarsMax = 10;
+        public const int StarsMin = 0;
+        public const int StarsMax = 10;
 
     }
 }
