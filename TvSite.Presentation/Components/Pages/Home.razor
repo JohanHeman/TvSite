@@ -1,38 +1,32 @@
 ﻿@page "/"
 @using TvSite.Domain.InterfacesAPI.Services
 @using TvSite.Domain.Entities
-@using TvSite.Presentation.Components.Search
 @rendermode InteractiveServer
 @inject IAPIService apiService
 
 <PageTitle>Home</PageTitle>
 
-
 <h1>TvSite!</h1>
 <p>Welcome</p>
-
 
 <h3 style="text-align: center">Discover Tv shows</h3>
 <div class="d-flex flex-wrap gap-3">
     @foreach (var show in tvShows)
     {
         <div style="width: 12rem;">
-            <img src="@show.Image"/>
-            <p>@show.Name</p>
+            <a href="/tvshow?mediaid=@show.Id">
+                <img src="@show.Image"/>
+                <p>@show.Name</p>
+            </a>
         </div>
     }
 </div>
 
-
-
 @code{
-
-    
     List<DisplayMedia> tvShows = new List<DisplayMedia>();
     
     protected override async Task OnInitializedAsync()
     {
         tvShows = await apiService.GetTvShowsFromDiscover();
     }
-
 }
