@@ -22,6 +22,13 @@ namespace TvSite.Application.Service
 
         public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
         {
+            var existingMediaEntry = await _set.FirstOrDefaultAsync(existingMediaEntry => 
+                existingMediaEntry.ApplicationUserId == userMediaListEntry.ApplicationUserId &&
+                existingMediaEntry.MediaId == userMediaListEntry.MediaId &&
+                existingMediaEntry.ListState == userMediaListEntry.ListState);
+
+            if (existingMediaEntry != null) return;
+            
             await _set.AddAsync(userMediaListEntry);
             await _dbContext.SaveChangesAsync();
         }
