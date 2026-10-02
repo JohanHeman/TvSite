@@ -51,18 +51,18 @@ public class APIRepository : IAPIRepository
         return searchResults;
     }
 
-    public record DiscoverTvShowResultDTO([property: JsonPropertyName("results")]List<HomeScreenMediaDTO> Results);
+    public record DiscoverTvShowResultDTO([property: JsonPropertyName("results")] List<HomeScreenMediaDTO> Results);
     public async Task<List<DisplayMedia>> GetTvShowDiscoverListAsync()
     {
         var baseImgUrl = "https://image.tmdb.org/t/p/w154";
         var endpoint = _client.BaseAddress + "discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc";
-        List<DisplayMedia> tvShows= new List<DisplayMedia>();
+        List<DisplayMedia> tvShows = new List<DisplayMedia>();
         var response = await _client.GetAsync(endpoint);
         if (response.IsSuccessStatusCode)
         {
             try
             {
-                var responseString  = await response.Content.ReadAsStringAsync();
+                var responseString = await response.Content.ReadAsStringAsync();
                 var results = JsonSerializer.Deserialize<DiscoverTvShowResultDTO>(responseString);
                 foreach (var show in results.Results)
                 {
@@ -94,12 +94,12 @@ public class APIRepository : IAPIRepository
 
         try
         {
-            if (response.IsSuccessStatusCode) 
+            if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
                 var tvShowDetails = JsonSerializer.Deserialize<TvShowDetailsDTO>(responseString);
 
-                if (tvShowDetails != null) 
+                if (tvShowDetails != null)
                 {
                     media.Id = tvShowDetails.Id.ToString();
                     media.Name = tvShowDetails.Title;
@@ -108,7 +108,8 @@ public class APIRepository : IAPIRepository
                     media.MediaImage = baseImgUrlTvSeries + tvShowDetails.ImagePath;
                     media.AirDate = tvShowDetails.AirDate;
 
-                    media.Seasons = tvShowDetails.Seasons.Select(season => new TvSeriesSeason() {
+                    media.Seasons = tvShowDetails.Seasons.Select(season => new TvSeriesSeason()
+                    {
                         MediaId = season.Id.ToString(),
                         SeasonNumber = season.SeasonNumber,
                         SeasonName = season.Title,
@@ -142,7 +143,7 @@ public class APIRepository : IAPIRepository
                 var responseString = await response.Content.ReadAsStringAsync();
                 var season = JsonSerializer.Deserialize<SeasonDetailsDTO>(responseString);
 
-                if(season != null)
+                if (season != null)
                 {
                     tvSeriesSeason.MediaId = season.Id.ToString();
                     tvSeriesSeason.SeasonName = season.Title;

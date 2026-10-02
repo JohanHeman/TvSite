@@ -4,7 +4,7 @@ namespace TvSite.Infrastructure.DTO;
 
 public class HomeScreenMediaDTO
 {
-    
+
     [JsonPropertyName("id")]
     public int Id { get; set; }
 

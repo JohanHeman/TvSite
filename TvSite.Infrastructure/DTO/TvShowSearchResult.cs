@@ -6,7 +6,7 @@ public class TvShowSearchResult
 {
     //https://developer.themoviedb.org/reference/search-tv
     [JsonPropertyName("id")]
-    public int MediaId{ get; set; }
+    public int MediaId { get; set; }
     [JsonPropertyName("name")]
-    public string Title{ get; set; }
+    public string Title { get; set; }
 }

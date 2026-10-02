@@ -8,7 +8,7 @@ public class Comment
     private string _text;
     public string Text
     {
-        get =>  _text;
+        get => _text;
         set
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -16,8 +16,8 @@ public class Comment
             _text = value;
         }
     }
-    
+
     public Guid ApplicationUserId { get; set; }
-    public ApplicationUser ApplicationUser{ get; set; }
-    public string MediaId{ get; set; }
+    public ApplicationUser ApplicationUser { get; set; }
+    public string MediaId { get; set; }
 }

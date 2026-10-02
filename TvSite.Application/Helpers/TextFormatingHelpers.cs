@@ -13,7 +13,7 @@ namespace TvSite.Application.Helpers
                 return input;
             }
 
-            if(input.Length == 1)
+            if (input.Length == 1)
             {
                 return input.ToUpper();
             }
