@@ -14,7 +14,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void Set_DisplayName_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string input)
+        public void Set_DisplayName_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string? input)
         {
             // Arrange
             ApplicationUser user = new ApplicationUser();
@@ -79,15 +79,15 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CommentText_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string input)
+        public void CommentText_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string? input)
         {
             // Arrange
             Comment comment = new Comment();
             var expectedMessage = $"Text cannot be null or whitespace";
-            
+
             // Act
             var actual = Assert.Throws<ArgumentException>(() => comment.Text = input);
-            
+
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
         }
@@ -100,10 +100,10 @@ namespace TvSite.Tests.UnitTests.DomainTests
             // Arrange
             Rating rating = new Rating();
             var expectedMessage = $"Stars cannot be below {ApplicationSettings.StarsMin}";
-            
+
             // Act
             var actual = Assert.Throws<ArgumentException>(() => rating.Stars = stars);
-            
+
             // Assert
             Assert.Equal(actual.Message, expectedMessage);
         }
@@ -125,7 +125,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
 
         // MediaListEntry
         [Theory]
-        [InlineData(4)] 
+        [InlineData(4)]
         [InlineData(-1)]
         [InlineData(0)]
         public void ListState_ThrowsArgumentExeption_WhenListStateDoesNotExist(int input)
@@ -138,7 +138,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
             var actual = Assert.Throws<ArgumentException>(() => mediaListEntry.ListState = input);
 
             // Assert
-            Assert.Equal(actual.Message , expectedMessage);
+            Assert.Equal(actual.Message, expectedMessage);
         }
     }
 }

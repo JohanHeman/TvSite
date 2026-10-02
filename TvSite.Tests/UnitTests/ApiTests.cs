@@ -37,7 +37,7 @@ public class ApiTests
         var actual = await _sut.GetMediasByTitle(input);
 
         // Assert
-        
+
         Assert.Equal(expected, actual[0].Title);
     }
 
@@ -47,11 +47,11 @@ public class ApiTests
         var input = "";
         _mockRepository.Setup(r => r.GetTvShowsSearchResult(input))
             .ReturnsAsync(new List<SearchResult>());
-        
+
         var expected = new List<SearchResult>();
-        
+
         var actual = await _sut.GetMediasByTitle(input);
-        
+
         Assert.Equal(expected, actual);
     }
 }

@@ -12,8 +12,8 @@ public class APIService : IAPIService
     {
         _repository = repository;
     }
-    
-    
+
+
     public async Task<List<SearchResult>> GetMediasByTitle(string title)
     {
         return await _repository.GetTvShowsSearchResult(title);
@@ -28,7 +28,7 @@ public class APIService : IAPIService
     {
         if (string.IsNullOrWhiteSpace(mediaId))
             return null!;
-        
+
         return await _repository.GetTvShowDetails(mediaId);
     }
 

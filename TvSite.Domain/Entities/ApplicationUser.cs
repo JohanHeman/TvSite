@@ -5,9 +5,11 @@ namespace TvSite.Domain.Entities;
 public class ApplicationUser : IdentityUser<Guid>
 {
     private string _displayName;
-    public string DisplayName{ 
-        get { return _displayName; } 
-        set {
+    public string DisplayName
+    {
+        get { return _displayName; }
+        set
+        {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException($"DisplayName cannot be null or whitespace");
 
@@ -21,6 +23,7 @@ public class ApplicationUser : IdentityUser<Guid>
                 throw new ArgumentException($"First letter must be uppercase");
 
             _displayName = value;
-        } }
-    public string? ProfileImage{ get; set; }
+        }
+    }
+    public string? ProfileImage { get; set; }
 }

@@ -17,7 +17,7 @@
         @foreach (var result in searchResults)
         {
             <div class="bg-light p-1 border-bottom hover-overlay">
-                <a href="@GetMediaUrl(result.MediaId)">@result.Title</a>
+                <a href="/tvshow?MediaId=@result.MediaId">@result.Title</a>
             </div>
         }
     </div>
@@ -46,10 +46,5 @@
             previousSearch = "";
             return;
         }
-    }
-
-    private string GetMediaUrl(string mediaId)
-    {
-        return "https://www.themoviedb.org/tv/" + mediaId;
     }
 }
