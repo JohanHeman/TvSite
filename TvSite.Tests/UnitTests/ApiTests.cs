@@ -37,7 +37,6 @@ public class ApiTests
         var actual = await _sut.GetMediasByTitle(input);
 
         // Assert
-
         Assert.Equal(expected, actual[0].Title);
     }
 
@@ -51,6 +50,45 @@ public class ApiTests
         var expected = new List<SearchResult>();
 
         var actual = await _sut.GetMediasByTitle(input);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task GetTvSeriesDetails_ShouldReturn_TitleGameOfThrones_WhenId1399()
+    {
+        var input = "1399";
+        var expectedTitle = "Game of Thrones";
+
+        _mockRepository.Setup(repo => repo.GetTvShowDetails(input))
+            .ReturnsAsync(
+            new TvSeries()
+            {
+                Id = "1399",
+                Name = "Game of Thrones"
+            });
+
+        var actual = await _sut.GetTvShowDetailsById(input);
+
+        Assert.Equal(expectedTitle, actual.Name);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public async Task GetTvSeriesDetails_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? input)
+    {
+        TvSeries? expected = null;
+        _mockRepository.Setup(repo => repo.GetTvShowDetails(input!))
+            .ReturnsAsync(
+            new TvSeries()
+            {
+                Id = "1399",
+                Name = "Game of Thrones"
+            });
+
+        var actual = await _sut.GetTvShowDetailsById(input!);
 
         Assert.Equal(expected, actual);
     }
