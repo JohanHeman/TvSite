@@ -34,10 +34,10 @@
          
     </div>
     <div>
-        <button class="btn btn-outline-dark" @onclick="() => AddToList(ListStateEnum.ListState.Following)">
+        <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
             Follow
         </button>
-        <button class="btn btn-outline-dark" @onclick="() => AddToList(ListStateEnum.ListState.ToBeWatched)">
+        <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
             Watch Later
         </button>
     </div>
@@ -73,18 +73,16 @@
 
     private TvSeries _tvSeries = null!;
 
-    private ListStateEnum.ListState _currentState;
-
     protected override async Task OnParametersSetAsync()
     {
         _tvSeries = await ApiService.GetTvShowDetailsById(MediaId);
     }
 
-    private async Task AddToList(ListStateEnum.ListState listState)
+    private async Task AddToListAsync(ListStateEnum.ListState listState)
     {
         var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = await UserManager.GetUserAsync(authenticationState.User);
-        if(user != null)
+        if(user != null && !string.IsNullOrWhiteSpace(MediaId))
         {
             var mediaListEntry = new MediaListEntry
             {
@@ -92,11 +90,7 @@
                 ListState = (int)listState,
                 ApplicationUserId = user.Id
             };
-
             await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
-            _currentState = listState;
         }
     }
-
-
 }
