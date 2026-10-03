@@ -168,4 +168,37 @@ public class APIRepository : IAPIRepository
 
         return tvSeriesSeason;
     }
+
+    public async Task<TvSeriesEpisode> GetEpisodeDetailsAsync(string tvshowId, int seasonNumber, int episodeNumber)
+    {
+
+        var tvSeriesEpisode = new TvSeriesEpisode();
+        var endpoint = _client.BaseAddress +  $"tv/{tvshowId}/season/{seasonNumber}/episode/{episodeNumber}?language=en-US";
+        
+        var response = await _client.GetAsync(endpoint);
+
+        try
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var episode = JsonSerializer.Deserialize<SeasonEpisodeDTO>(responseString);
+
+                if (episode != null)
+                {
+                    tvSeriesEpisode.Id = episode.Id.ToString();
+                    tvSeriesEpisode.Title = episode.Title;
+                    tvSeriesEpisode.Description = episode.Description;
+                    tvSeriesEpisode.AirDate = episode.AirDate;
+                    tvSeriesEpisode.EpisodeNumber = episode.EpisodeNumber;
+                    tvSeriesEpisode.ImagePath = episode.ImagePath;
+                }
+            }
+        }
+        catch
+        {
+            throw new Exception("Api could not get TvEpisodeDetails");
+        }
+        return tvSeriesEpisode;
+    }
 }
