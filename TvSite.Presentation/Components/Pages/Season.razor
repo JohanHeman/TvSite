@@ -20,29 +20,28 @@
     <div class="d-flex flex-column gap-3">
         @foreach (var episode in _season.Episodes)
         {
-            <div class="d-flex border border-1 p-1 gap-3 bg-body-tertiary">
-                <div>
-                    <p>Episode: @episode.EpisodeNumber</p>
-                    <img src="@episode.ImagePath"/>
+            <a href="/episode?ShowId=@ShowId&SeasonNumber=@_season.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
+                <div class="d-flex border border-1 p-1 gap-3 bg-body-tertiary">
+                    <div>
+                        <p>Episode: @episode.EpisodeNumber</p>
+                        <img src="@episode.ImagePath"/>
+                    </div>
+                    <div>
+
+                        <p>@episode.Title | @episode.AirDate</p>
+                        <p>@episode.Description</p>
+                    </div>
                 </div>
-                <div>
-                    
-                    <p>@episode.Title | @episode.AirDate</p>
-                    <p>@episode.Description</p>
-                </div>
-            </div>
-        }
+            </a>        }
     </div>
 }
 
 @code {
     private TvSeriesSeason _season;
 
-    [SupplyParameterFromQuery]
-    public int SeasonNumber { get; set; }
+    [SupplyParameterFromQuery] public int SeasonNumber { get; set; }
 
-    [SupplyParameterFromQuery]
-    public string ShowId { get; set; } = "";
+    [SupplyParameterFromQuery] public string ShowId { get; set; } = "";
 
     // Vars for preventing calling the api multiple times
     private int _loadedSeasonNumber;
@@ -56,7 +55,7 @@
         // Prevent loading calling the api twice. OnParametersSetAsync can triggers multiple times
         if (_loadedShowId == ShowId && _loadedSeasonNumber == SeasonNumber)
             return;
-        
+
         _loadedShowId = ShowId;
         _loadedSeasonNumber = SeasonNumber;
 
