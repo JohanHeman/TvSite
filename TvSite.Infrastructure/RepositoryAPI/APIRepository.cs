@@ -171,7 +171,7 @@ public class APIRepository : IAPIRepository
 
     public async Task<TvSeriesEpisode> GetEpisodeDetailsAsync(string tvshowId, int seasonNumber, int episodeNumber)
     {
-
+        var baseImgUrl = "https://image.tmdb.org/t/p/w300";
         var tvSeriesEpisode = new TvSeriesEpisode();
         var endpoint = _client.BaseAddress +  $"tv/{tvshowId}/season/{seasonNumber}/episode/{episodeNumber}?language=en-US";
         
@@ -191,7 +191,7 @@ public class APIRepository : IAPIRepository
                     tvSeriesEpisode.Description = episode.Description;
                     tvSeriesEpisode.AirDate = episode.AirDate;
                     tvSeriesEpisode.EpisodeNumber = episode.EpisodeNumber;
-                    tvSeriesEpisode.ImagePath = episode.ImagePath;
+                    tvSeriesEpisode.ImagePath = baseImgUrl + episode.ImagePath;
                 }
             }
         }
