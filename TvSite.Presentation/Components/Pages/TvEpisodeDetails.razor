@@ -1,0 +1,47 @@
+@page "/episode"
+@using TvSite.Domain.Entities
+@using TvSite.Domain.Interfaces.Services
+@using TvSite.Domain.InterfacesAPI.Services
+@inject IAPIService ApiService;
+@inject IRatingService RatingService
+@rendermode InteractiveServer
+
+<h3>TvEpisodeDetails</h3>
+
+@if (_tvEpisodeDetails != null)
+{
+    <p>
+    
+        @_tvEpisodeDetails.Title
+    </p>
+}
+
+
+@code {
+    private TvSeriesEpisode _tvEpisodeDetails;
+    
+    [SupplyParameterFromQuery] 
+    public int SeasonNumber { get; set; }
+    
+    [SupplyParameterFromQuery] 
+    public string ShowId { get; set; }
+    
+    [SupplyParameterFromQuery]
+    public int EpisodeNumber { get; set; }
+
+    private string _loadedShowId;
+
+    private double? _rating = null;
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_loadedShowId == ShowId) return;
+        
+        _loadedShowId = ShowId;
+        
+        _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
+        
+        _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
+    }
+
+}

@@ -20,7 +20,6 @@
         <h1>@_tvSeries.Name</h1>
         <p>@_tvSeries.Description</p>
         <img src='@_tvSeries.MediaImage' class="mb-1" />
-        
     </div>
 
     <div>
@@ -48,6 +47,7 @@
         <div class="d-flex flex-column gap-2">
             @foreach (var season in _tvSeries.Seasons)
             {
+                <a href="/tvshow/season?ShowId=@_tvSeries.Id&SeasonNumber=@season.SeasonNumber">
                 <div class="border border-1 p-2">
                     <div class="d-flex gap-2">
                         <p>@season.SeasonName</p>
@@ -59,8 +59,8 @@
                         <img src="@season.ImagePath"/>
                         <p>@season.Description</p>
                     </div>
-            </div>
-
+                </div>
+                </a>
             }
         </div>
     </div>

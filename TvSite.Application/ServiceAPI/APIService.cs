@@ -39,4 +39,9 @@ public class APIService : IAPIService
 
         return await _repository.GetSeasonDetails(showId, seasonNumber);
     }
+
+    public async Task<TvSeriesEpisode> GetEpisodeDetails(string tvShowId ,int seasonNumber, int episodeNumber)
+    {
+        return await _repository.GetEpisodeDetailsAsync(tvShowId, seasonNumber, episodeNumber);
+    }
 }

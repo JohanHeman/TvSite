@@ -8,4 +8,5 @@ public interface IAPIRepository
     public Task<List<DisplayMedia>> GetTvShowDiscoverListAsync();
     public Task<TvSeries> GetTvShowDetails(string mediaId);
     public Task<TvSeriesSeason> GetSeasonDetails(string showId, int seasonNumber);
+    public Task<TvSeriesEpisode> GetEpisodeDetailsAsync(string tvshowId, int seasonNumber, int episodeNumber);
 }
