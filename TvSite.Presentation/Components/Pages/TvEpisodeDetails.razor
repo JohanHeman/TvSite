@@ -1,7 +1,9 @@
 @page "/episode"
 @using TvSite.Domain.Entities
+@using TvSite.Domain.Interfaces.Services
 @using TvSite.Domain.InterfacesAPI.Services
 @inject IAPIService ApiService;
+@inject IRatingService RatingService
 @rendermode InteractiveServer
 
 <h3>TvEpisodeDetails</h3>
@@ -28,7 +30,8 @@
     public int EpisodeNumber { get; set; }
 
     private string _loadedShowId;
-    
+
+    private double? _rating = null;
     
     protected override async Task OnParametersSetAsync()
     {
@@ -37,7 +40,8 @@
         _loadedShowId = ShowId;
         
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
-
+        
+        _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
     }
 
 }
