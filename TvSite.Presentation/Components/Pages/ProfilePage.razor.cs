@@ -12,6 +12,7 @@ namespace TvSite.Presentation.Components.Pages
         private List<MediaListEntry> _watchLaterList = new List<MediaListEntry>();
         private List<MediaListEntry> _stoppedWatchingList = new List<MediaListEntry>();
 
+        
         private List<TvSeries> _followedTvShowsAPI = new List<TvSeries>();
 
         protected override async Task OnInitializedAsync()

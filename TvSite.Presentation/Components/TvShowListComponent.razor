@@ -1,0 +1,23 @@
+﻿@using TvSite.Domain.Entities
+@rendermode InteractiveServer
+
+<h3>@ListName</h3>
+
+<div>
+    @foreach (var tvShow in TvShowList)
+    {
+        <div>
+            @tvShow.Name
+        </div>
+    }
+</div>
+
+
+@code {
+    [Parameter]
+    public string ListName { get; set; } = "";
+
+    [Parameter]
+    public List<TvSeries> TvShowList { get; set; } = new();
+
+}
