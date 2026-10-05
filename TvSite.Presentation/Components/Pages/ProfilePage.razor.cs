@@ -11,7 +11,6 @@ namespace TvSite.Presentation.Components.Pages
         private List<MediaListEntry> _followList = new List<MediaListEntry>();
         private List<MediaListEntry> _watchLaterList = new List<MediaListEntry>();
         private List<MediaListEntry> _stoppedWatchingList = new List<MediaListEntry>();
-
         
         private List<TvSeries> _followedTvShowsAPI = new List<TvSeries>();
 
@@ -31,9 +30,9 @@ namespace TvSite.Presentation.Components.Pages
                 foreach(var mediaListEntry in _followList)
                 {
                     var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
+                    _followedTvShowsAPI.Add(tvShow);
                 }
             }
-            
         }
     }
 }
