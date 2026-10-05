@@ -27,20 +27,30 @@
         <p>
             @foreach (var director in _tvSeries.Directors)
             {
-                @director<br />
+                @director
+                <br />
             }
         </p>
-         
     </div>
-    <div>
-        <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
-            Follow
-        </button>
-        <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
-            Watch Later
-        </button>
-    </div>
-   
+
+    <AuthorizeView>
+        <Authorized>
+            <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
+                Follow
+            </button>
+            <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
+                Watch Later
+            </button>
+        </Authorized>
+        <NotAuthorized>
+            <button class="btn btn-outline-danger" disabled>
+                Loggin to Follow
+            </button>
+            <button class="btn btn-outline-danger" disabled>
+                Loggin to add to watch later
+            </button>
+        </NotAuthorized>
+    </AuthorizeView>
 
     <div>
         <h2>Seasons</h2>
@@ -82,6 +92,7 @@
     {
         var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = await UserManager.GetUserAsync(authenticationState.User);
+
         if(user != null && !string.IsNullOrWhiteSpace(MediaId))
         {
             var mediaListEntry = new MediaListEntry
