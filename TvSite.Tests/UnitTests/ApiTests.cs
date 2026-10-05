@@ -55,7 +55,7 @@ public class ApiTests
     }
 
     [Fact]
-    public async Task GetTvSeriesDetails_ShouldReturn_TitleGameOfThrones_WhenId1399()
+    public async Task GetTvSeriesDetails_ShouldReturn_TitleGameOfThrones_WhenMatchingId()
     {
         var input = "1399";
         var expectedTitle = "Game of Thrones";
@@ -79,17 +79,11 @@ public class ApiTests
     [InlineData(null)]
     public async Task GetTvSeriesDetails_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? input)
     {
-        TvSeries? expected = null;
-        _mockRepository.Setup(repo => repo.GetTvShowDetails(input!))
-            .ReturnsAsync(
-            new TvSeries()
-            {
-                Id = "1399",
-                Name = "Game of Thrones"
-            });
-
+        // Act
         var actual = await _sut.GetTvShowDetailsById(input!);
 
-        Assert.Equal(expected, actual);
+        // Asserts
+        Assert.Equal(null!, actual);
+        _mockRepository.Verify(repo => repo.GetTvShowDetails(input!), Times.Never);
     }
 }
