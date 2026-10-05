@@ -10,10 +10,24 @@
 
 @if (_tvEpisodeDetails != null)
 {
-    <p>
-    
+    <h3>
         @_tvEpisodeDetails.Title
-    </p>
+    </h3>
+    <div>
+       <img src="@_tvEpisodeDetails.ImagePath"/> 
+    </div>
+    <div>
+        <p>@_tvEpisodeDetails.EpisodeNumber</p>
+        <p>Airdate: @_tvEpisodeDetails.AirDate</p>
+        @if (_rating != null)
+        {
+            <p>Rating: @_rating</p>
+        }
+    </div>
+    <div>
+        <p>Description</p>
+        <p>@_tvEpisodeDetails.Description</p>
+    </div>
 }
 
 
