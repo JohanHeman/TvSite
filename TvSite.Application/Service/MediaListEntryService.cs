@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
 using TvSite.Domain.Enums;
 using TvSite.Domain.Interfaces.Services;
+using TvSite.Domain.InterfacesAPI.Services;
 using TvSite.Infrastructure.Data;
 
 namespace TvSite.Application.Service
@@ -13,11 +14,13 @@ namespace TvSite.Application.Service
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly DbSet<MediaListEntry> _set;
+        private readonly IAPIService _APIService;
 
-        public MediaListEntryService(ApplicationDbContext dbContext)
+        public MediaListEntryService(ApplicationDbContext dbContext, IAPIService APIService)
         {
             _dbContext = dbContext;
             _set = dbContext.MediaListEntry;
+            _APIService = APIService;
         }
 
         public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
@@ -45,6 +48,21 @@ namespace TvSite.Application.Service
         {
             _set.Update(userMediaListEntry);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)
+        {
+            var tvShows = new List<TvSeries>();
+
+            var mediaListEntries = await GetMediaListByUserIdAsync(userId, listState);
+
+            foreach (var mediaListEntry in mediaListEntries)
+            {
+                var tvShow = await _APIService.GetTvShowDetailsById(mediaListEntry.MediaId);
+                tvShows.Add(tvShow);
+            }
+
+            return tvShows;
         }
     }
 }

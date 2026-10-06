@@ -1,14 +1,20 @@
 ﻿@page "/profile"
 @using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities
+@using TvSite.Domain.Interfaces.Services
+@using TvSite.Domain.InterfacesAPI.Services
 
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMediaListEntryService MediaListEntryService
 @rendermode InteractiveServer
 
 <div class="text-center">
     <h2>@DisplayName</h2>
 </div>
 
+<TvShowListComponent ListName="Following" TvShowList="@_followList"></TvShowListComponent>
 
+<TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterList"></TvShowListComponent>
 
+<TvShowListComponent ListName="Stopped Watching" TvShowList="@_stoppedWatchingList"></TvShowListComponent>

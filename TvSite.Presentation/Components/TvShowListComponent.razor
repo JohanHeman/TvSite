@@ -1,0 +1,49 @@
+﻿@using TvSite.Domain.Entities
+@rendermode InteractiveServer
+
+<h3>@ListName</h3>
+
+<div class="d-flex flex-wrap gap-3">
+    @if (_isShowingFullList)
+    {
+        @foreach (var tvShow in TvShowList)
+        {
+            <div style="width: 12rem;">
+                <a href="/tvshow?mediaid=@tvShow.Id">
+                    <img src="@tvShow.MediaImage" />
+                    <p>@tvShow.Name</p>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        @foreach (var tvShow in TakeFourList)
+        {
+            <div style="width: 12rem;">
+                <a href="/tvshow?mediaid=@tvShow.Id">
+                <img src="@tvShow.MediaImage" />
+                <p>@tvShow.Name</p>
+                </a>
+            </div>
+        }
+    }
+</div>
+<button @onclick="ToggleShowFullList" class="btn btn-outline-dark">Expand / Minimize</button>
+
+
+@code {
+    [Parameter]
+    public string ListName { get; set; } = "";
+
+    [Parameter]
+    public List<TvSeries> TvShowList { get; set; } = new();
+
+    private bool _isShowingFullList;
+    private List<TvSeries> TakeFourList => TvShowList.Take(4).ToList();
+
+    private void ToggleShowFullList()
+    {
+        _isShowingFullList = !_isShowingFullList;
+    }
+}
