@@ -52,12 +52,21 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         }
     }
 
-    public async Task DeleteWatchedEpisode(WatchedEpisode watchedEpisode)
+    public async Task DeleteWatchedEpisode(string episodeMediaId, Guid userId)
     {
-        if (watchedEpisode == null) return;
+        if (episodeMediaId == null) return;
+
+        WatchedEpisode? watchedEpisode;
 
         try
         {
+            watchedEpisode = await _set
+                .Where(episode => episode.EpisodeId == episodeMediaId)
+                .Where(episode => episode.UserId == userId)
+            .SingleOrDefaultAsync();
+
+            if (watchedEpisode == null) return; 
+
             _set.Remove(watchedEpisode);
             await _dbContext.SaveChangesAsync();
         }
