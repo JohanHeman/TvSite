@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<MediaListEntry> MediaListEntry { get; set; }
+    public DbSet<WatchedEpisode> WatchedEpisodes { get; set; }
 }
 
 
