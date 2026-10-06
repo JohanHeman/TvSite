@@ -173,8 +173,8 @@ public class APIRepository : IAPIRepository
     {
         var baseImgUrl = "https://image.tmdb.org/t/p/w300";
         var tvSeriesEpisode = new TvSeriesEpisode();
-        var endpoint = _client.BaseAddress +  $"tv/{tvshowId}/season/{seasonNumber}/episode/{episodeNumber}?language=en-US";
-        
+        var endpoint = _client.BaseAddress + $"tv/{tvshowId}/season/{seasonNumber}/episode/{episodeNumber}?language=en-US";
+
         var response = await _client.GetAsync(endpoint);
 
         try
