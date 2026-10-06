@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.DbModels;
 
 namespace TvSite.Infrastructure.Data;
 
