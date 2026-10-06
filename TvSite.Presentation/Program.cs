@@ -74,6 +74,7 @@ builder.Services.AddTransient<IRatingRepository, RatingRepository>();
 builder.Services.AddTransient<IRatingService, RatingService>();
 builder.Services.AddTransient<IAPIRepository, APIRepository>();
 builder.Services.AddTransient<IAPIService, APIService>();
+builder.Services.AddTransient<IWatchedEpisodeService, WatchedEpisodeService>();
 
 var app = builder.Build();
 

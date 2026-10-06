@@ -2,7 +2,7 @@
 
 namespace TvSite.Domain.Interfaces.Services;
 
-public interface IEpisodeService
+public interface IWatchedEpisodeService
 {
     public Task CreateWatchedEpisode(WatchedEpisode watchedEpisode);
     public Task DeleteWatchedEpisode(WatchedEpisode watchedEpisode);
