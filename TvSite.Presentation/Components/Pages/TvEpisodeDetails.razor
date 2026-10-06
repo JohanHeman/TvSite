@@ -37,23 +37,23 @@
             </div>
         }
     
-        <!--comment section-->
-        <AuthorizeView>
-            <Authorized>   
-                <div>
-                    <input @bind="_comment"/>
-                    <button onclick=@CreateCommentAsync(_comment)
-                    >Add comment</button>
-                </div>
-            </Authorized>
-</AuthorizeView>
-        @foreach (var comment in _comments)
-        {
+    <!--comment section-->
+    <AuthorizeView>
+        <Authorized>   
             <div>
-                @comment.ApplicationUser.DisplayName
-                @comment.Text
+                <input @bind="_comment"/>
+                <button onclick=@CreateCommentAsync(_comment)
+                >Add comment</button>
             </div>
-        }
+        </Authorized>
+    </AuthorizeView>
+    @foreach (var comment in _comments)
+    {
+        <div>
+            @comment.ApplicationUser.DisplayName
+            @comment.Text
+        </div>
+    }
 
 @code {
     //comment
