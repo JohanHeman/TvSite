@@ -8,13 +8,9 @@ namespace TvSite.Presentation.Components.Pages
     public partial class ProfilePage
     {
         private string DisplayName;
-        private List<MediaListEntry> _followList = new List<MediaListEntry>();
-        private List<MediaListEntry> _watchLaterList = new List<MediaListEntry>();
-        private List<MediaListEntry> _stoppedWatchingList = new List<MediaListEntry>();
-        
-        private List<TvSeries> _followedTvShowsAPI = new List<TvSeries>();
-        private List<TvSeries> _watchLaterTvShowsAPI = new List<TvSeries>();
-        private List<TvSeries> _stopWatchingTvShowsAPI = new List<TvSeries>();
+        private List<TvSeries> _followList = new();
+        private List<TvSeries> _watchLaterList = new();
+        private List<TvSeries> _stoppedWatchingList = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -24,28 +20,10 @@ namespace TvSite.Presentation.Components.Pages
             if(user != null)
             {
                 DisplayName = user.DisplayName;
-                
-                _followList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.Following);
-                _watchLaterList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.ToBeWatched);
-                _stoppedWatchingList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.StoppedWatching);
 
-                foreach(var mediaListEntry in _followList)
-                {
-                    var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
-                    _followedTvShowsAPI.Add(tvShow);
-                }
-
-                foreach(var mediaListEntry in _watchLaterList)
-                {
-                    var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
-                    _watchLaterTvShowsAPI.Add(tvShow);
-                }
-
-                foreach (var mediaListEntry in _stoppedWatchingList)
-                {
-                    var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
-                    _stopWatchingTvShowsAPI.Add(tvShow);
-                }
+                _followList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.Following);
+                _watchLaterList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.ToBeWatched);
+                _stoppedWatchingList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.StoppedWatching);
             }
         }
     }

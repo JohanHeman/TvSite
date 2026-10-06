@@ -7,18 +7,17 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMediaListEntryService MediaListEntryService
-@inject IAPIService ApiService
 @rendermode InteractiveServer
 
 <div class="text-center">
     <h2>@DisplayName</h2>
 </div>
 
-<TvShowListComponent ListName="Following" TvShowList="@_followedTvShowsAPI"></TvShowListComponent>
+<TvShowListComponent ListName="Following" TvShowList="@_followList"></TvShowListComponent>
 
-<TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterTvShowsAPI"></TvShowListComponent>
+<TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterList"></TvShowListComponent>
 
-<TvShowListComponent ListName="Stopped Watching" TvShowList="@_stopWatchingTvShowsAPI"></TvShowListComponent>
+<TvShowListComponent ListName="Stopped Watching" TvShowList="@_stoppedWatchingList"></TvShowListComponent>
 
 
 
