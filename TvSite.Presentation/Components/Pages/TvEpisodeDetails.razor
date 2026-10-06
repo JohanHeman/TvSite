@@ -12,48 +12,48 @@
 
 
 <h3>TvEpisodeDetails</h3>
-        @if (_tvEpisodeDetails != null)
-        {
-            // episode information
-            <div>
-                <h3>
-                    @_tvEpisodeDetails.Title
-                </h3>
-                <div>
-                    <img src="@_tvEpisodeDetails.ImagePath"/> 
-                </div>
-                <div>
-                    <p>@_tvEpisodeDetails.EpisodeNumber</p>
-                    <p>Airdate: @_tvEpisodeDetails.AirDate</p>
-                    @if (_rating != null)
-                    {
-                        <p>Rating: @_rating</p>
-                    }
-                </div>
-                <div>
-                    <p>Description</p>
-                    <p>@_tvEpisodeDetails.Description</p>
-                </div>
-            </div>
-        }
-    
-    <!--comment section-->
-    <AuthorizeView>
-        <Authorized>   
-            <div>
-                <input @bind="_comment"/>
-                <button onclick=@CreateCommentAsync(_comment)
-                >Add comment</button>
-            </div>
-        </Authorized>
-    </AuthorizeView>
-    @foreach (var comment in _comments)
-    {
+@if (_tvEpisodeDetails != null)
+{
+    // episode information
+    <div>
+        <h3>
+            @_tvEpisodeDetails.Title
+        </h3>
         <div>
-            @comment.ApplicationUser.DisplayName
-            @comment.Text
+            <img src="@_tvEpisodeDetails.ImagePath"/> 
         </div>
-    }
+        <div>
+            <p>@_tvEpisodeDetails.EpisodeNumber</p>
+            <p>Airdate: @_tvEpisodeDetails.AirDate</p>
+            @if (_rating != null)
+            {
+                <p>Rating: @_rating</p>
+            }
+        </div>
+        <div>
+            <p>Description</p>
+            <p>@_tvEpisodeDetails.Description</p>
+        </div>
+    </div>
+}
+    
+<!--comment section-->
+<AuthorizeView>
+    <Authorized>   
+        <div>
+            <input @bind="_comment"/>
+            <button onclick=@CreateCommentAsync(_comment)
+            >Add comment</button>
+        </div>
+    </Authorized>
+</AuthorizeView>
+@foreach (var comment in _comments)
+{
+    <div>
+        @comment.ApplicationUser.DisplayName
+        @comment.Text
+    </div>
+}
 
 @code {
     //comment
@@ -76,7 +76,6 @@
     }
     
     //loading the page
-    
     private TvSeriesEpisode _tvEpisodeDetails;
     
     [SupplyParameterFromQuery] 
@@ -104,7 +103,4 @@
         
         _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
     }
-
-    
-    
 }

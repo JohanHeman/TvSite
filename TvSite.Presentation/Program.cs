@@ -54,7 +54,7 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(
 // new way, register the dbContext from the factory instead to avoid conflict, scoped since thats the default 
 // registration of the db context. 
 
-builder.Services.AddScoped<ApplicationDbContext>(sp => 
+builder.Services.AddScoped<ApplicationDbContext>(sp =>
     sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
