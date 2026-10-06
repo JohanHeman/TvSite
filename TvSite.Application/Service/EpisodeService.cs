@@ -26,7 +26,7 @@ public class EpisodeService : IEpisodeService
         }
         catch (Exception ex)
         {
-            throw new Exception("Could not Save WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not Save WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
     }
 
@@ -41,7 +41,7 @@ public class EpisodeService : IEpisodeService
         }
         catch (Exception ex) 
         {
-            throw new Exception("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
     }
 }
