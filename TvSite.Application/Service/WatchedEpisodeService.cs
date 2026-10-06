@@ -15,6 +15,28 @@ public class WatchedEpisodeService : IEpisodeService
         _set = dbContext.WatchedEpisodes;
     }
 
+    public async Task<bool> GetIsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
+    {
+        if (episodeMediaId == null) return false;
+
+        WatchedEpisode? myEpisode;
+        try
+        {
+            myEpisode = await _set
+                .Where(episode => episode.EpisodeId == episodeMediaId)
+                .Where(episode => episode.UserId == userId)
+            .SingleOrDefaultAsync();
+
+            if (myEpisode == null) return false;
+        }
+        catch (Exception ex)
+        {
+            throw new DbUpdateException("Could not get WatchedEpisode \nInner Exception: " + ex.InnerException);
+        }
+
+        return true;
+    }
+
     public async Task CreateWatchedEpisode(WatchedEpisode watchedEpisode)
     {
         if (watchedEpisode == null) return;

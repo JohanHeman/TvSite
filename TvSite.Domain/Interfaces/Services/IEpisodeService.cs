@@ -5,6 +5,6 @@ namespace TvSite.Domain.Interfaces.Services;
 public interface IEpisodeService
 {
     public Task CreateWatchedEpisode(WatchedEpisode watchedEpisode);
-
     public Task DeleteWatchedEpisode(WatchedEpisode watchedEpisode);
+    public Task<bool> GetIsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId);
 }
