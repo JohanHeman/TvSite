@@ -46,17 +46,14 @@
                     >Add comment</button>
                 </div>
             </Authorized>
-            <NotAuthorized>
-                @foreach (var comment in _comments)
-                {
-                    <div>
-                        @comment.ApplicationUser.DisplayName
-                        @comment.Text
-                    </div>
-                }
-            </NotAuthorized>
 </AuthorizeView>
-
+        @foreach (var comment in _comments)
+        {
+            <div>
+                @comment.ApplicationUser.DisplayName
+                @comment.Text
+            </div>
+        }
 
 @code {
     //comment
@@ -106,7 +103,6 @@
         _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
         
         _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
-        
     }
 
     
