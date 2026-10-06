@@ -4,14 +4,14 @@
 <h3>@ListName</h3>
 
 <div class="d-flex flex-wrap gap-3">
-    @if (IsFullList)
+    @if (_isShowingFullList)
     {
         @foreach (var tvShow in TvShowList)
         {
             <div style="width: 12rem;">
                 <a href="/tvshow?mediaid=@tvShow.Id">
-                <img src="@tvShow.MediaImage" />
-                <p>@tvShow.Name</p>
+                    <img src="@tvShow.MediaImage" />
+                    <p>@tvShow.Name</p>
                 </a>
             </div>
         }
@@ -39,11 +39,11 @@
     [Parameter]
     public List<TvSeries> TvShowList { get; set; } = new();
 
-    private bool IsFullList;
+    private bool _isShowingFullList;
     private List<TvSeries> TakeFourList => TvShowList.Take(4).ToList();
 
     private void ToggleShowFullList()
     {
-        IsFullList = !IsFullList;
+        _isShowingFullList = !_isShowingFullList;
     }
 }
