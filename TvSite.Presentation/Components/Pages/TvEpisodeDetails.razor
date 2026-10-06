@@ -1,11 +1,13 @@
-@page "/episode"
+@page "/tvshow/season/episode"
 @using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities
+@using TvSite.Domain.Entities.DbModels
 @using TvSite.Domain.Interfaces.Services
 @using TvSite.Domain.InterfacesAPI.Services
 @inject IAPIService ApiService;
 @inject IRatingService RatingService
 @inject ICommentService CommentService
+@inject IWatchedEpisodeService WatchedEpisodeService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<ApplicationUser> UserManager
 @rendermode InteractiveServer
@@ -22,6 +24,23 @@
         <div>
             <img src="@_tvEpisodeDetails.ImagePath"/> 
         </div>
+
+        <AuthorizeView>
+            <Authorized>
+                @if (!_isWatchedEpisode)
+                {
+                    <button @onclick="async () => await SetEpisodeAsWatchedAsync()" class="btn btn-outline-success">Not watched</button>
+                }
+                else
+                {
+                    <button @onclick="async () => await DeleteWatchedEpisodeAsync()" class="btn btn-success">Watched</button>
+                }
+            </Authorized>
+            <NotAuthorized>
+                <a href="/Account/Login" class="btn btn-outline-success">Login to mark as watched</a>
+            </NotAuthorized>
+        </AuthorizeView>
+
         <div>
             <p>@_tvEpisodeDetails.EpisodeNumber</p>
             <p>Airdate: @_tvEpisodeDetails.AirDate</p>
@@ -56,15 +75,46 @@
 }
 
 @code {
-    //comment
+    //loading the page
+    private TvSeriesEpisode _tvEpisodeDetails;
 
+    [SupplyParameterFromQuery]
+    public int SeasonNumber { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string ShowId { get; set; }
+
+    [SupplyParameterFromQuery]
+    public int EpisodeNumber { get; set; }
+
+    private string _loadedShowId;
+
+    private double? _rating = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_loadedShowId == ShowId) return;
+
+        _loadedShowId = ShowId;
+
+        _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
+        _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
+        _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
+
+        var user = await GetUser();
+        if (user != null)
+            _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+    }
+
+    //comment
     private IReadOnlyList<Comment> _comments = new List<Comment>();
     private string _comment = "";
-     
+
     private async Task CreateCommentAsync(string commentText)
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = await UserManager.GetUserAsync(authState.User);
+        var user = await GetUser();
+        if (user == null) return;
+
         var comment = new Comment()
         {
             Id = Guid.NewGuid(),
@@ -72,35 +122,45 @@
             ApplicationUserId =  user.Id,
             MediaId = _tvEpisodeDetails.Id
         };
+
         await CommentService.CreateCommentAsync(comment);
     }
-    
-    //loading the page
-    private TvSeriesEpisode _tvEpisodeDetails;
-    
-    [SupplyParameterFromQuery] 
-    public int SeasonNumber { get; set; }
-    
-    [SupplyParameterFromQuery] 
-    public string ShowId { get; set; }
-    
-    [SupplyParameterFromQuery]
-    public int EpisodeNumber { get; set; }
 
-    private string _loadedShowId;
-
-    private double? _rating = null;
-    
-    protected override async Task OnParametersSetAsync()
+    private async Task<ApplicationUser?> GetUser()
     {
-        if (_loadedShowId == ShowId) return;
-        
-        _loadedShowId = ShowId;
-        
-        _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
-        
-        _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
-        
-        _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
+        var myAuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        return await UserManager.GetUserAsync(myAuthState.User);
+    }
+
+    private bool _isWatchedEpisode;
+    private async Task SetEpisodeAsWatchedAsync()
+    {
+        var user = await GetUser();
+        if (user == null || _tvEpisodeDetails == null) return;
+
+        WatchedEpisode watchedEpisode = new()
+        {
+            Id = new Guid(),
+            EpisodeId = _tvEpisodeDetails.Id,
+            UserId = user.Id,
+            DateTime = DateTime.Now,
+            IsSoftDeleted = false,
+        };
+
+        await WatchedEpisodeService.CreateWatchedEpisode(watchedEpisode);
+
+        // Refresh bool
+        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+    }
+
+    private async Task DeleteWatchedEpisodeAsync()
+    {
+        var user = await GetUser();
+        if (user == null || _tvEpisodeDetails == null) return;
+
+        await WatchedEpisodeService.DeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
+
+        // Refresh bool
+        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 }

@@ -20,7 +20,7 @@
     <div class="d-flex flex-column gap-3">
         @foreach (var episode in _season.Episodes)
         {
-            <a href="/episode?ShowId=@ShowId&SeasonNumber=@_season.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
+            <a href="/tvshow/season/episode?ShowId=@ShowId&SeasonNumber=@_season.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
                 <div class="d-flex border border-1 p-1 gap-3 bg-body-tertiary">
                     <div>
                         <p>Episode: @episode.EpisodeNumber</p>

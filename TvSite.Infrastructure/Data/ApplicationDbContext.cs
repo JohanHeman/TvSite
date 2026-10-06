@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.DbModels;
 
 namespace TvSite.Infrastructure.Data;
 
@@ -15,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<MediaListEntry> MediaListEntry { get; set; }
+    public DbSet<WatchedEpisode> WatchedEpisodes { get; set; }
 }
 
 
