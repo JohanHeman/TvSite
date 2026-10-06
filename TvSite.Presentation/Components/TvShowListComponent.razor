@@ -9,8 +9,10 @@
         @foreach (var tvShow in TvShowList)
         {
             <div style="width: 12rem;">
+                <a href="/tvshow?mediaid=@tvShow.Id">
                 <img src="@tvShow.MediaImage" />
                 <p>@tvShow.Name</p>
+                </a>
             </div>
         }
     }
@@ -19,8 +21,10 @@
         @foreach (var tvShow in TakeFourList)
         {
             <div style="width: 12rem;">
+                <a href="/tvshow?mediaid=@tvShow.Id">
                 <img src="@tvShow.MediaImage" />
                 <p>@tvShow.Name</p>
+                </a>
             </div>
         }
     }
