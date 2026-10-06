@@ -5,11 +5,11 @@ using TvSite.Infrastructure.Data;
 
 namespace TvSite.Application.Service;
 
-public class EpisodeService : IEpisodeService
+public class WatchedEpisodeService : IEpisodeService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<WatchedEpisode> _set;
-    public EpisodeService(ApplicationDbContext dbContext)
+    public WatchedEpisodeService(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
         _set = dbContext.WatchedEpisodes;
