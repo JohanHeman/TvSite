@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TvSite.Domain.Entities
+namespace TvSite.Domain.Entities.DbModels
 {
-    public class IsWatched
+    public class WatchedEpisode
     {
         public Guid Id { get; set; }
         public string EpisodeId { get; set; }
         public Guid UserId { get; set; }
-        public bool IsSoftDeleted { get; set; }
         public DateTime DateTime { get; set; }
+
+        public bool IsSoftDeleted { get; set; }
     }
 }
