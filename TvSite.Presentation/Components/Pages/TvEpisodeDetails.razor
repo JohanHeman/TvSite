@@ -1,37 +1,76 @@
 @page "/episode"
+@using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities
 @using TvSite.Domain.Interfaces.Services
 @using TvSite.Domain.InterfacesAPI.Services
 @inject IAPIService ApiService;
 @inject IRatingService RatingService
+@inject ICommentService CommentService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
 @rendermode InteractiveServer
 
-<h3>TvEpisodeDetails</h3>
 
-@if (_tvEpisodeDetails != null)
-{
-    <h3>
-        @_tvEpisodeDetails.Title
-    </h3>
-    <div>
-       <img src="@_tvEpisodeDetails.ImagePath"/> 
-    </div>
-    <div>
-        <p>@_tvEpisodeDetails.EpisodeNumber</p>
-        <p>Airdate: @_tvEpisodeDetails.AirDate</p>
-        @if (_rating != null)
+<h3>TvEpisodeDetails</h3>
+        @if (_tvEpisodeDetails != null)
         {
-            <p>Rating: @_rating</p>
+            // episode information
+            <div>
+                <h3>
+                    @_tvEpisodeDetails.Title
+                </h3>
+                <div>
+                    <img src="@_tvEpisodeDetails.ImagePath"/> 
+                </div>
+                <div>
+                    <p>@_tvEpisodeDetails.EpisodeNumber</p>
+                    <p>Airdate: @_tvEpisodeDetails.AirDate</p>
+                    @if (_rating != null)
+                    {
+                        <p>Rating: @_rating</p>
+                    }
+                </div>
+                <div>
+                    <p>Description</p>
+                    <p>@_tvEpisodeDetails.Description</p>
+                </div>
+            </div>
         }
-    </div>
-    <div>
-        <p>Description</p>
-        <p>@_tvEpisodeDetails.Description</p>
-    </div>
-}
+    
+        <!--comment section-->
+        <AuthorizeView>
+    <Authorized>   
+        <div>
+            <input @bind="_comment"/>
+            <button onclick=@CreateCommentAsync(_comment)
+            >Add comment</button>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 
 @code {
+    //comment
+
+    private string _comment = "";
+    
+    private async Task CreateCommentAsync(string commentText)
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        var comment = new Comment()
+        {
+            Id = Guid.NewGuid(),
+            Text = commentText,
+            ApplicationUserId =  user.Id,
+            MediaId = _tvEpisodeDetails.Id
+        };
+        
+        await CommentService.CreateCommentAsync(comment);
+    }
+    
+    //loading the page
+    
     private TvSeriesEpisode _tvEpisodeDetails;
     
     [SupplyParameterFromQuery] 
@@ -58,4 +97,6 @@
         _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
     }
 
+    
+    
 }
