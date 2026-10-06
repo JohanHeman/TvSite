@@ -1,4 +1,4 @@
-@page "/episode"
+@page "/tvshow/season/episode"
 @using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities
 @using TvSite.Domain.Entities.DbModels
@@ -75,32 +75,13 @@
 }
 
 @code {
-    //comment
-
-    private IReadOnlyList<Comment> _comments = new List<Comment>();
-    private string _comment = "";
-
-    private async Task CreateCommentAsync(string commentText)
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = await UserManager.GetUserAsync(authState.User);
-        var comment = new Comment()
-        {
-            Id = Guid.NewGuid(),
-            Text = commentText,
-            ApplicationUserId =  user.Id,
-            MediaId = _tvEpisodeDetails.Id
-        };
-        await CommentService.CreateCommentAsync(comment);
-    }
-
     //loading the page
     private TvSeriesEpisode _tvEpisodeDetails;
 
-    [SupplyParameterFromQuery] 
+    [SupplyParameterFromQuery]
     public int SeasonNumber { get; set; }
 
-    [SupplyParameterFromQuery] 
+    [SupplyParameterFromQuery]
     public string ShowId { get; set; }
 
     [SupplyParameterFromQuery]
@@ -117,49 +98,69 @@
         _loadedShowId = ShowId;
 
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
-
         _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
-
         _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
 
-        var myAuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var myUser = await UserManager.GetUserAsync(myAuthState.User);
-        if(myUser != null)
-            _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, myUser.Id);
+        var user = await GetUser();
+        if (user != null)
+            _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 
+    //comment
+    private IReadOnlyList<Comment> _comments = new List<Comment>();
+    private string _comment = "";
+
+    private async Task CreateCommentAsync(string commentText)
+    {
+        var user = await GetUser();
+        if (user == null) return;
+
+        var comment = new Comment()
+        {
+            Id = Guid.NewGuid(),
+            Text = commentText,
+            ApplicationUserId =  user.Id,
+            MediaId = _tvEpisodeDetails.Id
+        };
+
+        await CommentService.CreateCommentAsync(comment);
+    }
+
+    private async Task<ApplicationUser?> GetUser()
+    {
+        var myAuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        return await UserManager.GetUserAsync(myAuthState.User);
+    }
 
     private bool _isWatchedEpisode;
     private async Task SetEpisodeAsWatchedAsync()
     {
-        var myAuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var myUser = await UserManager.GetUserAsync(myAuthState.User);
-
-        if (myUser == null) return;
+        var user = await GetUser();
+        if (user == null || _tvEpisodeDetails == null) return;
 
         WatchedEpisode watchedEpisode = new()
         {
             Id = new Guid(),
             EpisodeId = _tvEpisodeDetails.Id,
-            UserId = myUser!.Id,
+            UserId = user.Id,
             DateTime = DateTime.Now,
             IsSoftDeleted = false,
         };
 
         await WatchedEpisodeService.CreateWatchedEpisode(watchedEpisode);
 
-        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, myUser.Id);
+        // Refresh bool
+        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 
     private async Task DeleteWatchedEpisodeAsync()
     {
-        var myAuthState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var myUser = await UserManager.GetUserAsync(myAuthState.User);
+        var user = await GetUser();
+        if (user == null || _tvEpisodeDetails == null) return;
 
-        if (myUser == null || _tvEpisodeDetails == null) return;
+        await WatchedEpisodeService.DeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
 
-        await WatchedEpisodeService.DeleteWatchedEpisode(_tvEpisodeDetails.Id, myUser.Id);
-
-        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, myUser.Id);
+        // Refresh bool
+        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 }

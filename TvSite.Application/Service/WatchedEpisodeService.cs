@@ -65,12 +65,12 @@ public class WatchedEpisodeService : IWatchedEpisodeService
                 .Where(episode => episode.UserId == userId)
             .SingleOrDefaultAsync();
 
-            if (watchedEpisode == null) return; 
+            if (watchedEpisode == null) return;
 
             _set.Remove(watchedEpisode);
             await _dbContext.SaveChangesAsync();
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
