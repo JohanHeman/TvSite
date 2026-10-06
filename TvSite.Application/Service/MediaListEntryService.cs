@@ -50,7 +50,7 @@ namespace TvSite.Application.Service
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task <List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)
+        public async Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)
         {
             var tvShows = new List<TvSeries>();
 
