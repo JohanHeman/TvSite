@@ -13,6 +13,8 @@ namespace TvSite.Presentation.Components.Pages
         private List<MediaListEntry> _stoppedWatchingList = new List<MediaListEntry>();
         
         private List<TvSeries> _followedTvShowsAPI = new List<TvSeries>();
+        private List<TvSeries> _watchLaterTvShowsAPI = new List<TvSeries>();
+        private List<TvSeries> _stopWatchingTvShowsAPI = new List<TvSeries>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -31,6 +33,18 @@ namespace TvSite.Presentation.Components.Pages
                 {
                     var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
                     _followedTvShowsAPI.Add(tvShow);
+                }
+
+                foreach(var mediaListEntry in _watchLaterList)
+                {
+                    var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
+                    _watchLaterTvShowsAPI.Add(tvShow);
+                }
+
+                foreach (var mediaListEntry in _stoppedWatchingList)
+                {
+                    var tvShow = await ApiService.GetTvShowDetailsById(mediaListEntry.MediaId);
+                    _stopWatchingTvShowsAPI.Add(tvShow);
                 }
             }
         }
