@@ -39,21 +39,31 @@
     
         <!--comment section-->
         <AuthorizeView>
-    <Authorized>   
-        <div>
-            <input @bind="_comment"/>
-            <button onclick=@CreateCommentAsync(_comment)
-            >Add comment</button>
-        </div>
-    </Authorized>
+            <Authorized>   
+                <div>
+                    <input @bind="_comment"/>
+                    <button onclick=@CreateCommentAsync(_comment)
+                    >Add comment</button>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                @foreach (var comment in _comments)
+                {
+                    <div>
+                        @comment.ApplicationUser.DisplayName
+                        @comment.Text
+                    </div>
+                }
+            </NotAuthorized>
 </AuthorizeView>
 
 
 @code {
     //comment
 
+    private IReadOnlyList<Comment> _comments = new List<Comment>();
     private string _comment = "";
-    
+     
     private async Task CreateCommentAsync(string commentText)
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -65,7 +75,6 @@
             ApplicationUserId =  user.Id,
             MediaId = _tvEpisodeDetails.Id
         };
-        
         await CommentService.CreateCommentAsync(comment);
     }
     
@@ -95,6 +104,9 @@
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
         
         _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
+        
+        _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
+        
     }
 
     
