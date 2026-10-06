@@ -13,9 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v6
-      - run: dotnet restore
-      - run: dotnet test
-      - run: dotnet build TvSite.Presentation/TvSite.Presentation.csproj
+      - name: restore
+        run: dotnet restore
+      - name: test
+        run: dotnet test
+      - name: build
+        run: dotnet build TvSite.Presentation/TvSite.Presentation.csproj
  
 
   
