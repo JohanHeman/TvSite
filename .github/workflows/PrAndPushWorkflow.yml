@@ -10,9 +10,15 @@ on:
 jobs:
   build-project:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '8.0.x', '9.0.x', '10.0.x' ]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+          
       - name: restore
         run: dotnet restore
       - name: test
