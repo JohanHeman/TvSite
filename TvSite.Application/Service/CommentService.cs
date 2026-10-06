@@ -8,6 +8,7 @@ namespace TvSite.Application.Service;
 public class CommentService : ICommentService
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
     private readonly DbSet<Comment> _set;
     public CommentService(ApplicationDbContext dbContext)
     {
@@ -17,7 +18,8 @@ public class CommentService : ICommentService
 
     public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
     {
-        return await _set.Include(c => c.ApplicationUser).Where(c => c.MediaId == mediaId).ToListAsync();
+        await using var context =  _dbContextFactory.CreateDbContext();
+        return await context.Comments.Include(c => c.ApplicationUser).Where(c => c.MediaId == mediaId).ToListAsync();
     }
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
