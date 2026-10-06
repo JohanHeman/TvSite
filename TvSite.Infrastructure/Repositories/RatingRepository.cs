@@ -9,11 +9,12 @@ public class RatingRepository : IRatingRepository
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<Rating> _set;
-
-    public RatingRepository(ApplicationDbContext dbContext)
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+    public RatingRepository(ApplicationDbContext dbContext, IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContext = dbContext;
         _set = dbContext.Ratings;
+        _dbContextFactory = dbContextFactory;
     }
 
     public async Task CreateRatingAsync(Rating rating)
@@ -30,6 +31,7 @@ public class RatingRepository : IRatingRepository
 
     public async Task<List<Rating>> GetAverageRating(string mediaId)
     {
-        return await _set.Where(s => s.MediaId == mediaId).ToListAsync();
+        await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        return await dbContext.Ratings.Where(s => s.MediaId == mediaId).ToListAsync();
     }
 }
