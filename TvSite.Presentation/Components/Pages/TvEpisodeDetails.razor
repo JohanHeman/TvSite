@@ -41,7 +41,13 @@
             <p>Airdate: @_tvEpisodeDetails.AirDate</p>
             @if (_rating != null)
             {
-                <p>Rating: @_rating</p>
+                <div>
+                    <p>Rating: @_rating</p>
+                    <label class="form-label">Rating amount:</label>
+                    <InputNumber TValue="int" @bind-Value="_userStars" Placeholder="Enter amount" class="form-control"/>
+                    
+                    <button @onclick="async () => await CreateUserRatingAsync(_userStars)">Rate</button>
+                </div>                
             }
         </div>
         <div>
@@ -56,7 +62,7 @@
     <Authorized>   
         <div>
             <input @bind="_comment"/>
-            <button onclick=@CreateCommentAsync(_comment)
+            <button @onclick=" async () => await CreateCommentAsync(_comment)"
             >Add comment</button>
         </div>
     </Authorized>
@@ -101,7 +107,7 @@
         if (user != null)
             _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
-
+    
     //comment
     private IReadOnlyList<Comment> _comments = new List<Comment>();
     private string _comment = "";
@@ -139,5 +145,26 @@
 
         // Refresh bool
         _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+    }
+    
+    // rating 
+    private int _userStars;
+
+    private async Task CreateUserRatingAsync(int number)
+    {
+        var user = await GetUser();
+        if (user == null || _tvEpisodeDetails == null) return;
+        var existingRating = await RatingService.GetRatingByIdAsync(_tvEpisodeDetails.Id.ToString(), user.Id);
+        if (existingRating != null)
+        {
+            if (existingRating.Stars == _userStars) return;
+            existingRating.Stars = _userStars;
+            await RatingService.UpdateRatingAsync(existingRating);
+        }
+        else
+        {
+            await RatingService.CreateRatingAsync(_userStars, _tvEpisodeDetails.Id, user.Id);
+        } 
+        _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
     }
 }
