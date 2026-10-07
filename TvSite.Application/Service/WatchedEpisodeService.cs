@@ -63,7 +63,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
     public async Task DeleteWatchedEpisode(string episodeMediaId, Guid userId)
     {
-        if (episodeMediaId == null) return;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
         WatchedEpisode? watchedEpisode;
 
@@ -83,5 +83,18 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
+    }
+
+    public async Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId)
+    {
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
+
+        var isExistingWatchedEpisode = await GetIsWatchedEpisodeByUserAsync(episodeMediaId, userId);
+
+        if (!isExistingWatchedEpisode)
+            await CreateWatchedEpisode(episodeMediaId, userId);
+
+        else
+            await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 }

@@ -7,4 +7,5 @@ public interface IWatchedEpisodeService
     public Task CreateWatchedEpisode(string episodeMediaId, Guid userId);
     public Task DeleteWatchedEpisode(string episodeMediaId, Guid userId);
     public Task<bool> GetIsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId);
+    public Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId);
 }
