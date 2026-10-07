@@ -15,7 +15,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         _set = dbContext.WatchedEpisodes;
     }
 
-    public async Task<bool> GetIsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
+    public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         if (episodeMediaId == null) return false;
 
@@ -89,7 +89,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
-        var isExistingWatchedEpisode = await GetIsWatchedEpisodeByUserAsync(episodeMediaId, userId);
+        bool isExistingWatchedEpisode = await IsWatchedEpisodeByUserAsync(episodeMediaId, userId);
 
         if (!isExistingWatchedEpisode)
             await CreateWatchedEpisode(episodeMediaId, userId);
