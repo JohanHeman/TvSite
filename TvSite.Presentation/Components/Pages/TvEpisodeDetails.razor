@@ -115,17 +115,9 @@
     private async Task CreateCommentAsync(string commentText)
     {
         var user = await GetUser();
-        if (user == null) return;
+        if (user == null || _tvEpisodeDetails == null) return;
 
-        var comment = new Comment()
-        {
-            Id = Guid.NewGuid(),
-            Text = commentText,
-            ApplicationUserId =  user.Id,
-            MediaId = _tvEpisodeDetails.Id
-        };
-
-        await CommentService.CreateCommentAsync(comment);
+        await CommentService.CreateCommentAsync(commentText, _tvEpisodeDetails.Id, user.Id);
     }
 
     private async Task<ApplicationUser?> GetUser()
