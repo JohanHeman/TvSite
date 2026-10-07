@@ -21,7 +21,7 @@
         @foreach (var episode in _season.Episodes)
         {
             <a href="/tvshow/season/episode?ShowId=@ShowId&SeasonNumber=@_season.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
-                <div class="d-flex border border-1 p-1 gap-3 bg-body-tertiary">
+                <div class="d-flex border border-1 p-1 gap-3">
                     <div>
                         <p>Episode: @episode.EpisodeNumber</p>
                         <img src="@episode.ImagePath"/>
