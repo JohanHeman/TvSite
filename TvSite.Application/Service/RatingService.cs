@@ -26,7 +26,7 @@ namespace TvSite.Application.Service
                 Id = Guid.NewGuid(),
                 Stars = stars,
                 ApplicationUserId = userId,
-                MediaId = mediaId 
+                MediaId = mediaId
             };
             await _repository.CreateRatingAsync(rating);
         }
@@ -38,7 +38,7 @@ namespace TvSite.Application.Service
 
         public async Task UpdateRatingAsync(Rating rating)
         {
-            
+
             await _repository.UpdateRatingAsync(rating);
         }
 
