@@ -1,7 +1,6 @@
 @page "/tvshow/season/episode"
 @using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities
-@using TvSite.Domain.Entities.DbModels
 @using TvSite.Domain.Interfaces.Services
 @using TvSite.Domain.InterfacesAPI.Services
 @inject IAPIService ApiService;
@@ -27,14 +26,10 @@
 
         <AuthorizeView>
             <Authorized>
-                @if (!_isWatchedEpisode)
-                {
-                    <button @onclick="async () => await SetEpisodeAsWatchedAsync()" class="btn btn-outline-success">Not watched</button>
-                }
-                else
-                {
-                    <button @onclick="async () => await DeleteWatchedEpisodeAsync()" class="btn btn-success">Watched</button>
-                }
+                @{ string _btnWatchedText = _isWatchedEpisode ? "Watched" : "Not watched"; 
+                   string _btnWatchedClass = _isWatchedEpisode ? "btn btn-success" : "btn btn-outline-success"; }
+                
+                <button @onclick="async () => await CreateOrDeleteWatchedEpisode()" class="@_btnWatchedClass">@_btnWatchedText</button>
             </Authorized>
             <NotAuthorized>
                 <a href="/Account/Login" class="btn btn-outline-success">Login to mark as watched</a>
@@ -98,12 +93,13 @@
         _loadedShowId = ShowId;
 
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
+
         _rating = await RatingService.GetAverageRatingByMediaIdAsync(_tvEpisodeDetails.Id);
-        _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id.ToString());
+        _comments = await CommentService.GetCommentsByMediaIdAsync(_tvEpisodeDetails.Id);
 
         var user = await GetUser();
         if (user != null)
-            _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+            _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 
     //comment
@@ -133,34 +129,15 @@
     }
 
     private bool _isWatchedEpisode;
-    private async Task SetEpisodeAsWatchedAsync()
+    private async Task CreateOrDeleteWatchedEpisode()
     {
         var user = await GetUser();
         if (user == null || _tvEpisodeDetails == null) return;
 
-        WatchedEpisode watchedEpisode = new()
-        {
-            Id = new Guid(),
-            EpisodeId = _tvEpisodeDetails.Id,
-            UserId = user.Id,
-            DateTime = DateTime.Now,
-            IsSoftDeleted = false,
-        };
-
-        await WatchedEpisodeService.CreateWatchedEpisode(watchedEpisode);
+        // Creates or deletes the WatchedEpisode in the DB. Depending on if it exists
+        await WatchedEpisodeService.CreateOrDeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
 
         // Refresh bool
-        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
-    }
-
-    private async Task DeleteWatchedEpisodeAsync()
-    {
-        var user = await GetUser();
-        if (user == null || _tvEpisodeDetails == null) return;
-
-        await WatchedEpisodeService.DeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
-
-        // Refresh bool
-        _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+        _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
 }

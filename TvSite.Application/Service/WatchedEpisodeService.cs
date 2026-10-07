@@ -15,7 +15,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         _set = dbContext.WatchedEpisodes;
     }
 
-    public async Task<bool> GetIsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
+    public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         if (episodeMediaId == null) return false;
 
@@ -37,9 +37,18 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         return true;
     }
 
-    public async Task CreateWatchedEpisode(WatchedEpisode watchedEpisode)
+    public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId)
     {
-        if (watchedEpisode == null) return;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
+
+        var watchedEpisode = new WatchedEpisode()
+        {
+            Id = Guid.NewGuid(),
+            EpisodeId = episodeMediaId,
+            UserId = userId,
+            DateTime = DateTime.Now,
+            IsSoftDeleted = false,
+        };
 
         try
         {
@@ -54,7 +63,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
     public async Task DeleteWatchedEpisode(string episodeMediaId, Guid userId)
     {
-        if (episodeMediaId == null) return;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
         WatchedEpisode? watchedEpisode;
 
@@ -74,5 +83,18 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
+    }
+
+    public async Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId)
+    {
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
+
+        bool isExistingWatchedEpisode = await IsWatchedEpisodeByUserAsync(episodeMediaId, userId);
+
+        if (!isExistingWatchedEpisode)
+            await CreateWatchedEpisode(episodeMediaId, userId);
+
+        else
+            await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 }
