@@ -138,16 +138,8 @@
         var user = await GetUser();
         if (user == null || _tvEpisodeDetails == null) return;
 
-        WatchedEpisode watchedEpisode = new()
-        {
-            Id = new Guid(),
-            EpisodeId = _tvEpisodeDetails.Id,
-            UserId = user.Id,
-            DateTime = DateTime.Now,
-            IsSoftDeleted = false,
-        };
-
-        await WatchedEpisodeService.CreateWatchedEpisode(watchedEpisode);
+        // Add to Db
+        await WatchedEpisodeService.CreateWatchedEpisode(user.Id, _tvEpisodeDetails.Id);
 
         // Refresh bool
         _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
