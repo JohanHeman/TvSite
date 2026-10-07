@@ -29,6 +29,17 @@ public class RatingRepository : IRatingRepository
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task UpdateRatingAsync(Rating rating)
+    {
+        _set.Update(rating);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Rating?> GetRatingByIdAsync(string mediaId, Guid userId)
+    {
+        return await _set.FirstOrDefaultAsync(r => r.MediaId == mediaId && r.ApplicationUserId == userId);
+    }
+
     public async Task<List<Rating>> GetAverageRating(string mediaId)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
