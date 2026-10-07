@@ -17,7 +17,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
     public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
-        if (episodeMediaId == null) return false;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return false;
 
         WatchedEpisode? myEpisode;
         try
