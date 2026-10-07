@@ -23,7 +23,7 @@ jobs:
       - name: test
         run: dotnet test
       - name: build
-        run: dotnet build TvSite.Presentation/TvSite.Presentation.csproj
+        run: dotnet build
 
   format-code:
     runs-on: ubuntu-latest
