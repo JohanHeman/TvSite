@@ -139,7 +139,7 @@
         if (user == null || _tvEpisodeDetails == null) return;
 
         // Add to Db
-        await WatchedEpisodeService.CreateWatchedEpisode(user.Id, _tvEpisodeDetails.Id);
+        await WatchedEpisodeService.CreateWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
 
         // Refresh bool
         _isWatchedEpisode = await WatchedEpisodeService.GetIsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);

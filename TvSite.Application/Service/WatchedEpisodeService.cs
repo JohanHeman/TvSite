@@ -37,7 +37,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         return true;
     }
 
-    public async Task CreateWatchedEpisode(Guid userId, string episodeMediaId)
+    public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId)
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
