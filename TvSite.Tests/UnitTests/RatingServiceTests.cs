@@ -29,7 +29,7 @@ public class RatingServiceTests
         var expected = ratings.Average(r => r.Stars);
         _mockrepo.Setup(r => r.GetAverageRating("56")).ReturnsAsync(ratings);
         // Arrange
-        var actual = await _ratingService.GetAverageRatingByMediaIdAsync("56");
+        var actual = await _ratingService.GetAverageRatingByEpisodeMediaIdAsync("56");
         // Assert
         Assert.Equal(expected, actual);
     }

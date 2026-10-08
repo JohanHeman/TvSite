@@ -19,14 +19,14 @@ namespace TvSite.Application.Service
             _repository = repository;
         }
 
-        public async Task CreateRatingAsync(int stars, string mediaId, Guid userId)
+        public async Task CreateRatingAsync(int stars, string episodeMediaId, Guid userId)
         {
             Rating rating = new()
             {
                 Id = Guid.NewGuid(),
                 Stars = stars,
                 ApplicationUserId = userId,
-                MediaId = mediaId
+                EpisodeMediaId = episodeMediaId
             };
             await _repository.CreateRatingAsync(rating);
         }
@@ -42,14 +42,14 @@ namespace TvSite.Application.Service
             await _repository.UpdateRatingAsync(rating);
         }
 
-        public Task<Rating?> GetRatingByIdAsync(string mediaId, Guid auserId)
+        public Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid auserId)
         {
-            var rating = _repository.GetRatingByIdAsync(mediaId, auserId);
+            var rating = _repository.GetRatingByIdAsync(episodeMediaId, auserId);
             if (rating == null) throw new KeyNotFoundException();
             return rating;
         }
 
-        public async Task<double> GetAverageRatingByMediaIdAsync(string mediaId)
+        public async Task<double> GetAverageRatingByEpisodeMediaIdAsync(string mediaId)
         {
             var ratings = await _repository.GetAverageRating(mediaId);
             if (ratings.Count == 0) return 0;

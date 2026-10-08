@@ -21,5 +21,5 @@ public class Rating
     }
     public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser { get; set; }
-    public string MediaId { get; set; }
+    public string EpisodeMediaId { get; set; }
 }

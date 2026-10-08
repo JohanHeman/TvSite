@@ -15,10 +15,10 @@ public class CommentService : ICommentService
         _repository = repository;
     }
 
-    public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
+    public async Task<IReadOnlyList<Comment>> GetCommentsByEpisodeMediaIdAsync(string episodeMediaId)
     {
-        if (!string.IsNullOrWhiteSpace(mediaId))
-            return await _repository.GetCommentsByMediaIdAsync(mediaId);
+        if (!string.IsNullOrWhiteSpace(episodeMediaId))
+            return await _repository.GetCommentsByMediaIdAsync(episodeMediaId);
 
         else
             throw new ArgumentException("MediaId cannot be null or whitespace");

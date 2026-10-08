@@ -36,10 +36,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         var watchedEpisode = new WatchedEpisode()
         {
             Id = Guid.NewGuid(),
-            EpisodeId = episodeMediaId,
+            EpisodeMediaId = episodeMediaId,
             UserId = userId,
             DateTime = DateTime.Now,
-            IsSoftDeleted = false,
         };
 
         try
