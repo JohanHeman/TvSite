@@ -19,7 +19,7 @@ namespace TvSite.Application.Service
         public MediaListEntryService(ApplicationDbContext dbContext, IAPIService APIService)
         {
             _dbContext = dbContext;
-            _set = dbContext.MediaListEntry;
+            _set = dbContext.MediaListEntries;
             _APIService = APIService;
         }
 
