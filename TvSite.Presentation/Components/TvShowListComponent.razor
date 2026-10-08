@@ -1,35 +1,38 @@
 ﻿@using TvSite.Domain.Entities
 @rendermode InteractiveServer
 
-<h3>@ListName</h3>
+<div class="mb-3">
+    <h3>@ListName</h3>
 
-<div class="d-flex flex-wrap gap-3">
-    @if (_isShowingFullList)
-    {
-        @foreach (var tvShow in TvShowList)
+    <div class="d-flex flex-wrap gap-3">
+        @if (_isShowingFullList)
         {
-            <div style="width: 12rem;">
-                <a href="/tvshow?mediaid=@tvShow.Id">
-                    <img src="@tvShow.MediaImage" />
-                    <p>@tvShow.Name</p>
-                </a>
-            </div>
+            @foreach (var tvShow in TvShowList)
+            {
+                <div style="width: 12rem;">
+                    <a href="/tvshow?mediaid=@tvShow.Id">
+                        <img src="@tvShow.MediaImage" />
+                        <p>@tvShow.Name</p>
+                    </a>
+                </div>
+            }
         }
-    }
-    else
-    {
-        @foreach (var tvShow in TakeFourList)
+        else
         {
-            <div style="width: 12rem;">
-                <a href="/tvshow?mediaid=@tvShow.Id">
-                <img src="@tvShow.MediaImage" />
-                <p>@tvShow.Name</p>
-                </a>
-            </div>
+            @foreach (var tvShow in TakeFourList)
+            {
+                <div style="width: 12rem;">
+                    <a href="/tvshow?mediaid=@tvShow.Id">
+                        <img src="@tvShow.MediaImage" />
+                        <p>@tvShow.Name</p>
+                    </a>
+                </div>
+            }
         }
-    }
+    </div>
+    <button @onclick="ToggleShowFullList" class="btn btn-primary">Expand / Minimize</button>
 </div>
-<button @onclick="ToggleShowFullList" class="btn btn-outline-dark">Expand / Minimize</button>
+
 
 
 @code {
