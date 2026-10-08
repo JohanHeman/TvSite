@@ -25,7 +25,7 @@ public class CommentRepository : ICommentRepository
     }
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
-        return await _set.Include(c => c.ApplicationUser).FirstOrDefaultAsync(c => c.Id == commentId);
+        return await _set.Include(c => c.ApplicationUser).SingleOrDefaultAsync(c => c.Id == commentId);
     }
 
     public async Task CreateCommentAsync(Comment comment)
@@ -36,7 +36,7 @@ public class CommentRepository : ICommentRepository
 
     public async Task DeleteCommentAsync(Comment comment)
     {
-        _set.Remove(comment);
+        _set.Remove(comment!);
         await _dbContext.SaveChangesAsync();
     }
 }
