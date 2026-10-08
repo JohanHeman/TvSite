@@ -16,7 +16,7 @@ namespace TvSite.Application.Service
         private readonly IMediaListentryRepository _repository;
         private readonly IAPIService _APIService;
 
-        public MediaListEntryService(IMediaListentryRepository repository , IAPIService APIService)
+        public MediaListEntryService(IMediaListentryRepository repository, IAPIService APIService)
         {
             _repository = repository;
             _APIService = APIService;
@@ -36,7 +36,7 @@ namespace TvSite.Application.Service
 
         public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
         {
-            await _repository.UpdateMediaListEntryStateAsync(userMediaListEntry); 
+            await _repository.UpdateMediaListEntryStateAsync(userMediaListEntry);
         }
 
         public async Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)

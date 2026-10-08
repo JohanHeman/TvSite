@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities.DbModels;
+using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
 
@@ -7,34 +8,25 @@ namespace TvSite.Application.Service;
 
 public class WatchedEpisodeService : IWatchedEpisodeService
 {
-    private readonly ApplicationDbContext _dbContext;
-    private readonly DbSet<WatchedEpisode> _set;
-    public WatchedEpisodeService(ApplicationDbContext dbContext)
+    private readonly IWatchedEpisodeRepository _repository;
+
+    public WatchedEpisodeService(IWatchedEpisodeRepository repository)
     {
-        _dbContext = dbContext;
-        _set = dbContext.WatchedEpisodes;
+        _repository = repository;
     }
 
     public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return false;
 
-        WatchedEpisode? myEpisode;
         try
         {
-            myEpisode = await _set
-                .Where(episode => episode.EpisodeId == episodeMediaId)
-                .Where(episode => episode.UserId == userId)
-            .SingleOrDefaultAsync();
-
-            if (myEpisode == null) return false;
+            return await _repository.IsWatchedEpisodeByUserAsync(episodeMediaId, userId);
         }
         catch (Exception ex)
         {
             throw new DbUpdateException("Could not get WatchedEpisode \nInner Exception: " + ex.InnerException);
         }
-
-        return true;
     }
 
     public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId)
@@ -52,8 +44,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
         try
         {
-            await _set.AddAsync(watchedEpisode);
-            await _dbContext.SaveChangesAsync();
+            await _repository.CreateWatchedEpisode(watchedEpisode);
         }
         catch (Exception ex)
         {
@@ -66,18 +57,12 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
         WatchedEpisode? watchedEpisode;
-
         try
         {
-            watchedEpisode = await _set
-                .Where(episode => episode.EpisodeId == episodeMediaId)
-                .Where(episode => episode.UserId == userId)
-            .SingleOrDefaultAsync();
-
+            watchedEpisode = await _repository.GetWatchedEpisodeByUserAsync(episodeMediaId, userId);
             if (watchedEpisode == null) return;
 
-            _set.Remove(watchedEpisode);
-            await _dbContext.SaveChangesAsync();
+            await _repository.DeleteWatchedEpisode(watchedEpisode);
         }
         catch (Exception ex)
         {

@@ -16,7 +16,7 @@ public class MediaListEntryRepository : IMediaListentryRepository
         _context = context;
         _set = context.MediaListEntries;
     }
-    
+
     public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
     {
         return await _set
