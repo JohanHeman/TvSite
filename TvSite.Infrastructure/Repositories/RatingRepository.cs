@@ -35,14 +35,14 @@ public class RatingRepository : IRatingRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<Rating?> GetRatingByIdAsync(string mediaId, Guid userId)
+    public async Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId)
     {
-        return await _set.FirstOrDefaultAsync(r => r.MediaId == mediaId && r.ApplicationUserId == userId);
+        return await _set.FirstOrDefaultAsync(r => r.EpisodeMediaId == episodeMediaId && r.ApplicationUserId == userId);
     }
 
-    public async Task<List<Rating>> GetAverageRating(string mediaId)
+    public async Task<List<Rating>> GetAverageRating(string episodeMediaId)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        return await dbContext.Ratings.Where(s => s.MediaId == mediaId).ToListAsync();
+        return await dbContext.Ratings.Where(s => s.EpisodeMediaId == episodeMediaId).ToListAsync();
     }
 }

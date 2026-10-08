@@ -18,10 +18,10 @@ public class CommentRepository : ICommentRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
+    public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string episodeMediaId)
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        return await context.Comments.Include(c => c.ApplicationUser).Where(c => c.EpisodeMediaId == mediaId).ToListAsync();
+        return await context.Comments.Include(c => c.ApplicationUser).Where(c => c.EpisodeMediaId == episodeMediaId).ToListAsync();
     }
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {

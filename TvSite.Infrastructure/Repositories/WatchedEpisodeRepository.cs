@@ -34,7 +34,7 @@ public class WatchedEpisodeRepository : IWatchedEpisodeRepository
     public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         var episode = await _set
-            .Where(episode => episode.EpisodeId == episodeMediaId)
+            .Where(episode => episode.EpisodeMediaId == episodeMediaId)
             .Where(episode => episode.UserId == userId)
             .SingleOrDefaultAsync();
 
@@ -44,7 +44,7 @@ public class WatchedEpisodeRepository : IWatchedEpisodeRepository
     public async Task<WatchedEpisode?> GetWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         var episode = await _set
-            .Where(episode => episode.EpisodeId == episodeMediaId)
+            .Where(episode => episode.EpisodeMediaId == episodeMediaId)
             .Where(episode => episode.UserId == userId)
             .SingleOrDefaultAsync();
 
