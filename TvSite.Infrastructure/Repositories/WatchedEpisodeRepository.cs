@@ -1,26 +1,57 @@
+using Microsoft.EntityFrameworkCore;
+using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.DbModels;
 using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Infrastructure.Data;
 
 namespace TvSite.Infrastructure.Repositories;
 
 public class WatchedEpisodeRepository : IWatchedEpisodeRepository
 {
-    public Task CreateWatchedEpisode(string episodeMediaId, Guid userId)
+
+
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<WatchedEpisode> _set;
+
+    public WatchedEpisodeRepository(ApplicationDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _set = context.WatchedEpisodes;
     }
 
-    public Task DeleteWatchedEpisode(string episodeMediaId, Guid userId)
+
+    public async Task CreateWatchedEpisode(WatchedEpisode episode)
     {
-        throw new NotImplementedException();
+        await _set.AddAsync(episode);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
+    public async Task DeleteWatchedEpisode(WatchedEpisode episode)
     {
-        throw new NotImplementedException();
+        _set.Remove(episode);
+        await _context.SaveChangesAsync();
     }
 
-    public Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId)
+    public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
-        throw new NotImplementedException();
+        var episode = await _set
+            .Where(episode => episode.EpisodeId == episodeMediaId)
+            .Where(episode => episode.UserId == userId)
+            .SingleOrDefaultAsync();
+
+        return episode != null ? true : false;
     }
+
+    public async Task<WatchedEpisode?> GetWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
+    {
+        var episode = await _set
+            .Where(episode => episode.EpisodeId == episodeMediaId)
+            .Where(episode => episode.UserId == userId)
+            .SingleOrDefaultAsync();
+
+        return episode;
+    }
+
+
+
 }
