@@ -68,12 +68,15 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<IMediaListentryRepository, MediaListEntryRepository>();
 builder.Services.AddTransient<IMediaListEntryService, MediaListEntryService>();
 builder.Services.AddTransient<IRatingRepository, RatingRepository>();
 builder.Services.AddTransient<IRatingService, RatingService>();
 builder.Services.AddTransient<IAPIRepository, APIRepository>();
 builder.Services.AddTransient<IAPIService, APIService>();
+builder.Services.AddTransient<IWatchedEpisodeRepository, WatchedEpisodeRepository>();
 builder.Services.AddTransient<IWatchedEpisodeService, WatchedEpisodeService>();
 
 var app = builder.Build();
