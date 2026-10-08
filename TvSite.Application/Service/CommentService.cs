@@ -44,7 +44,7 @@ public class CommentService : ICommentService
             Id = Guid.NewGuid(),
             Text = commentText,
             ApplicationUserId = userId,
-            MediaId = episodeMediaId
+            EpisodeMediaId = episodeMediaId
         };
 
         await _repository.CreateCommentAsync(comment);

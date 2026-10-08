@@ -21,7 +21,7 @@ public class CommentRepository : ICommentRepository
     public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        return await context.Comments.Include(c => c.ApplicationUser).Where(c => c.MediaId == mediaId).ToListAsync();
+        return await context.Comments.Include(c => c.ApplicationUser).Where(c => c.EpisodeMediaId == mediaId).ToListAsync();
     }
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
