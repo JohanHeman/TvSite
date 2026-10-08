@@ -1,6 +1,4 @@
-﻿using TvSite.Domain.Entities.DbModels;
-
-namespace TvSite.Domain.Interfaces.Services;
+﻿namespace TvSite.Domain.Interfaces.Services;
 
 public interface IWatchedEpisodeService
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TvSite.Domain.Entities
+﻿namespace TvSite.Domain.Entities.Api
 {
     public class TvSeriesSeason
     {

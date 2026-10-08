@@ -1,4 +1,4 @@
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
 
 namespace TvSite.Domain.Interfaces.Repositories;

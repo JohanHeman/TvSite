@@ -1,6 +1,6 @@
 using TvSite.Domain.Enums;
 
-namespace TvSite.Domain.Entities;
+namespace TvSite.Domain.Entities.Database;
 
 public class MediaListEntry
 {
