@@ -14,23 +14,45 @@ public class CommentService : ICommentService
     {
         _repository = repository;
     }
-    public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
-    {
-        return await _repository.GetCommentByIdAsync(commentId);
-    }
 
     public async Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId)
     {
-        return await _repository.GetCommentsByMediaIdAsync(mediaId);
+        if (!string.IsNullOrWhiteSpace(mediaId))
+            return await _repository.GetCommentsByMediaIdAsync(mediaId);
+
+        else
+            throw new ArgumentException("MediaId cannot be null or whitespace");
+    }
+    public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
+    {
+        if (commentId != Guid.Empty)
+            return await _repository.GetCommentByIdAsync(commentId);
+
+        else
+            throw new ArgumentException("CommentId cannot be empty");
     }
 
     public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId)
     {
-        await _repository.CreateCommentAsync(commentText, episodeMediaId, userId);
+        if (string.IsNullOrWhiteSpace(commentText)
+            || string.IsNullOrWhiteSpace(episodeMediaId)
+            || userId == Guid.Empty)
+            return;
+
+        var comment = new Comment()
+        {
+            Id = Guid.NewGuid(),
+            Text = commentText,
+            ApplicationUserId = userId,
+            MediaId = episodeMediaId
+        };
+
+        await _repository.CreateCommentAsync(comment);
     }
 
     public async Task DeleteCommentAsync(Comment comment)
     {
-        await _repository.DeleteCommentAsync(comment);
+        if (comment != null)
+            await _repository.DeleteCommentAsync(comment);
     }
 }

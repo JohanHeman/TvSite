@@ -6,6 +6,6 @@ public interface ICommentRepository
 {
     public Task<Comment?> GetCommentByIdAsync(Guid commentId);
     public Task<IReadOnlyList<Comment>> GetCommentsByMediaIdAsync(string mediaId);
-    public Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId);
+    public Task CreateCommentAsync(Comment comment);
     public Task DeleteCommentAsync(Comment comment);
 }
