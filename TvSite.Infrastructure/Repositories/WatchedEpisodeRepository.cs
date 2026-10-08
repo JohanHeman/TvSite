@@ -41,7 +41,7 @@ public class WatchedEpisodeRepository : IWatchedEpisodeRepository
 
         return episode != null ? true : false;
     }
-    
+
     public async Task<WatchedEpisode?> GetWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
     {
         var episode = await _set
@@ -51,7 +51,7 @@ public class WatchedEpisodeRepository : IWatchedEpisodeRepository
 
         return episode;
     }
-    
+
 
 
 }
