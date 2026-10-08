@@ -24,17 +24,17 @@ namespace TvSite.Tests.UnitTests.ServiceTests
         [InlineData("")]
         [InlineData("  ")]
         [InlineData(null)]
-        public async Task GetCommentsByMediaIdAsync_ThrowsArgumentExeption_WhenIsNullOrWhiteSpace(string? input)
+        public async Task GetCommentsByMediaIdAsync_ThrowsArgumentExeption_WhenIsNullOrWhiteSpace(string? episodeMediaId)
         {
             // Arrange
             var expectedMessage = $"EpisodeMediaId cannot be null or whitespace";
 
             // Act
-            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.GetCommentsByEpisodeMediaIdAsync(input!));
+            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.GetCommentsByEpisodeMediaIdAsync(episodeMediaId!));
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
-            _mockRepo.Verify(repo => repo.GetCommentsByMediaIdAsync(input!), Times.Never);
+            _mockRepo.Verify(repo => repo.GetCommentsByMediaIdAsync(episodeMediaId!), Times.Never);
         }
 
         [Fact]
@@ -49,6 +49,25 @@ namespace TvSite.Tests.UnitTests.ServiceTests
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
             _mockRepo.Verify(repo => repo.GetCommentByIdAsync(Guid.Empty), Times.Never);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("  ")]
+        [InlineData(null)]
+        public async Task CreateCommentAsync_ThrowsArgumentExeption_WhenIdIsNullOrWhiteSpace(string? episodeMediaId)
+        {
+            // Arrange
+            var commentText = "Comment text";
+            var userId = Guid.NewGuid();
+
+            var expectedMessage = $"EpisodeMediaId cannot be null or whitespace";
+
+            // Act
+            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.CreateCommentAsync(commentText, episodeMediaId, userId));
+
+            // Assert
+            Assert.Equal(expectedMessage, actual.Message);
         }
 
         [Fact]
