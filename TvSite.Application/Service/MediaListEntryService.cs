@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using TvSite.Domain.Entities.Api;
+﻿using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
-using TvSite.Infrastructure.Data;
 
 namespace TvSite.Application.Service
 {
@@ -31,12 +26,18 @@ namespace TvSite.Application.Service
         public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
         {
             var existingMediaListEntry = await _repository.GetMediaListEntryByIdAsync(userMediaListEntry.Id);
+
             if (existingMediaListEntry != null) return;
+
             await _repository.CreateMediaListEntryAsync(userMediaListEntry);
         }
 
         public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
         {
+            var existingMediaListEntry = await _repository.GetMediaListEntryByIdAsync(userMediaListEntry.Id);
+
+            if (existingMediaListEntry == null) return;
+
             await _repository.UpdateMediaListEntryStateAsync(userMediaListEntry);
         }
 

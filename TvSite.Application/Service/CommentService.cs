@@ -21,8 +21,9 @@ public class CommentService : ICommentService
             return await _repository.GetCommentsByMediaIdAsync(episodeMediaId);
 
         else
-            throw new ArgumentException("MediaId cannot be null or whitespace");
+            throw new ArgumentException("EpisodeMediaId cannot be null or whitespace");
     }
+
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
         if (commentId != Guid.Empty)
@@ -34,10 +35,12 @@ public class CommentService : ICommentService
 
     public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId)
     {
-        if (string.IsNullOrWhiteSpace(commentText)
-            || string.IsNullOrWhiteSpace(episodeMediaId)
-            || userId == Guid.Empty)
+        // Domain entity will throw if comment text is null or whitespace
+        if (string.IsNullOrWhiteSpace(commentText) || userId == Guid.Empty)
             return;
+
+        if (string.IsNullOrWhiteSpace(episodeMediaId))
+            throw new ArgumentException("EpisodeMediaId cannot be null or whitespace");
 
         var comment = new Comment()
         {
@@ -50,9 +53,16 @@ public class CommentService : ICommentService
         await _repository.CreateCommentAsync(comment);
     }
 
-    public async Task DeleteCommentAsync(Comment comment)
+    public async Task DeleteCommentAsync(Guid commentId)
     {
-        if (comment != null)
-            await _repository.DeleteCommentAsync(comment);
+        if (commentId == Guid.Empty)
+            throw new ArgumentException("Comment id cannot be empty");
+
+        var comment = await _repository.GetCommentByIdAsync(commentId);
+
+        if (comment == null)
+            throw new NullReferenceException("Comment does not exist");
+
+        await _repository.DeleteCommentAsync(comment);
     }
 }
