@@ -27,7 +27,7 @@ namespace TvSite.Tests.UnitTests.ServiceTests
         {
             // Arrange
             var expectedMessage = $"MediaId cannot be null or whitespace";
-            
+
             // Act
             var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.GetCommentsByMediaIdAsync(input!));
 
@@ -41,10 +41,10 @@ namespace TvSite.Tests.UnitTests.ServiceTests
         {
             // Arrange
             var expectedMessage = $"CommentId cannot be empty";
-            
+
             // Act
             var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.GetCommentByIdAsync(Guid.Empty));
-            
+
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
             _mockRepo.Verify(repo => repo.GetCommentByIdAsync(Guid.Empty));
