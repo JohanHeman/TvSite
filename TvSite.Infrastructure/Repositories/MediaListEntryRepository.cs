@@ -1,28 +1,44 @@
+using Microsoft.EntityFrameworkCore;
 using TvSite.Domain.Entities;
 using TvSite.Domain.Enums;
 using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Infrastructure.Data;
 
 namespace TvSite.Infrastructure.Repositories;
 
 public class MediaListEntryRepository : IMediaListentryRepository
 {
-    public Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
+    private readonly ApplicationDbContext _context;
+    private readonly DbSet<MediaListEntry> _set;
+
+    public MediaListEntryRepository(ApplicationDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _set = context.MediaListEntries;
+    }
+    
+    public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
+    {
+        return await _set
+            .Where(entry => entry.ApplicationUserId == userId)
+            .Where(entry => entry.ListState == ((int)listState))
+            .ToListAsync();
     }
 
-    public Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
+    public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
     {
-        throw new NotImplementedException();
+        await _set.AddAsync(userMediaListEntry);
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
+    public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
     {
-        throw new NotImplementedException();
+        _set.Update(userMediaListEntry);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)
+    public async Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid mediaListEntryId)
     {
-        throw new NotImplementedException();
+        return await _set.FirstOrDefaultAsync(mediaListEntry => mediaListEntry.Id == mediaListEntryId);
     }
 }
