@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 using TvSite.Application.Service;
 using TvSite.Application.ServiceAPI;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Repositories;

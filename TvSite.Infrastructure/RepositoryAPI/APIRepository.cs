@@ -1,7 +1,7 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Api;
 using TvSite.Domain.InterfacesAPI.Repositories;
 using TvSite.Infrastructure.DTO;
 using TvSite.Infrastructure.DTO.SeasonDetailsDTO;

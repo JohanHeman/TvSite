@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Infrastructure.Data;
@@ -44,7 +44,7 @@ public class CommentService : ICommentService
             Id = Guid.NewGuid(),
             Text = commentText,
             ApplicationUserId = userId,
-            MediaId = episodeMediaId
+            EpisodeMediaId = episodeMediaId
         };
 
         await _repository.CreateCommentAsync(comment);

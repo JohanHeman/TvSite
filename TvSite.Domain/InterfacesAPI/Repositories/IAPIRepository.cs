@@ -1,4 +1,4 @@
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Api;
 
 namespace TvSite.Domain.InterfacesAPI.Repositories;
 

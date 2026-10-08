@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace TvSite.Domain.Entities;
+namespace TvSite.Domain.Entities.Database;
 
 public class ApplicationUser : IdentityUser<Guid>
 {

@@ -1,4 +1,4 @@
-namespace TvSite.Domain.Entities;
+namespace TvSite.Domain.Entities.Api;
 
 public class SearchResult
 {

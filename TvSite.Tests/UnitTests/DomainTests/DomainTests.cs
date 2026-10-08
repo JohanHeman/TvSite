@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using TvSite.Domain;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Database;
 
 namespace TvSite.Tests.UnitTests.DomainTests
 {

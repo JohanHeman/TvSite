@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Database;
 
 namespace TvSite.Domain.Interfaces.Services
 {

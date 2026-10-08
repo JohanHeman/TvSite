@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Api;
+using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
 
 namespace TvSite.Domain.Interfaces.Services

@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace TvSite.Domain.Entities;
+namespace TvSite.Domain.Entities.Database;
 
 public class Comment
 {
@@ -19,5 +17,5 @@ public class Comment
 
     public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser { get; set; }
-    public string MediaId { get; set; }
+    public string EpisodeMediaId { get; set; }
 }

@@ -1,6 +1,6 @@
 using Moq;
 using TvSite.Application.ServiceAPI;
-using TvSite.Domain.Entities;
+using TvSite.Domain.Entities.Api;
 using TvSite.Domain.InterfacesAPI.Repositories;
 
 namespace TvSite.Tests.UnitTests;

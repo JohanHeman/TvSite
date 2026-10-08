@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TvSite.Domain.Entities;
-using TvSite.Domain.Entities.DbModels;
+using TvSite.Domain.Entities.Database;
 
 namespace TvSite.Infrastructure.Data;
 
@@ -18,5 +17,4 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<MediaListEntry> MediaListEntries { get; set; }
     public DbSet<WatchedEpisode> WatchedEpisodes { get; set; }
 }
-
 

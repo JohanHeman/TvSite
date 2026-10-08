@@ -1,4 +1,4 @@
-using TvSite.Domain.Entities.DbModels;
+using TvSite.Domain.Entities.Database;
 
 namespace TvSite.Domain.Interfaces.Repositories;
 
