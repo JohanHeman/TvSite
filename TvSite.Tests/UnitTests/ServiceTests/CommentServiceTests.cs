@@ -47,7 +47,7 @@ namespace TvSite.Tests.UnitTests.ServiceTests
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
-            _mockRepo.Verify(repo => repo.GetCommentByIdAsync(Guid.Empty));
+            _mockRepo.Verify(repo => repo.GetCommentByIdAsync(Guid.Empty), Times.Never);
         }
     }
 }
