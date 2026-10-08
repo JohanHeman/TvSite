@@ -31,6 +31,6 @@ public class CommentService : ICommentService
 
     public async Task DeleteCommentAsync(Comment comment)
     {
-        await _repository.DeleteCommentAsync(comment); 
+        await _repository.DeleteCommentAsync(comment);
     }
 }

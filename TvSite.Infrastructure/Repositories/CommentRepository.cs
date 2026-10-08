@@ -7,7 +7,7 @@ namespace TvSite.Infrastructure.Repositories;
 
 public class CommentRepository : ICommentRepository
 {
-    
+
     private readonly ApplicationDbContext _dbContext;
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
     private readonly DbSet<Comment> _set;
