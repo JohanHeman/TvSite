@@ -36,7 +36,7 @@ namespace TvSite.Application.Service
         {
             var existingMediaListEntry = await _repository.GetMediaListEntryByIdAsync(userMediaListEntry.Id);
 
-            if(existingMediaListEntry == null) return;
+            if (existingMediaListEntry == null) return;
 
             await _repository.UpdateMediaListEntryStateAsync(userMediaListEntry);
         }

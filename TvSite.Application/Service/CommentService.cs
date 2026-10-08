@@ -60,7 +60,7 @@ public class CommentService : ICommentService
 
         var comment = await _repository.GetCommentByIdAsync(commentId);
 
-        if(comment == null)
+        if (comment == null)
             throw new NullReferenceException("Comment does not exist");
 
         await _repository.DeleteCommentAsync(comment);
