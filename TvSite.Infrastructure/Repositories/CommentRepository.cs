@@ -28,21 +28,8 @@ public class CommentRepository : ICommentRepository
         return await _set.Include(c => c.ApplicationUser).FirstOrDefaultAsync(c => c.Id == commentId);
     }
 
-    public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId)
+    public async Task CreateCommentAsync(Comment comment)
     {
-        if (string.IsNullOrWhiteSpace(commentText)
-            || string.IsNullOrWhiteSpace(episodeMediaId)
-            || userId == Guid.Empty)
-            return;
-
-        var comment = new Comment()
-        {
-            Id = Guid.NewGuid(),
-            Text = commentText,
-            ApplicationUserId = userId,
-            MediaId = episodeMediaId
-        };
-
         await _set.AddAsync(comment);
         await _dbContext.SaveChangesAsync();
     }
