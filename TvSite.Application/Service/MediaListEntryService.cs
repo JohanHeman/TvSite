@@ -46,6 +46,8 @@ namespace TvSite.Application.Service
             var tvShows = new List<TvSeries>();
 
             var mediaListEntries = await _repository.GetMediaListByUserIdAsync(userId, listState);
+            
+            if(mediaListEntries.Count == 0) return tvShows;
 
             foreach (var mediaListEntry in mediaListEntries)
             {
