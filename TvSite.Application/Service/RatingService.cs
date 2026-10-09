@@ -48,9 +48,11 @@ namespace TvSite.Application.Service
             await _repository.UpdateRatingAsync(rating);
         }
 
-        public Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid auserId)
+        public async Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId)
         {
-            var rating = _repository.GetRatingByIdAsync(episodeMediaId, auserId);
+            if(string.IsNullOrWhiteSpace(episodeMediaId)) 
+                throw new ArgumentException("Episode media id cannot be null or empty");
+            var rating = await _repository.GetRatingByIdAsync(episodeMediaId, userId);
             if (rating == null) throw new KeyNotFoundException();
             return rating;
         }

@@ -62,7 +62,34 @@ public class RatingServiceTests
         // Assert 
         Assert.Equal(expectedMessage, actual.Message);
     }
-    
-    
-    
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    public async Task GetRatingByIdAsync_ShouldThrow_WhenEpisodeMediaIdIsNullOrWhiteSpace(string episodeMediaId)
+    {
+        //Arrange
+        string expectedMessage = "Episode media id cannot be null or empty";
+
+        // Act
+        var actual = await Assert.ThrowsAsync<ArgumentException>(
+            () => _sut.GetRatingByIdAsync(episodeMediaId, Guid.NewGuid()));
+
+        // Assert 
+        Assert.Equal(expectedMessage, actual.Message);
+    }
+
+    [Fact]
+    public async Task GetRatingByIdAsync_ShouldThrow_WhenRatingIsNull()
+    {
+        // Arrange
+        Guid userId = Guid.NewGuid();
+
+        // Act
+
+        var actual = await Assert.ThrowsAsync<KeyNotFoundException>(() => _sut.GetRatingByIdAsync("3", userId));
+        // Assert 
+        _mockrepo.Verify(r => r.GetRatingByIdAsync("3", userId),  Times.Once);
+    }
 }
