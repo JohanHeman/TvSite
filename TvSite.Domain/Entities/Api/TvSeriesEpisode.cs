@@ -6,6 +6,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public DateOnly AirDate { get; set; }
+        public int SeasonNumber { get; set; }
         public int EpisodeNumber { get; set; }
         public string ImagePath { get; set; }
     }

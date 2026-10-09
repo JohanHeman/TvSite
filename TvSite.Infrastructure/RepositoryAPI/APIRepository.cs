@@ -190,6 +190,7 @@ public class APIRepository : IAPIRepository
                     tvSeriesEpisode.Title = episode.Title;
                     tvSeriesEpisode.Description = episode.Description;
                     tvSeriesEpisode.AirDate = episode.AirDate;
+                    tvSeriesEpisode.SeasonNumber = episode.SeasonNumber;
                     tvSeriesEpisode.EpisodeNumber = episode.EpisodeNumber;
                     tvSeriesEpisode.ImagePath = baseImgUrl + episode.ImagePath;
                 }

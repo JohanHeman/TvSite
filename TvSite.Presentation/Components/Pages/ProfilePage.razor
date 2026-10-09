@@ -7,6 +7,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IMediaListEntryService MediaListEntryService
+@inject IWatchedEpisodeService WatchedEpisodeService
 @rendermode InteractiveServer
 
 <div class="text-center">
@@ -17,4 +18,24 @@
     <TvShowListComponent ListName="Following" TvShowList="@_followList"></TvShowListComponent>
     <TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterList"></TvShowListComponent>
     <TvShowListComponent ListName="Stopped Watching" TvShowList="@_stoppedWatchingList"></TvShowListComponent>
+</div>
+
+@* Display recently watched episodes *@
+<div class="my-5">
+    <h3>Recently watched episodes</h3>
+    <div class="d-flex gap-3">
+
+        @foreach (var episode in _watchedEpisodes)
+        {
+            <a href="/tvshow/season/episode?ShowId=@episode.TvSeriesId&SeasonNumber=@episode.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
+                <div class="d-flex flex-column border border-white rounded">
+                    <p>@episode.DateTimeWatched</p>
+                    <h5 class="px-2 pt-2">@episode.Title</h5>
+                    <div class="p-1">
+                        <img src="@episode.ImagePath" />
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
 </div>

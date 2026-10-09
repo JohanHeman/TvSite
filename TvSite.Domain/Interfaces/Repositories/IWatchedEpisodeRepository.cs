@@ -8,4 +8,5 @@ public interface IWatchedEpisodeRepository
     public Task DeleteWatchedEpisode(WatchedEpisode episode);
     public Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId);
     public Task<WatchedEpisode?> GetWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId);
+    public Task<IReadOnlyList<WatchedEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId);
 }

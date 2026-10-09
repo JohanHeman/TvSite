@@ -7,8 +7,6 @@ namespace TvSite.Infrastructure.Repositories;
 
 public class WatchedEpisodeRepository : IWatchedEpisodeRepository
 {
-
-
     private readonly ApplicationDbContext _context;
     private readonly DbSet<WatchedEpisode> _set;
 
@@ -51,6 +49,8 @@ public class WatchedEpisodeRepository : IWatchedEpisodeRepository
         return episode;
     }
 
-
-
+    public async Task<IReadOnlyList<WatchedEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId)
+    {
+        return await _set.Where(watched => watched.UserId == userId).ToListAsync();
+    }
 }
