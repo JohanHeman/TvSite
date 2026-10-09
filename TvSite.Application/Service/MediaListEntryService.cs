@@ -63,10 +63,10 @@ namespace TvSite.Application.Service
         public async Task DeleteMediaListEntryAsync(Guid userId, string mediaId, ListStateEnum.ListState listState)
         {
             var mediaList = await _repository.GetMediaListByUserIdAsync(userId, listState);
-            
+
             var mediaListEntry = mediaList.FirstOrDefault(media => media.MediaId == mediaId);
 
-            if(mediaListEntry == null) return;
+            if (mediaListEntry == null) return;
 
             await _repository.DeleteMediaListEntryAsync(mediaListEntry);
         }
