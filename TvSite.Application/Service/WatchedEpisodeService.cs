@@ -99,7 +99,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             var tvSeriesEpisode = await _APIService.GetEpisodeDetails(episode.TvSeriesId, episode.SeasonNumber, episode.EpisodeNumber);
 
-            if(tvSeriesEpisode != null)
+            if (tvSeriesEpisode != null)
                 tvSeriesEpisodes.Add(tvSeriesEpisode);
         }
 
