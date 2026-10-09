@@ -141,7 +141,7 @@
         if (user == null || _tvEpisodeDetails == null) return;
 
         // Creates or deletes the WatchedEpisode in the DB. Depending on if it exists
-        await WatchedEpisodeService.CreateOrDeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
+        await WatchedEpisodeService.CreateOrDeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id, ShowId, _tvEpisodeDetails.SeasonNumber, _tvEpisodeDetails.EpisodeNumber);
 
         // Refresh bool
         _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);

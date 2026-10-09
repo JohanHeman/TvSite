@@ -34,7 +34,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         }
     }
 
-    public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId)
+    public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
@@ -42,6 +42,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             Id = Guid.NewGuid(),
             EpisodeMediaId = episodeMediaId,
+            TvSeriesId = tvSeriesId,
+            SeasonNumber = seasonNumber,
+            EpisodeNumber = episodeNumber,
             UserId = userId,
             DateTime = DateTime.Now,
         };
@@ -74,14 +77,14 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         }
     }
 
-    public async Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId)
+    public async Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
         bool isExistingWatchedEpisode = await IsWatchedEpisodeByUserAsync(episodeMediaId, userId);
 
         if (!isExistingWatchedEpisode)
-            await CreateWatchedEpisode(episodeMediaId, userId);
+            await CreateWatchedEpisode(episodeMediaId, userId, tvSeriesId, seasonNumber, episodeNumber);
 
         else
             await DeleteWatchedEpisode(episodeMediaId, userId);
