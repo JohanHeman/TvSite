@@ -13,6 +13,6 @@ namespace TvSite.Domain.Interfaces.Services
         public Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry);
         public Task UpdateMediaListEntryStateAsync(Guid userId, string mediaId, ListStateEnum.ListState listState);
         public Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState);
-        public Task DeleteMediaListEntryAsync(Guid userId, string mediaId);
+        public Task DeleteMediaListEntryAsync(Guid userId, string mediaId, ListStateEnum.ListState listState);
     }
 }
