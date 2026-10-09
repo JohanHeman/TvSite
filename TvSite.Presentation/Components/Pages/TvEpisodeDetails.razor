@@ -101,8 +101,11 @@
 
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
 
-        _rating = await RatingService.GetAverageRatingByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
-        _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+        if (!string.IsNullOrWhiteSpace(_tvEpisodeDetails.Id))
+        {
+            _rating = await RatingService.GetAverageRatingByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+            _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+        }
 
         var user = await GetUser();
         if (user != null)
