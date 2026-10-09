@@ -21,6 +21,11 @@ namespace TvSite.Application.Service
 
         public async Task CreateRatingAsync(int stars, string episodeMediaId, Guid userId)
         {
+            if (userId == Guid.Empty) return;
+            
+            if(string.IsNullOrWhiteSpace(episodeMediaId)) 
+                throw new ArgumentException("Episode media id cannot be null or empty");
+            
             Rating rating = new()
             {
                 Id = Guid.NewGuid(),
@@ -40,7 +45,6 @@ namespace TvSite.Application.Service
 
         public async Task UpdateRatingAsync(Rating rating)
         {
-
             await _repository.UpdateRatingAsync(rating);
         }
 

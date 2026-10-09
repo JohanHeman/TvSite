@@ -17,20 +17,18 @@ public class CommentService : ICommentService
 
     public async Task<IReadOnlyList<Comment>> GetCommentsByEpisodeMediaIdAsync(string episodeMediaId)
     {
-        if (!string.IsNullOrWhiteSpace(episodeMediaId))
-            return await _repository.GetCommentsByMediaIdAsync(episodeMediaId);
-
-        else
+        if (string.IsNullOrWhiteSpace(episodeMediaId))
             throw new ArgumentException("EpisodeMediaId cannot be null or whitespace");
+
+        return await _repository.GetCommentsByMediaIdAsync(episodeMediaId);
     }
 
     public async Task<Comment?> GetCommentByIdAsync(Guid commentId)
     {
-        if (commentId != Guid.Empty)
-            return await _repository.GetCommentByIdAsync(commentId);
-
-        else
+        if (commentId == Guid.Empty)
             throw new ArgumentException("CommentId cannot be empty");
+
+        return await _repository.GetCommentByIdAsync(commentId);
     }
 
     public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId)
