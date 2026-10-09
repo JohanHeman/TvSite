@@ -20,7 +20,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
             var actual = Assert.Throws<ArgumentException>(() => rating.Stars = stars);
 
             // Assert
-            Assert.Equal(actual.Message, expectedMessage);
+            Assert.Equal(expectedMessage, actual.Message);
         }
 
         [Theory]
@@ -35,7 +35,7 @@ namespace TvSite.Tests.UnitTests.DomainTests
             var actual = Assert.Throws<ArgumentException>(() => rating.Stars = stars);
 
             // Assert
-            Assert.Equal(actual.Message, expectedMessage);
+            Assert.Equal(expectedMessage, actual.Message);
         }
     }
 }

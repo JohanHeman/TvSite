@@ -11,17 +11,17 @@ namespace TvSite.Tests.UnitTests.DomainTests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void CommentText_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string? input)
+        public void CommentText_ThrowsArgumentException_WhenIsNullOrWhiteSpace(string? commentText)
         {
             // Arrange
             Comment comment = new Comment();
             var expectedMessage = $"Text cannot be null or whitespace";
 
             // Act
-            var actual = Assert.Throws<ArgumentException>(() => comment.Text = input);
+            var actual = Assert.Throws<ArgumentException>(() => comment.Text = commentText!);
 
             // Assert
-            Assert.Equal(actual.Message, expectedMessage);
+            Assert.Equal(expectedMessage, actual.Message);
         }
     }
 }
