@@ -90,9 +90,21 @@ public class WatchedEpisodeService : IWatchedEpisodeService
             await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 
-    //public async Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(string tvShowId, int seasonNumber, int episodeNumber, Guid userId)
-    //{
-    //}
+    public async Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(string tvShowId, int seasonNumber, int episodeNumber, Guid userId)
+    {
+        var tvSeriesEpisodes = new List<TvSeriesEpisode>();
+
+        var watchedEpisodes = await _repository.GetWatchedEpisodesByUserIdAsync(userId);
+
+        foreach (var episode in watchedEpisodes)
+        {
+            var tvSeriesEpisode = await _APIService.GetEpisodeDetails(tvShowId, seasonNumber, episodeNumber);
+            if(tvSeriesEpisode != null)
+                tvSeriesEpisodes.Add(tvSeriesEpisode);
+        }
+
+        return tvSeriesEpisodes;
+    }
    
     // PROBLEM: WatchedEpisode sparar ej SeriesId, SeasonNumber, EpisodeNumber
     // Finns ej som Query Parameterar på ProfilePage.Razor
