@@ -63,7 +63,7 @@
     <Authorized>   
         <div>
             <input @bind="_comment"/>
-            <button @onclick=" async () => await CreateCommentAsync(_comment)"
+            <button @onclick=" async () => await CreateCommentAsync()"
             >Add comment</button>
         </div>
     </Authorized>
@@ -108,17 +108,24 @@
         if (user != null)
             _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
     }
-    
+
     //comment
     private IReadOnlyList<Comment> _comments = new List<Comment>();
     private string _comment = "";
 
-    private async Task CreateCommentAsync(string commentText)
+    private async Task CreateCommentAsync()
     {
+        if (string.IsNullOrWhiteSpace(_comment)) return;
+
         var user = await GetUser();
         if (user == null || _tvEpisodeDetails == null) return;
 
-        await CommentService.CreateCommentAsync(commentText, _tvEpisodeDetails.Id, user.Id);
+        // Upload comment to db
+        await CommentService.CreateCommentAsync(_comment, _tvEpisodeDetails.Id, user.Id);
+
+        // Reset input and get updated comment list
+        _comment = "";
+        _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
     }
 
     private async Task<ApplicationUser?> GetUser()
