@@ -19,7 +19,7 @@ namespace TvSite.Presentation.Components.Pages
             var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = await UserManager.GetUserAsync(authenticationState.User);
 
-            if(user != null)
+            if (user != null)
             {
                 DisplayName = user.DisplayName;
 
