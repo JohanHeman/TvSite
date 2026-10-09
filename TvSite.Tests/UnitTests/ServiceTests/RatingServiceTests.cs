@@ -8,12 +8,12 @@ namespace TvSite.Tests.UnitTests;
 
 public class RatingServiceTests
 {
-    private readonly IRatingService _ratingService;
+    private readonly IRatingService _sut;
     private readonly Mock<IRatingRepository> _mockrepo;
     public RatingServiceTests()
     {
         _mockrepo = new Mock<IRatingRepository>();
-        _ratingService = new RatingService(_mockrepo.Object);
+        _sut = new RatingService(_mockrepo.Object);
     }
 
     [Theory]
@@ -27,8 +27,44 @@ public class RatingServiceTests
         var expected = ratings.Average(r => r.Stars);
         _mockrepo.Setup(r => r.GetAverageRating("56")).ReturnsAsync(ratings);
         // Arrange
-        var actual = await _ratingService.GetAverageRatingByEpisodeMediaIdAsync("56");
+        var actual = await _sut.GetAverageRatingByEpisodeMediaIdAsync("56");
         // Assert
         Assert.Equal(expected, actual);
     }
+
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    public async Task CreateRatingAsync_ShouldThrow_WhenEpisodeMediaIdIsNullOrWhiteSpace(string? episodeMediaId)
+    {
+        // Arrange
+        string expectedMessage = "Episode media id cannot be null or empty";
+
+        // Act
+        var actual = await Assert.ThrowsAsync<ArgumentException>(
+            () => _sut.CreateRatingAsync(3, episodeMediaId, Guid.NewGuid()));
+
+        // Assert 
+        Assert.Equal(expectedMessage, actual.Message);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    public async Task GetRatingByIdAsync_ShouldThrow_WhenEpisodeMediaIdIsNullOrWhiteSpace(string? episodeMediaId)
+    {
+        //Arrange
+        string expectedMessage = "Episode media id cannot be null or empty";
+
+        // Act
+        var actual = await Assert.ThrowsAsync<ArgumentException>(
+            () => _sut.GetRatingByIdAsync(episodeMediaId, Guid.NewGuid()));
+
+        // Assert 
+        Assert.Equal(expectedMessage, actual.Message);
+    }
+
 }
