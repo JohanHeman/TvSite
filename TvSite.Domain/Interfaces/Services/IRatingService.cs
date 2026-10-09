@@ -9,8 +9,7 @@ namespace TvSite.Domain.Interfaces.Services
     {
         public Task<Double> GetAverageRatingByEpisodeMediaIdAsync(string episodeMediaId);
         public Task CreateRatingAsync(int stars, string episodeMediaId, Guid userId);
-        public Task DeleteRatingAsync(Rating rating);
-        public Task UpdateRatingAsync(Rating rating);
+        public Task UpdateRatingAsync(Rating rating, int stars);
         public Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId);
     }
 }

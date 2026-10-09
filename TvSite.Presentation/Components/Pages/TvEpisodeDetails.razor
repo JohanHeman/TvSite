@@ -47,7 +47,7 @@
                     <label class="form-label">Rating amount:</label>
                     <InputNumber TValue="int" @bind-Value="_userStars" Placeholder="Enter amount" class="form-control"/>
                     
-                    <button @onclick="async () => await CreateUserRatingAsync(_userStars)">Rate</button>
+                    <button @onclick="async () => await CreateUserRatingAsync()">Rate</button>
                 </div>                
             }
         </div>
@@ -153,16 +153,14 @@
     // rating 
     private int _userStars;
 
-    private async Task CreateUserRatingAsync(int number)
+    private async Task CreateUserRatingAsync()
     {
         var user = await GetUser();
         if (user == null || _tvEpisodeDetails == null) return;
-        var existingRating = await RatingService.GetRatingByIdAsync(_tvEpisodeDetails.Id.ToString(), user.Id);
+        var existingRating = await RatingService.GetRatingByIdAsync(_tvEpisodeDetails.Id, user.Id);
         if (existingRating != null)
         {
-            if (existingRating.Stars == _userStars) return;
-            existingRating.Stars = _userStars;
-            await RatingService.UpdateRatingAsync(existingRating);
+            await RatingService.UpdateRatingAsync(existingRating, _userStars);
         }
         else
         {

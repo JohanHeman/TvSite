@@ -23,11 +23,6 @@ public class RatingRepository : IRatingRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteRatingAsync(Rating rating)
-    {
-        _set.Remove(rating);
-        await _dbContext.SaveChangesAsync();
-    }
 
     public async Task UpdateRatingAsync(Rating rating)
     {
@@ -38,6 +33,11 @@ public class RatingRepository : IRatingRepository
     public async Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId)
     {
         return await _set.FirstOrDefaultAsync(r => r.EpisodeMediaId == episodeMediaId && r.ApplicationUserId == userId);
+    }
+
+    public async Task<Rating?> GetRatingByRatingIdAsync(Guid ratingId)
+    {
+        return await _set.FirstOrDefaultAsync(r => r.Id == ratingId);
     }
 
     public async Task<List<Rating>> GetAverageRating(string episodeMediaId)
