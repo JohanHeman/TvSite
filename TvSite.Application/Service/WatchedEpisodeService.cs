@@ -6,6 +6,8 @@ using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
 using TvSite.Infrastructure.Data;
+using TvSite.Domain.Entities.Display;
+
 
 namespace TvSite.Application.Service;
 
@@ -90,9 +92,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
             await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 
-    public async Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId)
+    public async Task<List<DisplayWatchedEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId)
     {
-        var tvSeriesEpisodes = new List<TvSeriesEpisode>();
+        var tvSeriesEpisodes = new List<DisplayWatchedEpisode>();
 
         var watchedEpisodes = await _repository.GetWatchedEpisodesByUserIdAsync(userId);
         foreach (var episode in watchedEpisodes)
@@ -100,7 +102,22 @@ public class WatchedEpisodeService : IWatchedEpisodeService
             var tvSeriesEpisode = await _APIService.GetEpisodeDetails(episode.TvSeriesId, episode.SeasonNumber, episode.EpisodeNumber);
 
             if (tvSeriesEpisode != null)
-                tvSeriesEpisodes.Add(tvSeriesEpisode);
+            {
+                var displayEntity = new DisplayWatchedEpisode()
+                {
+                    TvSeriesId = episode.TvSeriesId,
+                    SeasonNumber = episode.SeasonNumber,
+                    EpisodeNumber = episode.EpisodeNumber,
+                    DateTimeWatched = episode.DateTime,
+
+                    Title = tvSeriesEpisode.Title,
+                    ImagePath = tvSeriesEpisode.ImagePath,
+
+                };
+
+                tvSeriesEpisodes.Add(displayEntity);
+            }
+                
         }
 
         return tvSeriesEpisodes;

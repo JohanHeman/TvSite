@@ -3,6 +3,7 @@ using TvSite.Application.ServiceAPI;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
+using TvSite.Domain.Entities.Display;
 
 namespace TvSite.Presentation.Components.Pages
 {
@@ -12,7 +13,7 @@ namespace TvSite.Presentation.Components.Pages
         private List<TvSeries> _followList = new();
         private List<TvSeries> _watchLaterList = new();
         private List<TvSeries> _stoppedWatchingList = new();
-        private List<TvSeriesEpisode> _watchedEpisodes = new();
+        private List<DisplayWatchedEpisode> _watchedEpisodes = new();
 
         protected override async Task OnInitializedAsync()
         {

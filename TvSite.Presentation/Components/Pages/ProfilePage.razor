@@ -27,13 +27,15 @@
 
         @foreach (var episode in _watchedEpisodes)
         {
-            @* <a href="/tvshow/season/episode?ShowId=@SHOWID d&SeasonNumber=@episode.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">Go TO</a> *@
-            <div class="d-flex flex-column border border-white rounded">
-                <h5 class="px-2 pt-2">@episode.Title</h5>
-                <div class="p-1">
-                    <img src="@episode.ImagePath" />
+            <a href="/tvshow/season/episode?ShowId=@episode.TvSeriesId&SeasonNumber=@episode.SeasonNumber&EpisodeNumber=@episode.EpisodeNumber">
+                <div class="d-flex flex-column border border-white rounded">
+                    <p>@episode.DateTimeWatched</p>
+                    <h5 class="px-2 pt-2">@episode.Title</h5>
+                    <div class="p-1">
+                        <img src="@episode.ImagePath" />
+                    </div>
                 </div>
-            </div>
+            </a>
         }
     </div>
 </div>
