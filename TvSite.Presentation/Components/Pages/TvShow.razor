@@ -119,7 +119,7 @@
         {
             if(listState == ListStateEnum.ListState.StoppedWatching)
             {
-                await MediaListEntryService.DeleteMediaListEntryAsync(user.Id, MediaId);
+                await MediaListEntryService.UpdateMediaListEntryStateAsync(user.Id, MediaId, listState);
                 _isFollowing = false;
             }
             else
