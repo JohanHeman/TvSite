@@ -117,7 +117,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
                 tvSeriesEpisodes.Add(displayEntity);
             }
-                
+
         }
 
         return tvSeriesEpisodes;
