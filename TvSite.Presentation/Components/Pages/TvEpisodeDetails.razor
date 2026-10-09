@@ -101,8 +101,11 @@
 
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
 
-        _rating = await RatingService.GetAverageRatingByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
-        _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+        if (!string.IsNullOrWhiteSpace(_tvEpisodeDetails.Id))
+        {
+            _rating = await RatingService.GetAverageRatingByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+            _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
+        }
 
         var user = await GetUser();
         if (user != null)
@@ -141,7 +144,7 @@
         if (user == null || _tvEpisodeDetails == null) return;
 
         // Creates or deletes the WatchedEpisode in the DB. Depending on if it exists
-        await WatchedEpisodeService.CreateOrDeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id);
+        await WatchedEpisodeService.CreateOrDeleteWatchedEpisode(_tvEpisodeDetails.Id, user.Id, ShowId, _tvEpisodeDetails.SeasonNumber, _tvEpisodeDetails.EpisodeNumber);
 
         // Refresh bool
         _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
