@@ -32,11 +32,15 @@ namespace TvSite.Application.Service
             await _repository.CreateMediaListEntryAsync(userMediaListEntry);
         }
 
-        public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
+        public async Task UpdateMediaListEntryStateAsync(Guid userId, string mediaId, ListStateEnum.ListState listState)
         {
-            var existingMediaListEntry = await _repository.GetMediaListEntryByIdAsync(userMediaListEntry.Id);
+            var followingList = await _repository.GetMediaListByUserIdAsync(userId, ListStateEnum.ListState.Following);
 
-            if (existingMediaListEntry == null) return;
+            var userMediaListEntry = followingList.FirstOrDefault(media => media.MediaId == mediaId);
+
+            if (userMediaListEntry == null) return;
+
+            userMediaListEntry.ListState = (int)listState;
 
             await _repository.UpdateMediaListEntryStateAsync(userMediaListEntry);
         }
@@ -54,6 +58,17 @@ namespace TvSite.Application.Service
             }
 
             return tvShows;
+        }
+
+        public async Task DeleteMediaListEntryAsync(Guid userId, string mediaId, ListStateEnum.ListState listState)
+        {
+            var mediaList = await _repository.GetMediaListByUserIdAsync(userId, listState);
+
+            var mediaListEntry = mediaList.FirstOrDefault(media => media.MediaId == mediaId);
+
+            if (mediaListEntry == null) return;
+
+            await _repository.DeleteMediaListEntryAsync(mediaListEntry);
         }
     }
 }

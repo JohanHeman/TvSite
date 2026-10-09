@@ -1,6 +1,7 @@
 ﻿@page "/profile"
 @using Microsoft.AspNetCore.Identity
 @using TvSite.Domain.Entities.Database
+@using TvSite.Domain.Enums
 @using TvSite.Domain.Interfaces.Services
 @using TvSite.Domain.InterfacesAPI.Services
 
@@ -15,9 +16,9 @@
 </div>
 
 <div>
-    <TvShowListComponent ListName="Following" TvShowList="@_followList"></TvShowListComponent>
-    <TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterList"></TvShowListComponent>
-    <TvShowListComponent ListName="Stopped Watching" TvShowList="@_stoppedWatchingList"></TvShowListComponent>
+    <TvShowListComponent ListName="Following" TvShowList="@_followList" ListState="ListStateEnum.ListState.Following"></TvShowListComponent>
+    <TvShowListComponent ListName="Watch Later" TvShowList="@_watchLaterList" ListState="ListStateEnum.ListState.ToBeWatched"></TvShowListComponent>
+    <TvShowListComponent ListName="Stopped Watching" TvShowList="@_stoppedWatchingList" ListState="ListStateEnum.ListState.StoppedWatching"></TvShowListComponent>
 </div>
 
 @* Display recently watched episodes *@
