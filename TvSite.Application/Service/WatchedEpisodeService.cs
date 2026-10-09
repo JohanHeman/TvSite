@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TvSite.Application.ServiceAPI;
+using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
+using TvSite.Domain.InterfacesAPI.Services;
 using TvSite.Infrastructure.Data;
 
 namespace TvSite.Application.Service;
@@ -9,10 +12,12 @@ namespace TvSite.Application.Service;
 public class WatchedEpisodeService : IWatchedEpisodeService
 {
     private readonly IWatchedEpisodeRepository _repository;
+    private readonly IAPIService _APIService;
 
-    public WatchedEpisodeService(IWatchedEpisodeRepository repository)
+    public WatchedEpisodeService(IWatchedEpisodeRepository repository, IAPIService apiService)
     {
         _repository = repository;
+        _APIService = apiService;
     }
 
     public async Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId)
@@ -81,4 +86,13 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         else
             await DeleteWatchedEpisode(episodeMediaId, userId);
     }
+
+    //public async Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(string tvShowId, int seasonNumber, int episodeNumber, Guid userId)
+    //{
+    //}
+   
+    // PROBLEM: WatchedEpisode sparar ej SeriesId, SeasonNumber, EpisodeNumber
+    // Finns ej som Query Parameterar på ProfilePage.Razor
+    // Alternativ: Lägg till som properties på WatchedEpisode / Skippa denna funktion
+
 }
