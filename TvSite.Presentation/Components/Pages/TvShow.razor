@@ -38,17 +38,17 @@
         <Authorized>
             @if (_isFollowing == true)
             {
-                <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.StoppedWatching)">
-                    Stop Watching
+                <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.StoppedWatching)">
+                    Unfollow
                 </button>
             }
             else
             {
-                <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
+                <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
                     Follow
                 </button>
             }
-            <button class="btn btn-outline-dark" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
+            <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
                 Watch Later
             </button>
         </Authorized>
