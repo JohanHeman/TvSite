@@ -31,8 +31,10 @@ namespace TvSite.Application.Service
             await _repository.CreateRatingAsync(rating);
         }
 
-        public async Task DeleteRatingAsync(Rating rating)
+        public async Task DeleteRatingAsync(Guid ratingId)
         {
+            var rating = await _repository.GetRatingByRatingIdAsync(ratingId);
+            if(rating == null) throw new KeyNotFoundException("Invalid rating id");
             await _repository.DeleteRatingAsync(rating);
         }
 

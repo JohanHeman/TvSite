@@ -40,6 +40,11 @@ public class RatingRepository : IRatingRepository
         return await _set.FirstOrDefaultAsync(r => r.EpisodeMediaId == episodeMediaId && r.ApplicationUserId == userId);
     }
 
+    public async Task<Rating?> GetRatingByRatingIdAsync(Guid ratingId)
+    {
+        return await _set.FirstOrDefaultAsync(r => r.Id == ratingId); 
+    }
+
     public async Task<List<Rating>> GetAverageRating(string episodeMediaId)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
