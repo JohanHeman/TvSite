@@ -36,15 +36,10 @@ namespace TvSite.Application.Service
             await _repository.CreateRatingAsync(rating);
         }
 
-        public async Task DeleteRatingAsync(Guid ratingId)
+        public async Task UpdateRatingAsync(Rating rating, int stars)
         {
-            var rating = await _repository.GetRatingByRatingIdAsync(ratingId);
-            if (rating == null) throw new KeyNotFoundException("Invalid rating id");
-            await _repository.DeleteRatingAsync(rating);
-        }
-
-        public async Task UpdateRatingAsync(Rating rating)
-        {
+            if (rating.Stars == stars) return;
+            rating.Stars = stars;
             await _repository.UpdateRatingAsync(rating);
         }
 
@@ -53,7 +48,6 @@ namespace TvSite.Application.Service
             if (string.IsNullOrWhiteSpace(episodeMediaId))
                 throw new ArgumentException("Episode media id cannot be null or empty");
             var rating = await _repository.GetRatingByIdAsync(episodeMediaId, userId);
-            if (rating == null) throw new KeyNotFoundException();
             return rating;
         }
 

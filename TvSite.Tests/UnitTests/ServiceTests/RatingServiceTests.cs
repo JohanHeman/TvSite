@@ -32,19 +32,6 @@ public class RatingServiceTests
         Assert.Equal(expected, actual);
     }
 
-    [Fact]
-    public async Task DeleteRatingByRatingIdAsync_ShouldThrow_WhenRatingIdIsInvalid()
-    {
-        // Arrange
-        string expectedMessage = "Invalid rating id";
-
-        // Act
-        var actual = await Assert.ThrowsAsync<KeyNotFoundException>(
-            () => _sut.DeleteRatingAsync(Guid.NewGuid()));
-
-        // Assert
-        Assert.Equal(expectedMessage, actual.Message);
-    }
 
     [Theory]
     [InlineData("")]
@@ -80,16 +67,4 @@ public class RatingServiceTests
         Assert.Equal(expectedMessage, actual.Message);
     }
 
-    [Fact]
-    public async Task GetRatingByIdAsync_ShouldThrow_WhenRatingIsNull()
-    {
-        // Arrange
-        Guid userId = Guid.NewGuid();
-
-        // Act
-
-        var actual = await Assert.ThrowsAsync<KeyNotFoundException>(() => _sut.GetRatingByIdAsync("3", userId));
-        // Assert 
-        _mockrepo.Verify(r => r.GetRatingByIdAsync("3", userId), Times.Once);
-    }
 }

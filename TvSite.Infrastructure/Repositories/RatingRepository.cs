@@ -23,11 +23,6 @@ public class RatingRepository : IRatingRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteRatingAsync(Rating rating)
-    {
-        _set.Remove(rating);
-        await _dbContext.SaveChangesAsync();
-    }
 
     public async Task UpdateRatingAsync(Rating rating)
     {
