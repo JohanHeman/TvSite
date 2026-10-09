@@ -42,7 +42,7 @@ public class RatingRepository : IRatingRepository
 
     public async Task<Rating?> GetRatingByRatingIdAsync(Guid ratingId)
     {
-        return await _set.FirstOrDefaultAsync(r => r.Id == ratingId); 
+        return await _set.FirstOrDefaultAsync(r => r.Id == ratingId);
     }
 
     public async Task<List<Rating>> GetAverageRating(string episodeMediaId)

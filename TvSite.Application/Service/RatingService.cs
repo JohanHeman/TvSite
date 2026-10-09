@@ -22,10 +22,10 @@ namespace TvSite.Application.Service
         public async Task CreateRatingAsync(int stars, string episodeMediaId, Guid userId)
         {
             if (userId == Guid.Empty) return;
-            
-            if(string.IsNullOrWhiteSpace(episodeMediaId)) 
+
+            if (string.IsNullOrWhiteSpace(episodeMediaId))
                 throw new ArgumentException("Episode media id cannot be null or empty");
-            
+
             Rating rating = new()
             {
                 Id = Guid.NewGuid(),
@@ -39,7 +39,7 @@ namespace TvSite.Application.Service
         public async Task DeleteRatingAsync(Guid ratingId)
         {
             var rating = await _repository.GetRatingByRatingIdAsync(ratingId);
-            if(rating == null) throw new KeyNotFoundException("Invalid rating id");
+            if (rating == null) throw new KeyNotFoundException("Invalid rating id");
             await _repository.DeleteRatingAsync(rating);
         }
 
@@ -50,7 +50,7 @@ namespace TvSite.Application.Service
 
         public async Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId)
         {
-            if(string.IsNullOrWhiteSpace(episodeMediaId)) 
+            if (string.IsNullOrWhiteSpace(episodeMediaId))
                 throw new ArgumentException("Episode media id cannot be null or empty");
             var rating = await _repository.GetRatingByIdAsync(episodeMediaId, userId);
             if (rating == null) throw new KeyNotFoundException();
