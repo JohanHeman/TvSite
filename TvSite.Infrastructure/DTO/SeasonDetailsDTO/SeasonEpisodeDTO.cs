@@ -19,9 +19,12 @@ namespace TvSite.Infrastructure.DTO.SeasonDetailsDTO
         [JsonPropertyName("air_date")]
         public DateOnly AirDate { get; set; }
 
+        [JsonPropertyName("season_number")]
+        public int SeasonNumber { get; set; }
+
         [JsonPropertyName("episode_number")]
         public int EpisodeNumber { get; set; }
-
+   
         [JsonPropertyName("still_path")]
         public string ImagePath { get; set; }
     }
