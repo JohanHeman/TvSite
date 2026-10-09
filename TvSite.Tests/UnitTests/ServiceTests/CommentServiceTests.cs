@@ -58,13 +58,10 @@ namespace TvSite.Tests.UnitTests.ServiceTests
         public async Task CreateCommentAsync_ThrowsArgumentExeption_WhenIdIsNullOrWhiteSpace(string? episodeMediaId)
         {
             // Arrange
-            var commentText = "Comment text";
-            var userId = Guid.NewGuid();
-
             var expectedMessage = $"EpisodeMediaId cannot be null or whitespace";
 
             // Act
-            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.CreateCommentAsync(commentText, episodeMediaId, userId));
+            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.CreateCommentAsync("Comment text", episodeMediaId!, Guid.NewGuid()));
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
