@@ -9,6 +9,5 @@ public interface IWatchedEpisodeService
     public Task DeleteWatchedEpisode(string episodeMediaId, Guid userId);
     public Task<bool> IsWatchedEpisodeByUserAsync(string episodeMediaId, Guid userId);
     public Task CreateOrDeleteWatchedEpisode(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber);
-    //public Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId);
-    public Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(string tvShowId, int seasonNumber, int episodeNumber, Guid userId);
+    public Task<List<TvSeriesEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId);
 }

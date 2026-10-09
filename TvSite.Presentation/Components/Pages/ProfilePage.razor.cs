@@ -12,6 +12,7 @@ namespace TvSite.Presentation.Components.Pages
         private List<TvSeries> _followList = new();
         private List<TvSeries> _watchLaterList = new();
         private List<TvSeries> _stoppedWatchingList = new();
+        private List<TvSeriesEpisode> _watchedEpisodes = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -25,7 +26,14 @@ namespace TvSite.Presentation.Components.Pages
                 _followList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.Following);
                 _watchLaterList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.ToBeWatched);
                 _stoppedWatchingList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.StoppedWatching);
+
+                _watchedEpisodes = await WatchedEpisodeService.GetWatchedEpisodesByUserIdAsync(user.Id);
             }
         }
+
+        
+
     }
+
+    
 }
