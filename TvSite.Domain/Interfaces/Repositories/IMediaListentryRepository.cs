@@ -9,4 +9,5 @@ public interface IMediaListentryRepository
     public Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry);
     public Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry);
     public Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid mediaListEntryId);
+    public Task DeleteMediaListEntryAsync(MediaListEntry userMediaListEntry);
 }

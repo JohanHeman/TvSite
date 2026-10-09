@@ -8,13 +8,13 @@ namespace TvSite.Infrastructure.Repositories;
 
 public class MediaListEntryRepository : IMediaListentryRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _dbContext;
     private readonly DbSet<MediaListEntry> _set;
 
-    public MediaListEntryRepository(ApplicationDbContext context)
+    public MediaListEntryRepository(ApplicationDbContext dbContext)
     {
-        _context = context;
-        _set = context.MediaListEntries;
+        _dbContext = dbContext;
+        _set = dbContext.MediaListEntries;
     }
 
     public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
@@ -28,17 +28,23 @@ public class MediaListEntryRepository : IMediaListentryRepository
     public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
     {
         await _set.AddAsync(userMediaListEntry);
-        await _context.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry)
     {
         _set.Update(userMediaListEntry);
-        await _context.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid mediaListEntryId)
     {
         return await _set.FirstOrDefaultAsync(mediaListEntry => mediaListEntry.Id == mediaListEntryId);
+    }
+
+    public async Task DeleteMediaListEntryAsync(MediaListEntry userMediaListEntry)
+    {
+        _dbContext.MediaListEntries.Remove(userMediaListEntry);
+        await _dbContext.SaveChangesAsync();
     }
 }

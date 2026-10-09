@@ -55,5 +55,16 @@ namespace TvSite.Application.Service
 
             return tvShows;
         }
+
+        public async Task DeleteMediaListEntryAsync(Guid userId, string mediaId)
+        {
+            var followingList = await _repository.GetMediaListByUserIdAsync(userId, ListStateEnum.ListState.Following);
+            
+            var mediaListEntry = followingList.FirstOrDefault(media => media.MediaId == mediaId);
+
+            if(mediaListEntry == null) return;
+
+            await _repository.DeleteMediaListEntryAsync(mediaListEntry);
+        }
     }
 }
