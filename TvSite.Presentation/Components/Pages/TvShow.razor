@@ -104,9 +104,10 @@
 
         if(user != null)
         {
-            var followList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.Following);
-
-            _isFollowing = followList.Any(mediaListEntry => mediaListEntry.MediaId == MediaId);
+            var followingList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.Following);
+            // Checking if the tvshow is in the FollowingList. 
+            // If the tvshow is in the followingList - button switches to "unfollow"
+            _isFollowing = followingList.Any(mediaListEntry => mediaListEntry.MediaId == MediaId);
         }
     }
 
@@ -115,29 +116,31 @@
         var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = await UserManager.GetUserAsync(authenticationState.User);
 
-        if(user != null && !string.IsNullOrWhiteSpace(MediaId))
-        {
-            if(listState == ListStateEnum.ListState.StoppedWatching)
-            {
-                await MediaListEntryService.UpdateMediaListEntryStateAsync(user.Id, MediaId, listState);
-                _isFollowing = false;
-            }
-            else
-            {
-                var mediaListEntry = new MediaListEntry
-                {
-                    MediaId = MediaId,
-                    ListState = (int)listState,
-                    ApplicationUserId = user.Id
-                };
-            
-                await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
+        if (user == null && string.IsNullOrWhiteSpace(MediaId)) return;
 
-                if(listState == ListStateEnum.ListState.Following)
-                {
-                    _isFollowing = true;
-                }
-            }
+        // If the user click on the unfollow button - tvshow is moved to StopWatching list
+        if (listState == ListStateEnum.ListState.StoppedWatching)
+        {
+            await MediaListEntryService.UpdateMediaListEntryStateAsync(user.Id, MediaId, listState);
+            _isFollowing = false;
+            return;
+        }
+
+        // If the tvshow is not in the list yet - add to the list
+        var mediaListEntry = new MediaListEntry
+        {
+            MediaId = MediaId,
+            ListState = (int)listState,
+            ApplicationUserId = user.Id
+        };
+        await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
+
+        // If user clicks on follow button _isFollowing becomes true and the button switches to unfollow button.
+        if (listState == ListStateEnum.ListState.Following)
+        {
+            _isFollowing = true;
         }
     }
+
+    
 }
