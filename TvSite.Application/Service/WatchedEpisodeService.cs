@@ -52,9 +52,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             await _repository.CreateWatchedEpisode(watchedEpisode);
         }
-        catch (Exception ex)
+        catch
         {
-            throw new DbUpdateException("Could not Save WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not create WatchedEpisode");
         }
     }
 
@@ -70,9 +70,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
             await _repository.DeleteWatchedEpisode(watchedEpisode);
         }
-        catch (Exception ex)
+        catch
         {
-            throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not delete WatchedEpisode");
         }
     }
 

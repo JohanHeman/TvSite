@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
@@ -40,7 +41,7 @@ public class WatchedEpisodeTests
     [MemberData(nameof(CreateWatchedEpisodeInvalidInputs))]
     public async Task CreateWatchedEpisode_DoesNotCallRepo_WhenIdsAreInvalid(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
-        // Act, Arange
+        // Act Arange
         // Expecting early exit
         await _sut.CreateWatchedEpisode(episodeMediaId, userId, tvSeriesId, seasonNumber, episodeNumber);
 
@@ -49,7 +50,19 @@ public class WatchedEpisodeTests
         _mockRepo.Verify(repo => repo.CreateWatchedEpisode(It.IsAny<WatchedEpisode>()), Times.Never);
     }
 
-    // Need memberdata due to Guids. Guids cant be used in Inlinedata due requireing runtime to compile the value.
+    [Theory]
+    [MemberData(nameof(CreateWatchedEpisodeValidInputs))]
+    public async Task CreateWatchedEpisode_CallsRepoOnce_WhenInputsAreValid(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
+    {
+        // Arrange Act
+        await _sut.CreateWatchedEpisode(episodeMediaId, userId, tvSeriesId, seasonNumber, episodeNumber);
+
+        // Assert
+        _mockRepo.Verify(repo => repo.CreateWatchedEpisode(It.IsAny<WatchedEpisode>()), Times.Once);
+    }
+
+    // Need memberdata due to Guids. 
+    // Cant use inline data for guid as it need complie time
     // Member data
     public static IEnumerable<Object[]> InvalidIds => 
     [
@@ -63,7 +76,6 @@ public class WatchedEpisodeTests
         ["Abc", Guid.NewGuid()]
     ];
 
-    // Cant use inline data for guid as it set / gets it on runtime.
     public static IEnumerable<Object[]> CreateWatchedEpisodeInvalidInputs =>
     [
         ["episodeMediaId", Guid.NewGuid(), "", 0, 0],
@@ -74,5 +86,14 @@ public class WatchedEpisodeTests
         [null!, Guid.NewGuid(), null!, 0, 0],
         ["", Guid.Empty, "", 0, 0],
     ];
+
+    public static IEnumerable<Object[]> CreateWatchedEpisodeValidInputs =>
+    [
+        ["episodeMediaId", Guid.NewGuid(), "valid", 1, 1],
+        ["episodeMediaId", Guid.NewGuid(), "t", 1, 2],
+        ["tisissparta", Guid.NewGuid(), "test", 2, 1],
+    ];
+
+
 }
 
