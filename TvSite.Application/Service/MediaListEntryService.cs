@@ -29,9 +29,9 @@ namespace TvSite.Application.Service
             // Get userList to see if the tvshow already is added
             var userMediaList = await _repository.
                 GetMediaListByUserIdAsync
-                (userMediaListEntry.ApplicationUserId, 
+                (userMediaListEntry.ApplicationUserId,
                 (ListStateEnum.ListState)userMediaListEntry.ListState);
-            
+
             var existingMediaListEntry = userMediaList.FirstOrDefault(entry => entry.MediaId == userMediaListEntry.MediaId);
 
             if (existingMediaListEntry != null) return;
@@ -83,7 +83,7 @@ namespace TvSite.Application.Service
                 await _repository.UpdateMediaListEntryStateAsync(followedMediaEntry);
             }
             // If TvShow exists in StopWatchingList - switch to FollowingList
-            else if(stoppedWatchingMediaEntry != null)
+            else if (stoppedWatchingMediaEntry != null)
             {
                 stoppedWatchingMediaEntry.ListState = (int)ListStateEnum.ListState.Following;
                 await _repository.UpdateMediaListEntryStateAsync(stoppedWatchingMediaEntry);
