@@ -27,7 +27,7 @@ namespace TvSite.Presentation.Components.Pages
                 _watchLaterList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.ToBeWatched);
                 _stoppedWatchingList = await MediaListEntryService.GetTvShowsFromUserListAsync(user.Id, ListStateEnum.ListState.StoppedWatching);
 
-                _watchedEpisodes = await WatchedEpisodeService.GetWatchedEpisodesByUserIdAsync(user.Id);
+                _watchedEpisodes = await WatchedEpisodeService.GetDisplayWatchedEpisodesByUserIdAsync(user.Id);
             }
         }
     }
