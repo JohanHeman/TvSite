@@ -10,4 +10,5 @@ public interface IMediaListentryRepository
     public Task UpdateMediaListEntryStateAsync(MediaListEntry userMediaListEntry);
     public Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid mediaListEntryId);
     public Task DeleteMediaListEntryAsync(MediaListEntry userMediaListEntry);
+    public Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid userId, string tvShowId, ListStateEnum.ListState listState);
 }
