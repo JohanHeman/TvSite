@@ -36,18 +36,10 @@
 
     <AuthorizeView>
         <Authorized>
-            @if (_isFollowing == true)
-            {
-                <button class="btn btn-light" @onclick="async () => await UpdateFollowingListAsync(ListStateEnum.ListState.StoppedWatching)">
-                    Unfollow
-                </button>
-            }
-            else
-            {
-                <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
-                    Follow
-                </button>
-            }
+            <button class="btn btn-light" @onclick="async () => await AddOrUpdateTvShowListAsync()">
+                @(!_isFollowing ? "Follow" : "Unfollow")
+            </button>
+               
             <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
                 Watch Later
             </button>
@@ -116,32 +108,25 @@
 
         if (user == null || string.IsNullOrWhiteSpace(MediaId)) return;
 
-        // Create new MediaListEntry
         var mediaListEntry = new MediaListEntry
         {
             MediaId = MediaId,
             ListState = (int)listState,
-            ApplicationUserId = user.Id
+            ApplicationUserId = user.Id,
         };
         await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
-
-        // If user clicks on follow button _isFollowing becomes true and the button switches to unfollow button.
-        if (listState == ListStateEnum.ListState.Following)
-        {
-            _isFollowing = true;
-        }
     }
 
-    private async Task UpdateFollowingListAsync(ListStateEnum.ListState listState)
+    // Switches between FollowingList and StoppedWatchingList
+    private async Task AddOrUpdateTvShowListAsync()
     {
         var user = await GetUser();
 
         if (user == null || string.IsNullOrWhiteSpace(MediaId)) return;
 
-        // Update liststate from following or stop watching
-        await MediaListEntryService.UpdateMediaListEntryStateAsync(user.Id, MediaId, listState);
-        
-        _isFollowing = false;
+        await MediaListEntryService.AddOrUpdateMediaEntryList(user.Id, MediaId);
+
+        _isFollowing = !_isFollowing;
     }
 
     private async Task<ApplicationUser?> GetUser()

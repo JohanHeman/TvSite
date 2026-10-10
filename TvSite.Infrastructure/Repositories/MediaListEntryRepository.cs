@@ -47,4 +47,13 @@ public class MediaListEntryRepository : IMediaListentryRepository
         _dbContext.MediaListEntries.Remove(userMediaListEntry);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<MediaListEntry?> GetMediaListEntryByIdAsync(Guid userId, string tvShowId, ListStateEnum.ListState listState)
+    {
+        return await _set
+            .Where(entry => entry.ApplicationUserId == userId)
+            .Where(entry => entry.MediaId == tvShowId)
+            .Where(entry => entry.ListState == ((int)listState))
+            .SingleOrDefaultAsync();
+    }
 }
