@@ -90,7 +90,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
             await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 
-    public async Task<List<DisplayWatchedEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId)
+    public async Task<List<DisplayWatchedEpisode>> GetDisplayWatchedEpisodesByUserIdAsync(Guid userId)
     {
         var tvSeriesEpisodes = new List<DisplayWatchedEpisode>();
 

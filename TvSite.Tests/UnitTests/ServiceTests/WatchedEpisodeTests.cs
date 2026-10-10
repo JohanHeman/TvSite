@@ -3,6 +3,7 @@ using Moq;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
+using TvSite.Domain.Entities.Display;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
@@ -15,13 +16,13 @@ public class WatchedEpisodeTests
 
     // Mock dependencies to setup the _sut
     private readonly Mock<IWatchedEpisodeRepository> _mockRepo;
-    private readonly Mock<IAPIService> _apiService;
+    private readonly Mock<IAPIService> _mockApiService;
     public WatchedEpisodeTests()
     {
         _mockRepo = new Mock<IWatchedEpisodeRepository>();
-        _apiService = new Mock<IAPIService>();
+        _mockApiService = new Mock<IAPIService>();
 
-        _sut = new WatchedEpisodeService(_mockRepo.Object, _apiService.Object);
+        _sut = new WatchedEpisodeService(_mockRepo.Object, _mockApiService.Object);
     }
 
     [Theory]
@@ -96,11 +97,76 @@ public class WatchedEpisodeTests
         // Assert
         _mockRepo.Verify(repo => repo.DeleteWatchedEpisode(watchedEpisode), Times.Once);
     }
+    [Fact]
+    public async Task GetDisplayWatchedEpisodesByUserIdAsync_CallsRepoOnce_WhenValidInput()
+    {
+        var userId = Guid.NewGuid();
+        // Arrange
+        List<WatchedEpisode> watchedEpisodes = new()
+        {
+            new()
+            {
+                TvSeriesId = "series",
+                SeasonNumber = 1,
+                EpisodeNumber = 1,
+            },
+            new()
+            {
+                TvSeriesId = "series",
+                SeasonNumber = 1,
+                EpisodeNumber = 2,
+            },
+            new()
+            {
+                TvSeriesId = "series",
+                SeasonNumber = 1,
+                EpisodeNumber = 3,
+            }
+        };
+
+        // Setup mock repo
+        _mockRepo.Setup(repo => repo.GetWatchedEpisodesByUserIdAsync(userId)).ReturnsAsync(watchedEpisodes);
+
+        // Setup mock api service
+        _mockApiService.Setup(service => service.GetEpisodeDetails("series", 1, 1)).ReturnsAsync(new TvSeriesEpisode
+        {
+            Title = "series11",
+        });
+        _mockApiService.Setup(service => service.GetEpisodeDetails("series", 1, 2)).ReturnsAsync(new TvSeriesEpisode
+        {
+            Title = "series12",
+        });
+        _mockApiService.Setup(service => service.GetEpisodeDetails("series", 1, 3)).ReturnsAsync(new TvSeriesEpisode
+        {
+            Title = "series13",
+        });
+
+        // Act
+        var act = await _sut.GetDisplayWatchedEpisodesByUserIdAsync(userId);
+
+        // Assert
+        // Verify the list returned the 3x items from setup
+        Assert.Equal(3, act.Count);
+        // Verify the repo was only called once
+        _mockRepo.Verify(repo => repo.GetWatchedEpisodesByUserIdAsync(userId), Times.Once);
+
+        // Verify Title is returned corretly
+        Assert.Equal("series11", act[0].Title);
+        Assert.Equal("series12", act[1].Title);
+        Assert.Equal("series13", act[2].Title);
+
+        // Verify Api method was called 3 times as its called once per item in the repo list.
+        _mockApiService.Verify(service => service.GetEpisodeDetails(
+            It.IsAny<string>(),
+            It.IsAny<int>(),
+            It.IsAny<int>()),
+        Times.Exactly(3));
+    }
 
     // Need memberdata due to Guids. 
     // Cant use inline data for guid as it need complie time
     // Member data
-    public static IEnumerable<Object[]> IsWatchedEpisodeByUserData => 
+    public static IEnumerable<Object[]> IsWatchedEpisodeByUserData =>
     [
         ["", Guid.Empty],
         ["   ", Guid.Empty],
