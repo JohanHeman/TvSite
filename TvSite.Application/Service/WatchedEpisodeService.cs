@@ -62,10 +62,11 @@ public class WatchedEpisodeService : IWatchedEpisodeService
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
-        WatchedEpisode? watchedEpisode;
         try
         {
+            WatchedEpisode? watchedEpisode;
             watchedEpisode = await _repository.GetWatchedEpisodeByUserAsync(episodeMediaId, userId);
+
             if (watchedEpisode == null) return;
 
             await _repository.DeleteWatchedEpisode(watchedEpisode);

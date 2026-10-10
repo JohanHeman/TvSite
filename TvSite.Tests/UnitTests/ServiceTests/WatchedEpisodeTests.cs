@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using TvSite.Application.Service;
+using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
@@ -24,7 +25,7 @@ public class WatchedEpisodeTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidIds))]
+    [MemberData(nameof(IsWatchedEpisodeByUserData))]
     public async Task IsWatchedEpisodeByUserAsync_ReturnsFalse_WhenIdsAreInvalid(string? episodeMediaId, Guid userId)
     {
         // Arrange
@@ -38,7 +39,7 @@ public class WatchedEpisodeTests
     }
 
     [Theory]
-    [MemberData(nameof(CreateWatchedEpisodeInvalidInputs))]
+    [MemberData(nameof(CreateWatchedEpisodeInvalidInputsData))]
     public async Task CreateWatchedEpisode_DoesNotCallRepo_WhenIdsAreInvalid(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
         // Act Arange
@@ -51,7 +52,7 @@ public class WatchedEpisodeTests
     }
 
     [Theory]
-    [MemberData(nameof(CreateWatchedEpisodeValidInputs))]
+    [MemberData(nameof(CreateWatchedEpisodeValidInputsData))]
     public async Task CreateWatchedEpisode_CallsRepoOnce_WhenInputsAreValid(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
         // Arrange Act
@@ -61,10 +62,45 @@ public class WatchedEpisodeTests
         _mockRepo.Verify(repo => repo.CreateWatchedEpisode(It.IsAny<WatchedEpisode>()), Times.Once);
     }
 
+    [Theory]
+    [MemberData(nameof(DeleteWatchedEpisodeInvalidData))]
+    public async Task DeleteWatchedEpisode_NeverCallsRepo_WhenInvalidIds(string episodeMediaId, Guid userId)
+    {
+        // Act Arange
+        // Expecting early exit
+        await _sut.DeleteWatchedEpisode(episodeMediaId, userId);
+
+        // Assert
+        // Ensure repo was never called
+        _mockRepo.Verify(repo => repo.DeleteWatchedEpisode(It.IsAny<WatchedEpisode>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task DeleteWatchedEpisode_CallsRepoOnce_WhenValidInput()
+    {
+        // Arrange
+        string episodeMediaId = "validId";
+        var userId = Guid.NewGuid();
+        var watchedEpisode = new WatchedEpisode()
+        {
+            EpisodeMediaId = episodeMediaId,
+            UserId = userId,
+        };
+
+        // Setup repo methods called in _sut method
+        _mockRepo.Setup(repo => repo.GetWatchedEpisodeByUserAsync(episodeMediaId, userId)).ReturnsAsync(watchedEpisode);
+
+        // Act
+        await _sut.DeleteWatchedEpisode(episodeMediaId, userId);
+
+        // Assert
+        _mockRepo.Verify(repo => repo.DeleteWatchedEpisode(watchedEpisode), Times.Once);
+    }
+
     // Need memberdata due to Guids. 
     // Cant use inline data for guid as it need complie time
     // Member data
-    public static IEnumerable<Object[]> InvalidIds => 
+    public static IEnumerable<Object[]> IsWatchedEpisodeByUserData => 
     [
         ["", Guid.Empty],
         ["   ", Guid.Empty],
@@ -76,7 +112,7 @@ public class WatchedEpisodeTests
         ["Abc", Guid.NewGuid()]
     ];
 
-    public static IEnumerable<Object[]> CreateWatchedEpisodeInvalidInputs =>
+    public static IEnumerable<Object[]> CreateWatchedEpisodeInvalidInputsData =>
     [
         ["episodeMediaId", Guid.NewGuid(), "", 0, 0],
         ["episodeMediaId", Guid.NewGuid(), "  ", 0, 0],
@@ -87,13 +123,23 @@ public class WatchedEpisodeTests
         ["", Guid.Empty, "", 0, 0],
     ];
 
-    public static IEnumerable<Object[]> CreateWatchedEpisodeValidInputs =>
+    public static IEnumerable<Object[]> CreateWatchedEpisodeValidInputsData =>
     [
         ["episodeMediaId", Guid.NewGuid(), "valid", 1, 1],
         ["episodeMediaId", Guid.NewGuid(), "t", 1, 2],
         ["tisissparta", Guid.NewGuid(), "test", 2, 1],
     ];
 
-
+    public static IEnumerable<Object[]> DeleteWatchedEpisodeInvalidData =>
+    [
+        [null!, Guid.Empty],
+        ["", Guid.Empty],
+        ["  ", Guid.Empty],
+        ["id", Guid.Empty],
+        [null!, Guid.Empty],
+        ["  ", Guid.NewGuid()],
+        ["", Guid.NewGuid()],
+        [null!, Guid.NewGuid()],
+    ];
 }
 
