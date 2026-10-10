@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TvSite.Application.ServiceAPI;
-using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
+using TvSite.Domain.Entities.Display;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
-using TvSite.Infrastructure.Data;
-using TvSite.Domain.Entities.Display;
 
 
 namespace TvSite.Application.Service;
@@ -38,7 +35,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
     public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
-        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId) || string.IsNullOrWhiteSpace(tvSeriesId)) return;
 
         var watchedEpisode = new WatchedEpisode()
         {
