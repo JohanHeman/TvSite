@@ -29,7 +29,7 @@ namespace TvSite.Application.Service
             Rating rating = new()
             {
                 Id = Guid.NewGuid(),
-                Stars = Math.Clamp(stars,1,10),
+                Stars = Math.Clamp(stars, 1, 10),
                 ApplicationUserId = userId,
                 EpisodeMediaId = episodeMediaId
             };
@@ -55,7 +55,7 @@ namespace TvSite.Application.Service
         {
             var ratings = await _repository.GetAverageRating(mediaId);
             if (ratings.Count == 0) return 0;
-            return Math.Round(ratings.Average(r => r.Stars),1);
+            return Math.Round(ratings.Average(r => r.Stars), 1);
         }
     }
 }
