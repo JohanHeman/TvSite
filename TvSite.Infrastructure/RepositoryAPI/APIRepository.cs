@@ -121,7 +121,10 @@ public class APIRepository : IAPIRepository
                 }
             }
         }
-        catch { throw new Exception("Api could not get TvShowDetails"); }
+        catch
+        {
+            //throw new Exception("Api could not get TvShowDetails");
+        }
 
         return media;
     }
@@ -164,7 +167,10 @@ public class APIRepository : IAPIRepository
                 }
             }
         }
-        catch { throw new Exception("Api could not get TvSeasonDetails"); }
+        catch
+        {
+            //throw new Exception("Api could not get TvSeasonDetails");
+        }
 
         return tvSeriesSeason;
     }
@@ -198,7 +204,7 @@ public class APIRepository : IAPIRepository
         }
         catch
         {
-            throw new Exception("Api could not get TvEpisodeDetails");
+            //throw new Exception("Api could not get TvEpisodeDetails");
         }
         return tvSeriesEpisode;
     }
