@@ -11,7 +11,7 @@ public class CommentRepository : ICommentRepository
     private readonly ApplicationDbContext _dbContext;
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
     private readonly DbSet<Comment> _set;
-    public CommentRepository(ApplicationDbContext dbContext, IDbContextFactory<ApplicationDbContext> dbContextFactory)
+    public CommentRepository(ApplicationDbContext dbContext,IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContext = dbContext;
         _set = dbContext.Comments;

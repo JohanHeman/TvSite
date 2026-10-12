@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using TvSite.Application.Service;
@@ -36,6 +37,57 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
 
     }
 
+    [Fact]
+    public async Task GetCommentsByEpisodeMediaIdAsync_ShouldReturnComments_WhenCommentsExist()
+    {
+        // Arrange
+        var comments = new List<Comment>()
+        {
+            new Comment
+            {
+                Id = Guid.NewGuid(),
+                Text = "Great episode!",
+                DateTime = DateTime.Now.AddMinutes(-20),
+                ApplicationUserId = Guid.NewGuid(),
+                EpisodeMediaId = "3"
+            },
+            new Comment
+            {
+                Id = Guid.NewGuid(),
+                Text = "The ending was amazing.",
+                DateTime = DateTime.Now.AddMinutes(-15),
+                ApplicationUserId = Guid.NewGuid(),
+                EpisodeMediaId = "3"
+            },
+            new Comment
+            {
+                Id = Guid.NewGuid(),
+                Text = "I cannot wait for the next episode.",
+                DateTime = DateTime.Now.AddMinutes(-10),
+                ApplicationUserId = Guid.NewGuid(),
+                EpisodeMediaId = "3"
+            },
+            new Comment
+            {
+                Id = Guid.NewGuid(),
+                Text = "The actors did a great job.",
+                DateTime = DateTime.Now.AddMinutes(-5),
+                ApplicationUserId = Guid.NewGuid(),
+                EpisodeMediaId = "3"
+            }
+        };
+
+        foreach (var comment in comments)
+        {
+            await applicationDbContext.Comments.AddAsync(comment);
+            await applicationDbContext.SaveChangesAsync();
+        }
+        // Act
+        var actual =  await _sut.GetCommentsByEpisodeMediaIdAsync("3");
+
+        // Assert 
+        Assert.Equal(comments.Count, actual.Count);
+    }
 
 
 }
