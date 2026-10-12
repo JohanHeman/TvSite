@@ -17,6 +17,7 @@ else
     <a href="/">Home</a>
 }
 
+@* Display Season details *@
 <h3>Season</h3>
 @if(_season != null)
 {
@@ -27,7 +28,7 @@ else
         <p>@_season.Description</p>
     </div>
 
-
+    @* Display season episodes *@
     <h1>Episodes</h1>
     <div class="d-flex flex-column gap-3">
         @foreach (var episode in _season.Episodes)
@@ -44,7 +45,8 @@ else
                         <p>@episode.Description</p>
                     </div>
                 </div>
-            </a>        }
+            </a>        
+        }
     </div>
 }
 
