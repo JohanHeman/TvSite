@@ -10,6 +10,8 @@ namespace TvSite.Tests.UnitTests.DomainTests
     {
         [Theory]
         [InlineData(-1)]
+        [InlineData(-6)]
+        [InlineData(-4)]
         public void Stars_ThrowsArgumentException_WhenBelowMinValue(int stars)
         {
             // Arrange
@@ -25,6 +27,8 @@ namespace TvSite.Tests.UnitTests.DomainTests
 
         [Theory]
         [InlineData(11)]
+        [InlineData(15)]
+        [InlineData(4556)]
         public void Stars_ThrowsArgumentException_WhenAboveMinValue(int stars)
         {
             // Arrange

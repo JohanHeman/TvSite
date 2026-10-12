@@ -61,7 +61,7 @@ namespace TvSite.Tests.UnitTests.ServiceTests
             var expectedMessage = $"EpisodeMediaId cannot be null or whitespace";
 
             // Act
-            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.CreateCommentAsync("Comment text", episodeMediaId!, Guid.NewGuid()));
+            var actual = await Assert.ThrowsAsync<ArgumentException>(() => _commentService.CreateCommentAsync("Comment text", episodeMediaId!, Guid.NewGuid(), DateTime.Now));
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);

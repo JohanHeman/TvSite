@@ -256,6 +256,9 @@ namespace TvSite.Infrastructure.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("EpisodeMediaId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
