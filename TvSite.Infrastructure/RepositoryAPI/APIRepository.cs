@@ -167,8 +167,8 @@ public class APIRepository : IAPIRepository
                 }
             }
         }
-        catch 
-        { 
+        catch
+        {
             //throw new Exception("Api could not get TvSeasonDetails");
         }
 
