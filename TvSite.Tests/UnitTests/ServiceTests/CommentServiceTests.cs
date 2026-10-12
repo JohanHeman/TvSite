@@ -120,13 +120,13 @@ namespace TvSite.Tests.UnitTests.ServiceTests
             };
 
             _mockRepo.Setup(repo => repo.GetCommentsByMediaIdAsync(episodeMediaId)).ReturnsAsync(comments);
-            
+
             // Act
             var actual = await _commentService.GetCommentsByEpisodeMediaIdAsync(episodeMediaId);
 
             // Assert
             _mockRepo.Verify(repo => repo.GetCommentsByMediaIdAsync(episodeMediaId), Times.Once());
-            
+
             // Checking that the list returns correct amount
             Assert.Equal(3, actual.Count);
 
@@ -218,7 +218,7 @@ namespace TvSite.Tests.UnitTests.ServiceTests
             };
 
             _mockRepo.Setup(repo => repo.GetCommentByIdAsync(comment.Id)).ReturnsAsync(comment);
-            
+
             // Act
             await _commentService.DeleteCommentAsync(comment.Id);
 
