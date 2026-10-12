@@ -13,10 +13,9 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<h3>Details</h3>
-
-@if(_tvSeries != null)
+@if(_tvSeries != null && _tvSeries.Name != null)
 {
+    <h3>Details</h3>
     <div>
         <h1>@_tvSeries.Name</h1>
         <p>@_tvSeries.Description</p>
@@ -26,10 +25,13 @@
     <div>
         <h4>Directors</h4>
         <p>
-            @foreach (var director in _tvSeries.Directors)
+            @if (_tvSeries.Directors != null)
             {
-                @director
-                <br />
+                @foreach (var director in _tvSeries.Directors)
+                {
+                    @director
+                    <br />
+                }
             }
         </p>
     </div>
@@ -57,26 +59,34 @@
     <div>
         <h2>Seasons</h2>
         <div class="d-flex flex-column gap-2">
-            @foreach (var season in _tvSeries.Seasons)
+            @if (_tvSeries.Seasons != null)
             {
-                <a href="/tvshow/season?ShowId=@_tvSeries.Id&SeasonNumber=@season.SeasonNumber">
-                <div class="border border-1 p-2">
-                    <div class="d-flex gap-2">
-                        <p>@season.SeasonName</p>
-                        <p>@season.AirDate</p>
-                        <p>Episodes: @season.EpisodeCount</p>
-                    </div>
+                @foreach (var season in _tvSeries.Seasons)
+                {
+                    <a href="/tvshow/season?ShowId=@_tvSeries.Id&SeasonNumber=@season.SeasonNumber">
+                        <div class="border border-1 p-2">
+                            <div class="d-flex gap-2">
+                                <p>@season.SeasonName</p>
+                                <p>@season.AirDate</p>
+                                <p>Episodes: @season.EpisodeCount</p>
+                            </div>
 
-                    <div class="mb-1 d-flex gap-2">
-                        <img src="@season.ImagePath"/>
-                        <p>@season.Description</p>
-                    </div>
-                </div>
-                </a>
+                            <div class="mb-1 d-flex gap-2">
+                                <img src="@season.ImagePath" />
+                                <p>@season.Description</p>
+                            </div>
+                        </div>
+                    </a>
+                }
             }
         </div>
     </div>
 
+}
+else
+{
+    <h3>Seris could not load... :(</h3>
+    <a href="/">Home</a>
 }
 
 @code {
