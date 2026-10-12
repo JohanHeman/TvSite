@@ -29,7 +29,7 @@ namespace TvSite.Application.Service
             Rating rating = new()
             {
                 Id = Guid.NewGuid(),
-                Stars = stars,
+                Stars = Math.Clamp(stars, 1, 10),
                 ApplicationUserId = userId,
                 EpisodeMediaId = episodeMediaId
             };
@@ -39,7 +39,7 @@ namespace TvSite.Application.Service
         public async Task UpdateRatingAsync(Rating rating, int stars)
         {
             if (rating.Stars == stars) return;
-            rating.Stars = stars;
+            rating.Stars = Math.Clamp(stars, 1, 10);
             await _repository.UpdateRatingAsync(rating);
         }
 
@@ -55,7 +55,7 @@ namespace TvSite.Application.Service
         {
             var ratings = await _repository.GetAverageRating(mediaId);
             if (ratings.Count == 0) return 0;
-            return ratings.Average(r => r.Stars);
+            return Math.Round(ratings.Average(r => r.Stars), 1);
         }
     }
 }
