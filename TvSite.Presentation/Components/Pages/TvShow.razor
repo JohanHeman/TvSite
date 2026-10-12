@@ -13,6 +13,10 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+@* Navigation link *@
+<a href="/">Home</a>
+
+@* Display TvShow Details *@
 @if(_tvSeries != null && _tvSeries.Name != null)
 {
     <h3>Details</h3>
@@ -36,6 +40,7 @@
         </p>
     </div>
 
+    @* Add to list buttons *@
     <AuthorizeView>
         <Authorized>
             <button class="btn btn-light" @onclick="async () => await AddOrUpdateTvShowListAsync()">
@@ -56,6 +61,7 @@
         </NotAuthorized>
     </AuthorizeView>
 
+    @* Display seasons *@
     <div>
         <h2>Seasons</h2>
         <div class="d-flex flex-column gap-2">
@@ -81,12 +87,10 @@
             }
         </div>
     </div>
-
 }
 else
 {
     <h3>Seris could not load... :(</h3>
-    <a href="/">Home</a>
 }
 
 @code {
