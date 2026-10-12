@@ -102,15 +102,16 @@
 
         _tvEpisodeDetails = await ApiService.GetEpisodeDetails(_loadedShowId, SeasonNumber, EpisodeNumber);
 
-        if (!string.IsNullOrWhiteSpace(_tvEpisodeDetails.Id))
+        if (_tvEpisodeDetails != null && !string.IsNullOrWhiteSpace(_tvEpisodeDetails.Id))
         {
             _rating = await RatingService.GetAverageRatingByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
             _comments = await CommentService.GetCommentsByEpisodeMediaIdAsync(_tvEpisodeDetails.Id);
-        }
+        
 
-        var user = await GetUser();
-        if (user != null)
-            _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+            var user = await GetUser();
+            if (user != null)
+                _isWatchedEpisode = await WatchedEpisodeService.IsWatchedEpisodeByUserAsync(_tvEpisodeDetails.Id, user.Id);
+        }
     }
 
     //comment
