@@ -12,6 +12,19 @@
 @inject UserManager<ApplicationUser> UserManager
 @rendermode InteractiveServer
 
+@* Navigation links *@
+@if (_tvEpisodeDetails != null)
+{
+    <a href="/">Home</a>
+    <a>/</a>
+    <a href="/tvShow?MediaId=@ShowId">TvShow</a>
+    <a>/</a>
+    <a href="/tvshow/season?ShowId=@ShowId&SeasonNumber=@_tvEpisodeDetails.SeasonNumber">Season</a>
+}
+else
+{
+    <a href="/">Home</a>
+}
 
 <h3>TvEpisodeDetails</h3>
 @if (_tvEpisodeDetails != null)
@@ -38,7 +51,7 @@
         </AuthorizeView>
 
         <div>
-            <p>@_tvEpisodeDetails.EpisodeNumber</p>
+            <p>Ep: @_tvEpisodeDetails.EpisodeNumber</p>
             <p>Airdate: @_tvEpisodeDetails.AirDate</p>
             @if (_rating != null)
             {

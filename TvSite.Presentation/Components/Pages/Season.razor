@@ -5,6 +5,18 @@
 
 @inject IAPIService ApiService
 
+@* Navigation links *@
+@if (_season != null)
+{
+    <a href="/">Home</a>
+    <a>/</a>
+    <a href="/tvShow?MediaId=@ShowId">Season</a>
+}
+else
+{
+    <a href="/">Home</a>
+}
+
 <h3>Season</h3>
 @if(_season != null)
 {
