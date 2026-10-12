@@ -36,18 +36,10 @@
 
     <AuthorizeView>
         <Authorized>
-            @if (_isFollowing == true)
-            {
-                <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.StoppedWatching)">
-                    Unfollow
-                </button>
-            }
-            else
-            {
-                <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.Following)">
-                    Follow
-                </button>
-            }
+            <button class="btn btn-light" @onclick="async () => await AddOrUpdateTvShowListAsync()">
+                @(!_isFollowing ? "Follow" : "Unfollow")
+            </button>
+               
             <button class="btn btn-light" @onclick="async () => await AddToListAsync(ListStateEnum.ListState.ToBeWatched)">
                 Watch Later
             </button>
@@ -99,45 +91,47 @@
     {
         _tvSeries = await ApiService.GetTvShowDetailsById(MediaId);
 
-        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = await UserManager.GetUserAsync(authenticationState.User);
+        var user = await GetUser();
 
         if(user != null)
         {
-            var followList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.Following);
-
-            _isFollowing = followList.Any(mediaListEntry => mediaListEntry.MediaId == MediaId);
+            var followingList = await MediaListEntryService.GetMediaListByUserIdAsync(user.Id, ListStateEnum.ListState.Following);
+            // Checking if the tvshow is in the FollowingList. 
+            // If the tvshow is in the followingList - button switches to "unfollow"
+            _isFollowing = followingList.Any(mediaListEntry => mediaListEntry.MediaId == MediaId);
         }
     }
 
     private async Task AddToListAsync(ListStateEnum.ListState listState)
     {
-        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = await UserManager.GetUserAsync(authenticationState.User);
+        var user = await GetUser();
 
-        if(user != null && !string.IsNullOrWhiteSpace(MediaId))
+        if (user == null || string.IsNullOrWhiteSpace(MediaId)) return;
+
+        var mediaListEntry = new MediaListEntry
         {
-            if(listState == ListStateEnum.ListState.StoppedWatching)
-            {
-                await MediaListEntryService.UpdateMediaListEntryStateAsync(user.Id, MediaId, listState);
-                _isFollowing = false;
-            }
-            else
-            {
-                var mediaListEntry = new MediaListEntry
-                {
-                    MediaId = MediaId,
-                    ListState = (int)listState,
-                    ApplicationUserId = user.Id
-                };
-            
-                await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
+            MediaId = MediaId,
+            ListState = (int)listState,
+            ApplicationUserId = user.Id,
+        };
+        await MediaListEntryService.CreateMediaListEntryAsync(mediaListEntry);
+    }
 
-                if(listState == ListStateEnum.ListState.Following)
-                {
-                    _isFollowing = true;
-                }
-            }
-        }
+    // Switches between FollowingList and StoppedWatchingList
+    private async Task AddOrUpdateTvShowListAsync()
+    {
+        var user = await GetUser();
+
+        if (user == null || string.IsNullOrWhiteSpace(MediaId)) return;
+
+        await MediaListEntryService.AddOrUpdateMediaEntryList(user.Id, MediaId);
+
+        _isFollowing = !_isFollowing;
+    }
+
+    private async Task<ApplicationUser?> GetUser()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        return await UserManager.GetUserAsync(authenticationState.User);
     }
 }
