@@ -18,7 +18,7 @@ public class ApiTests
     }
 
     [Fact]
-    public async Task GetTvShowsSearchResult_ShouldReturn_ListOfTvShows_WhenValidSearch()
+    public async Task GetTvShowsSearchResultByTitle_ShouldReturn_ListOfTvShows_WhenValidSearch()
     {
         // Arrange
         var input = "breaking";
@@ -34,7 +34,7 @@ public class ApiTests
             });
 
         // Act
-        var actual = await _sut.GetMediasByTitle(input);
+        var actual = await _sut.GetTvShowsSearchResultByTitle(input);
 
         // Assert
         Assert.Equal(expected, actual[0].Title);
@@ -43,24 +43,23 @@ public class ApiTests
     [Fact]
     public async Task GetTvShowsFromDiscover_ShouldReturn_EmptyList_WhenNoResults()
     {
-        var input = "";
-        _mockRepository.Setup(r => r.GetTvShowsSearchResult(input))
-            .ReturnsAsync(new List<SearchResult>());
+        _mockRepository.Setup(r => r.GetTvShowDiscoverListAsync())
+            .ReturnsAsync(new List<DisplayMedia>());
 
-        var expected = new List<SearchResult>();
+        var expected = new List<DisplayMedia>();
 
-        var actual = await _sut.GetMediasByTitle(input);
+        var actual = await _sut.GetTvShowsFromDiscover();
 
         Assert.Equal(expected, actual);
     }
 
     [Fact]
-    public async Task GetTvSeriesDetails_ShouldReturn_TitleGameOfThrones_WhenMatchingId()
+    public async Task GetTvShowDetailsById_ShouldReturn_TitleGameOfThrones_WhenMatchingId()
     {
-        var input = "1399";
+        var tvShowId = "1399";
         var expectedTitle = "Game of Thrones";
 
-        _mockRepository.Setup(repo => repo.GetTvShowDetails(input))
+        _mockRepository.Setup(repo => repo.GetTvShowDetails(tvShowId))
             .ReturnsAsync(
             new TvSeries()
             {
@@ -68,7 +67,7 @@ public class ApiTests
                 Name = "Game of Thrones"
             });
 
-        var actual = await _sut.GetTvShowDetailsById(input);
+        var actual = await _sut.GetTvShowDetailsById(tvShowId);
 
         Assert.Equal(expectedTitle, actual.Name);
     }
@@ -77,13 +76,41 @@ public class ApiTests
     [InlineData("")]
     [InlineData("  ")]
     [InlineData(null)]
-    public async Task GetTvSeriesDetails_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? input)
+    public async Task GetTvShowDetailsById_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? tvShowId)
     {
         // Act
-        var actual = await _sut.GetTvShowDetailsById(input!);
+        var actual = await _sut.GetTvShowDetailsById(tvShowId!);
 
         // Asserts
         Assert.Equal(null!, actual);
-        _mockRepository.Verify(repo => repo.GetTvShowDetails(input!), Times.Never);
+        _mockRepository.Verify(repo => repo.GetTvShowDetails(tvShowId!), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public async Task GetSeasonDetails_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? tvShowId)
+    {
+        // Act
+        var actual = await _sut.GetSeasonDetails(tvShowId!, 0);
+
+        // Asserts
+        Assert.Equal(null!, actual);
+        _mockRepository.Verify(repo => repo.GetSeasonDetails(tvShowId!, 0), Times.Never);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public async Task GetEpisodeDetails_ShouldReturn_Null_WhenNullOrEmptyOrWhiteSpace(string? tvShowId)
+    {
+        // Act
+        var actual = await _sut.GetEpisodeDetails(tvShowId!, 0, 0);
+
+        // Asserts
+        Assert.Equal(null!, actual);
+        _mockRepository.Verify(repo => repo.GetEpisodeDetailsAsync(tvShowId!, 0, 0), Times.Never);
     }
 }

@@ -34,7 +34,7 @@
         // Only search if not the same as last search
         if (!string.IsNullOrWhiteSpace(curentSearchText) && curentSearchText != previousSearch)
         {
-            searchResults = await ApiService.GetMediasByTitle(curentSearchText);
+            searchResults = await ApiService.GetTvShowsSearchResultByTitle(curentSearchText);
             previousSearch = curentSearchText;
             return;
         }

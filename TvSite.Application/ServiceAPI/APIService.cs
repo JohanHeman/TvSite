@@ -14,34 +14,40 @@ public class APIService : IAPIService
     }
 
 
-    public async Task<List<SearchResult>> GetMediasByTitle(string title)
+    // Done
+    public async Task<List<SearchResult>> GetTvShowsSearchResultByTitle(string title)
     {
         return await _repository.GetTvShowsSearchResult(title);
     }
 
+    // Done
     public async Task<List<DisplayMedia>> GetTvShowsFromDiscover()
     {
         return await _repository.GetTvShowDiscoverListAsync();
     }
 
-    public async Task<TvSeries> GetTvShowDetailsById(string mediaId)
+
+    public async Task<TvSeries> GetTvShowDetailsById(string tvShowId)
     {
-        if (string.IsNullOrWhiteSpace(mediaId))
+        if (string.IsNullOrWhiteSpace(tvShowId))
             return null!;
 
-        return await _repository.GetTvShowDetails(mediaId);
+        return await _repository.GetTvShowDetails(tvShowId);
     }
 
-    public async Task<TvSeriesSeason> GetSeasonDetails(string showId, int seasonNumber)
+    public async Task<TvSeriesSeason> GetSeasonDetails(string tvShowId, int seasonNumber)
     {
-        if (string.IsNullOrWhiteSpace(showId))
+        if (string.IsNullOrWhiteSpace(tvShowId))
             return null!;
 
-        return await _repository.GetSeasonDetails(showId, seasonNumber);
+        return await _repository.GetSeasonDetails(tvShowId, seasonNumber);
     }
 
     public async Task<TvSeriesEpisode> GetEpisodeDetails(string tvShowId, int seasonNumber, int episodeNumber)
     {
+        if (string.IsNullOrWhiteSpace(tvShowId))
+            return null!;
+
         return await _repository.GetEpisodeDetailsAsync(tvShowId, seasonNumber, episodeNumber);
     }
 }
