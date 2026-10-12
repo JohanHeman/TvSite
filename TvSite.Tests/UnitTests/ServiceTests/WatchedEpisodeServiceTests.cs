@@ -1,23 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Moq;
+﻿using Moq;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
-using TvSite.Domain.Entities.Display;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
 
 namespace TvSite.Tests.UnitTests.ServiceTests;
 
-public class WatchedEpisodeTests
+public class WatchedEpisodeServiceTests
 {
     private readonly IWatchedEpisodeService _sut;
 
-    // Mock dependencies to setup the _sut
+    // Mock dependencies for the _sut
     private readonly Mock<IWatchedEpisodeRepository> _mockRepo;
     private readonly Mock<IAPIService> _mockApiService;
-    public WatchedEpisodeTests()
+    public WatchedEpisodeServiceTests()
     {
         _mockRepo = new Mock<IWatchedEpisodeRepository>();
         _mockApiService = new Mock<IAPIService>();
@@ -97,6 +95,8 @@ public class WatchedEpisodeTests
         // Assert
         _mockRepo.Verify(repo => repo.DeleteWatchedEpisode(watchedEpisode), Times.Once);
     }
+
+    // Combines DbModel with ApiModel to DisplayMediaEpisode
     [Fact]
     public async Task GetDisplayWatchedEpisodesByUserIdAsync_CallsRepoOnce_WhenValidInput()
     {
@@ -142,18 +142,19 @@ public class WatchedEpisodeTests
         });
 
         // Act
-        var act = await _sut.GetDisplayWatchedEpisodesByUserIdAsync(userId);
+        var actual = await _sut.GetDisplayWatchedEpisodesByUserIdAsync(userId);
 
         // Assert
         // Verify the list returned the 3x items from setup
-        Assert.Equal(3, act.Count);
+        Assert.Equal(3, actual.Count);
+
         // Verify the repo was only called once
         _mockRepo.Verify(repo => repo.GetWatchedEpisodesByUserIdAsync(userId), Times.Once);
 
         // Verify Title is returned corretly
-        Assert.Equal("series11", act[0].Title);
-        Assert.Equal("series12", act[1].Title);
-        Assert.Equal("series13", act[2].Title);
+        Assert.Equal("series11", actual[0].Title);
+        Assert.Equal("series12", actual[1].Title);
+        Assert.Equal("series13", actual[2].Title);
 
         // Verify Api method was called 3 times as its called once per item in the repo list.
         _mockApiService.Verify(service => service.GetEpisodeDetails(
