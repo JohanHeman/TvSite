@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TvSite.Application.ServiceAPI;
-using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
+using TvSite.Domain.Entities.Display;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Services;
-using TvSite.Infrastructure.Data;
-using TvSite.Domain.Entities.Display;
 
 
 namespace TvSite.Application.Service;
@@ -38,7 +35,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
 
     public async Task CreateWatchedEpisode(string episodeMediaId, Guid userId, string tvSeriesId, int seasonNumber, int episodeNumber)
     {
-        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
+        if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId) || string.IsNullOrWhiteSpace(tvSeriesId)) return;
 
         var watchedEpisode = new WatchedEpisode()
         {
@@ -55,9 +52,9 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         {
             await _repository.CreateWatchedEpisode(watchedEpisode);
         }
-        catch (Exception ex)
+        catch
         {
-            throw new DbUpdateException("Could not Save WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not create WatchedEpisode");
         }
     }
 
@@ -65,17 +62,18 @@ public class WatchedEpisodeService : IWatchedEpisodeService
     {
         if (userId == Guid.Empty || string.IsNullOrWhiteSpace(episodeMediaId)) return;
 
-        WatchedEpisode? watchedEpisode;
         try
         {
+            WatchedEpisode? watchedEpisode;
             watchedEpisode = await _repository.GetWatchedEpisodeByUserAsync(episodeMediaId, userId);
+
             if (watchedEpisode == null) return;
 
             await _repository.DeleteWatchedEpisode(watchedEpisode);
         }
-        catch (Exception ex)
+        catch
         {
-            throw new DbUpdateException("Could not delete WatchedEpisode \nInner Exception: " + ex.InnerException);
+            throw new DbUpdateException("Could not delete WatchedEpisode");
         }
     }
 
@@ -92,7 +90,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
             await DeleteWatchedEpisode(episodeMediaId, userId);
     }
 
-    public async Task<List<DisplayWatchedEpisode>> GetWatchedEpisodesByUserIdAsync(Guid userId)
+    public async Task<List<DisplayWatchedEpisode>> GetDisplayWatchedEpisodesByUserIdAsync(Guid userId)
     {
         var tvSeriesEpisodes = new List<DisplayWatchedEpisode>();
 
