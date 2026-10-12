@@ -43,7 +43,6 @@ public class ApiTests
     [Fact]
     public async Task GetTvShowsFromDiscover_ShouldReturn_EmptyList_WhenNoResults()
     {
-        var input = "";
         _mockRepository.Setup(r => r.GetTvShowDiscoverListAsync())
             .ReturnsAsync(new List<DisplayMedia>());
 
