@@ -10,7 +10,7 @@ namespace TvSite.Domain.Interfaces.Services
         public Task<Comment?> GetCommentByIdAsync(Guid commentId);
         public Task<IReadOnlyList<Comment>> GetCommentsByEpisodeMediaIdAsync(string episodeMediaId);
 
-        public Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId);
+        public Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId, DateTime dateTime);
         public Task DeleteCommentAsync(Guid commentId);
     }
 }

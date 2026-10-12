@@ -31,7 +31,7 @@ public class CommentService : ICommentService
         return await _repository.GetCommentByIdAsync(commentId);
     }
 
-    public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId)
+    public async Task CreateCommentAsync(string commentText, string episodeMediaId, Guid userId, DateTime dateTime)
     {
         // Domain entity will throw if comment text is null or whitespace
         if (string.IsNullOrWhiteSpace(commentText) || userId == Guid.Empty)
@@ -45,7 +45,8 @@ public class CommentService : ICommentService
             Id = Guid.NewGuid(),
             Text = commentText,
             ApplicationUserId = userId,
-            EpisodeMediaId = episodeMediaId
+            EpisodeMediaId = episodeMediaId,
+            DateTime = dateTime
         };
 
         await _repository.CreateCommentAsync(comment);

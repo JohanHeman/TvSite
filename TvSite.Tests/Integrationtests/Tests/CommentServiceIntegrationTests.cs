@@ -25,9 +25,10 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         string text = "comment text";
         string episodeMediaId = "3";
         Guid userId = Guid.NewGuid();
+        DateTime dateTime = DateTime.Now;
 
         // Act
-        await _sut.CreateCommentAsync(text, episodeMediaId, userId);
+        await _sut.CreateCommentAsync(text, episodeMediaId, userId, dateTime);
         var comment = applicationDbContext.Comments.Where(c => c.Text == text
         && c.EpisodeMediaId == episodeMediaId && c.ApplicationUserId == userId).FirstOrDefault();
         // Assert
