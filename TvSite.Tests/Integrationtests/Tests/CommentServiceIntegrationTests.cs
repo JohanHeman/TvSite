@@ -41,47 +41,62 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     public async Task GetCommentsByEpisodeMediaIdAsync_ShouldReturnComments_WhenCommentsExist()
     {
         // Arrange
-        var comments = new List<Comment>()
+        var userIds = new[]
         {
-            new Comment
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
+
+        var users = userIds.Select(id => new ApplicationUser
+        {
+            Id = id,
+            UserName = $"user-{id}",
+            NormalizedUserName = $"USER-{id}".ToUpperInvariant(),
+            Email = $"{id}@example.com",
+            NormalizedEmail = $"{id}@example.com".ToUpperInvariant(),
+            DisplayName = "Test User"
+        });
+        var comments = new List<Comment>
+        {
+            new()
             {
                 Id = Guid.NewGuid(),
                 Text = "Great episode!",
                 DateTime = DateTime.Now.AddMinutes(-20),
-                ApplicationUserId = Guid.NewGuid(),
+                ApplicationUserId = userIds[0],
                 EpisodeMediaId = "3"
             },
-            new Comment
+            new()
             {
                 Id = Guid.NewGuid(),
                 Text = "The ending was amazing.",
                 DateTime = DateTime.Now.AddMinutes(-15),
-                ApplicationUserId = Guid.NewGuid(),
+                ApplicationUserId = userIds[1],
                 EpisodeMediaId = "3"
             },
-            new Comment
+            new()
             {
                 Id = Guid.NewGuid(),
                 Text = "I cannot wait for the next episode.",
                 DateTime = DateTime.Now.AddMinutes(-10),
-                ApplicationUserId = Guid.NewGuid(),
+                ApplicationUserId = userIds[2],
                 EpisodeMediaId = "3"
             },
-            new Comment
+            new()
             {
                 Id = Guid.NewGuid(),
                 Text = "The actors did a great job.",
                 DateTime = DateTime.Now.AddMinutes(-5),
-                ApplicationUserId = Guid.NewGuid(),
+                ApplicationUserId = userIds[3],
                 EpisodeMediaId = "3"
             }
         };
-
-        foreach (var comment in comments)
-        {
-            await applicationDbContext.Comments.AddAsync(comment);
-            await applicationDbContext.SaveChangesAsync();
-        }
+        await applicationDbContext.AddRangeAsync(users);
+        await applicationDbContext.Comments.AddRangeAsync(comments);
+        await applicationDbContext.SaveChangesAsync();
+ 
         // Act
         var actual =  await _sut.GetCommentsByEpisodeMediaIdAsync("3");
 
