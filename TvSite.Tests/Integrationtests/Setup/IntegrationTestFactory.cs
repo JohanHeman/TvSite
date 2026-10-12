@@ -13,6 +13,7 @@ public class IntegrationTestFactory<T> : WebApplicationFactory<T> where T : clas
     {
         builder.ConfigureServices(services =>
         {
+            builder.UseEnvironment("Testing");
             var serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
 
             services.AddDbContextFactory<ApplicationDbContext>(options =>
