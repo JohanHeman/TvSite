@@ -21,7 +21,7 @@ public class IntegrationTestFactory<T> : WebApplicationFactory<T> where T : clas
                 options.UseInternalServiceProvider(serviceProvider);
 
             });
-            
+
             var sp = services.BuildServiceProvider();
             using (var scope = sp.CreateScope())
             {

@@ -10,7 +10,7 @@ public class ApplicationTestBase<T> : IClassFixture<IntegrationTestFactory<T>> w
     internal readonly IServiceScope scope;
     public ApplicationTestBase(IntegrationTestFactory<T> factory)
     {
-        scope =  factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     }
 }

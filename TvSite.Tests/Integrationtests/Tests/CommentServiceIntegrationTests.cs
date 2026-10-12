@@ -27,14 +27,14 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         Guid userId = Guid.NewGuid();
 
         // Act
-        await _sut.CreateCommentAsync(text,  episodeMediaId, userId);
+        await _sut.CreateCommentAsync(text, episodeMediaId, userId);
         var comment = applicationDbContext.Comments.Where(c => c.Text == text
         && c.EpisodeMediaId == episodeMediaId && c.ApplicationUserId == userId).FirstOrDefault();
         // Assert
         Assert.NotNull(comment);
-        
+
     }
-    
-    
-    
+
+
+
 }
