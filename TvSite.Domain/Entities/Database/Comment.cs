@@ -15,6 +15,7 @@ public class Comment
         }
     }
 
+    public DateTime DateTime { get; set; }
     public Guid ApplicationUserId { get; set; }
     public ApplicationUser ApplicationUser { get; set; }
     public string EpisodeMediaId { get; set; }

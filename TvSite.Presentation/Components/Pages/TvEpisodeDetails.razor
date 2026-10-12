@@ -73,6 +73,7 @@
     <div>
         @comment.ApplicationUser.DisplayName
         @comment.Text
+        @comment.DateTime
     </div>
 }
 
@@ -123,8 +124,10 @@
         var user = await GetUser();
         if (user == null || _tvEpisodeDetails == null) return;
 
+        var dateTime = DateTime.Now;
+
         // Upload comment to db
-        await CommentService.CreateCommentAsync(_comment, _tvEpisodeDetails.Id, user.Id);
+        await CommentService.CreateCommentAsync(_comment, _tvEpisodeDetails.Id, user.Id, dateTime);
 
         // Reset input and get updated comment list
         _comment = "";
