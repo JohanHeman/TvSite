@@ -23,8 +23,7 @@ else
 {
     <h1>@_season.SeasonName</h1>
     <div class="d-flex gap-3 mb-4">
-        <img src="@_season.ImagePath" />
-
+        <img src="@(string.IsNullOrWhiteSpace(_season.ImagePath) || _season.ImagePath == "https://image.tmdb.org/t/p/w154" ? "/images/img_not_available.png" : _season.ImagePath)" height="231"/>
         <p>@_season.Description</p>
     </div>
 
@@ -37,7 +36,7 @@ else
                 <div class="d-flex border border-1 p-1 gap-3">
                     <div>
                         <p>Episode: @episode.EpisodeNumber</p>
-                        <img src="@episode.ImagePath"/>
+                        <img src="@(string.IsNullOrWhiteSpace(episode.ImagePath) || episode.ImagePath == "https://image.tmdb.org/t/p/w92" ? "/images/img_not_available.png" : episode.ImagePath)" height="52"/>
                     </div>
                     <div>
 

@@ -35,7 +35,7 @@ else
             @_tvEpisodeDetails.Title
         </h3>
         <div>
-            <img src="@_tvEpisodeDetails.ImagePath"/> 
+            <img src="@(string.IsNullOrWhiteSpace(_tvEpisodeDetails.ImagePath) || _tvEpisodeDetails.ImagePath == "https://image.tmdb.org/t/p/w300" ? "/images/img_not_available.png" : _tvEpisodeDetails.ImagePath)" height="169"/>
         </div>
 
         @* Add episode as watched buttons *@
