@@ -188,9 +188,5 @@ public class RatingServiceTests
         await _sut.UpdateRatingAsync(rating, 5);
 
         _mockrepo.Verify(r => r.UpdateRatingAsync(It.IsAny<Rating>()), Times.Never);
-
     }
-
-
-
 }
