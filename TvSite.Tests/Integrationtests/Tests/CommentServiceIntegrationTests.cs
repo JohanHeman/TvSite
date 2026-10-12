@@ -96,9 +96,9 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         await applicationDbContext.AddRangeAsync(users);
         await applicationDbContext.Comments.AddRangeAsync(comments);
         await applicationDbContext.SaveChangesAsync();
- 
+
         // Act
-        var actual =  await _sut.GetCommentsByEpisodeMediaIdAsync("3");
+        var actual = await _sut.GetCommentsByEpisodeMediaIdAsync("3");
 
         // Assert 
         Assert.Equal(comments.Count, actual.Count);
