@@ -4,7 +4,7 @@ using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
 
-namespace TvSite.Tests.UnitTests;
+namespace TvSite.Tests.UnitTests.ServiceTests;
 
 public class RatingServiceTests
 {
