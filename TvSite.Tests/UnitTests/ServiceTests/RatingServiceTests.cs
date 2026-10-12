@@ -31,13 +31,13 @@ public class RatingServiceTests
         // Assert
         Assert.Equal(expected, actual);
     }
-    
+
     [Fact]
     public async Task GetAverageRatingByEpisodeMediaAsync_ShouldReturnAverageRating_WhenValidId()
     {
         // Arrange
         var mediaId = "4";
-        
+
         var ratings = new List<Rating>()
         {
             new Rating
@@ -73,11 +73,10 @@ public class RatingServiceTests
         _mockrepo.Setup(r => r.GetAverageRating(mediaId)).ReturnsAsync(ratings);
         var expected = ratings.Average(r => r.Stars);
         // Act
-        var actual =  await _sut.GetAverageRatingByEpisodeMediaIdAsync(mediaId);
-        
-        
+        var actual = await _sut.GetAverageRatingByEpisodeMediaIdAsync(mediaId);
+
+
         // Assert
-        Assert.NotNull(actual);
         _mockrepo.Verify(r => r.GetAverageRating(mediaId), Times.Once);
         Assert.Equal(expected, actual);
     }
@@ -111,7 +110,7 @@ public class RatingServiceTests
             EpisodeMediaId = "56",
             ApplicationUserId = Guid.NewGuid()
         };
-        
+
         _mockrepo.Setup(r => r.GetRatingByIdAsync(rating.EpisodeMediaId, rating.Id)).ReturnsAsync(rating);
         // Act
         var actual = await _sut.GetRatingByIdAsync(rating.EpisodeMediaId, rating.Id);
@@ -121,7 +120,7 @@ public class RatingServiceTests
         Assert.Equal(rating.Id, actual.Id);
         _mockrepo.Verify(r => r.GetRatingByIdAsync(rating.EpisodeMediaId, rating.Id), Times.Once);
     }
-    
+
     [Theory]
     [InlineData("")]
     [InlineData(" ")]
@@ -138,7 +137,7 @@ public class RatingServiceTests
         // Assert 
         Assert.Equal(expectedMessage, actual.Message);
     }
-    
+
     [Fact]
     public async Task CreateRatingAsync_CallsRepoOnce_WhenValidProperties()
     {
@@ -146,7 +145,7 @@ public class RatingServiceTests
         Guid userId = Guid.NewGuid();
         string episodeMediaId = "4";
         int stars = 5;
-        
+
         // Act
         await _sut.CreateRatingAsync(stars, episodeMediaId, userId);
 
@@ -167,7 +166,7 @@ public class RatingServiceTests
         };
         int expeditedStars = 7;
         // Act
-        
+
         await _sut.UpdateRatingAsync(rating, 7);
 
         // Assert
@@ -185,13 +184,13 @@ public class RatingServiceTests
             EpisodeMediaId = "episode-1",
             ApplicationUserId = Guid.NewGuid()
         };
-        
+
         await _sut.UpdateRatingAsync(rating, 5);
-        
-        _mockrepo.Verify(r => r.UpdateRatingAsync(It.IsAny<Rating>()), Times.Never); 
-        
+
+        _mockrepo.Verify(r => r.UpdateRatingAsync(It.IsAny<Rating>()), Times.Never);
+
     }
-    
-    
-    
+
+
+
 }
