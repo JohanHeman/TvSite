@@ -46,7 +46,7 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     }
 
     [Fact]
-    public async Task GetCommentsByEpisodeMediaIdAsync_ShouldReturnComments_WhenCommentsExist()
+    public async Task GetCommentsByEpisodeMediaIdAsync_ShouldOnlyReturnCommentsWithEpisodeMediaId_WhenCommentsExist()
     {
         // Arrange
         var userIds = new[]
@@ -66,6 +66,7 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
             NormalizedEmail = $"{id}@example.com".ToUpperInvariant(),
             DisplayName = "Test User"
         });
+        
         var comments = new List<Comment>
         {
             new()
@@ -98,9 +99,10 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
                 Text = "The actors did a great job.",
                 DateTime = DateTime.Now.AddMinutes(-5),
                 ApplicationUserId = userIds[3],
-                EpisodeMediaId = "3"
+                EpisodeMediaId = "8"
             }
         };
+        var expected = comments.Count - 1;
         await applicationDbContext.AddRangeAsync(users);
         await applicationDbContext.Comments.AddRangeAsync(comments);
         await applicationDbContext.SaveChangesAsync();
@@ -109,8 +111,10 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         var actual = await _sut.GetCommentsByMediaIdAsync("3");
 
         // Assert 
-        Assert.Equal(comments.Count, actual.Count);
+        Assert.Equal(expected, actual.Count);
     }
+    
+    
 
 
 }
