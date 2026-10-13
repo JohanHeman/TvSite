@@ -65,6 +65,7 @@ namespace TvSite.Tests.UnitTests.ServiceTests
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
+            _mockRepo.Verify(repo => repo.CreateCommentAsync(It.IsAny<Comment>()), Times.Never);
         }
 
         [Fact]
@@ -78,7 +79,8 @@ namespace TvSite.Tests.UnitTests.ServiceTests
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
-            _mockRepo.Verify(repo => repo.DeleteCommentAsync(null!), Times.Never);
+            _mockRepo.Verify(repo => repo.GetCommentByIdAsync(Guid.Empty), Times.Never());
+            _mockRepo.Verify(repo => repo.DeleteCommentAsync(It.IsAny<Comment>()), Times.Never);
         }
 
         [Fact]
@@ -92,6 +94,137 @@ namespace TvSite.Tests.UnitTests.ServiceTests
 
             // Assert
             Assert.Equal(expectedMessage, actual.Message);
+        }
+
+        [Fact]
+        public async Task GetCommentsByEpisodeMediaIdAsync_ShouldReturnCommentsOnEpisode_WhenValidEpisodeMediaId()
+        {
+            // Arrange
+            var episodeMediaId = "24";
+
+            var comments = new List<Comment>()
+            {
+                // Only setting up needed properties for this test
+                new Comment
+                {
+                    EpisodeMediaId = episodeMediaId
+                },
+                new Comment
+                {
+                    EpisodeMediaId = episodeMediaId
+                },
+                new Comment
+                {
+                    EpisodeMediaId = episodeMediaId
+                }
+            };
+
+            _mockRepo.Setup(repo => repo.GetCommentsByMediaIdAsync(episodeMediaId)).ReturnsAsync(comments);
+
+            // Act
+            var actual = await _commentService.GetCommentsByEpisodeMediaIdAsync(episodeMediaId);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.GetCommentsByMediaIdAsync(episodeMediaId), Times.Once());
+
+            // Checking that the list returns correct amount
+            Assert.Equal(3, actual.Count);
+
+            // Checking the ids are correct
+            Assert.Equal("24", actual[0].EpisodeMediaId);
+            Assert.Equal("24", actual[1].EpisodeMediaId);
+            Assert.Equal("24", actual[2].EpisodeMediaId);
+        }
+
+        [Fact]
+        public async Task GetCommentByIdAsync_ShouldReturnComment_WhenValidCommentId()
+        {
+            // Arrange
+            var comment = new Comment()
+            {
+                Id = Guid.NewGuid()
+            };
+
+            _mockRepo.Setup(repo => repo.GetCommentByIdAsync(comment.Id)).ReturnsAsync(comment);
+
+            // Act
+            var actual = await _commentService.GetCommentByIdAsync(comment.Id);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.GetCommentByIdAsync(comment.Id), Times.Once());
+
+            Assert.NotNull(actual);
+            Assert.Equal(comment.Id, actual.Id);
+        }
+
+        [Fact]
+        public async Task CreateCommentAsync_CallsRepoOnce_WhenValidProperties()
+        {
+            // Arrange
+            string commentText = "Very good episode";
+            string episodeMediaId = "24";
+            Guid userId = Guid.NewGuid();
+            DateTime dateTime = DateTime.Now;
+
+            // Act
+            await _commentService.CreateCommentAsync(commentText, episodeMediaId, userId, dateTime);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.CreateCommentAsync(It.IsAny<Comment>()), Times.Once());
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("  ")]
+        [InlineData(null)]
+        public async Task CreateCommentAsync_DoesNotCallRepo_WhenCommentTextIsNullOrWhiteSpace(string? commentText)
+        {
+            // Arrange
+            string episodeMediaId = "24";
+            Guid userId = Guid.NewGuid();
+            DateTime dateTime = DateTime.Now;
+
+            // Act
+            await _commentService.CreateCommentAsync(commentText!, episodeMediaId, userId, dateTime);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.CreateCommentAsync(It.IsAny<Comment>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task CreateCommentAsync_DoesNotCallRepo_WhenUserIdIsEmpty()
+        {
+            // Arrange
+            Guid userId = Guid.Empty;
+
+            string episodeMediaId = "24";
+            string commentText = "Very bad episode";
+            DateTime dateTime = DateTime.Now;
+
+            // Act
+            await _commentService.CreateCommentAsync(commentText, episodeMediaId, userId, dateTime);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.CreateCommentAsync(It.IsAny<Comment>()), Times.Never());
+        }
+
+        [Fact]
+        public async Task DeleteCommentAsync_CallsRepoOnce_WhenValidCommentId()
+        {
+            // Arrange
+            var comment = new Comment()
+            {
+                Id = Guid.NewGuid()
+            };
+
+            _mockRepo.Setup(repo => repo.GetCommentByIdAsync(comment.Id)).ReturnsAsync(comment);
+
+            // Act
+            await _commentService.DeleteCommentAsync(comment.Id);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.GetCommentByIdAsync(comment.Id), Times.Once());
+            _mockRepo.Verify(repo => repo.DeleteCommentAsync(It.IsAny<Comment>()), Times.Once());
         }
     }
 }
