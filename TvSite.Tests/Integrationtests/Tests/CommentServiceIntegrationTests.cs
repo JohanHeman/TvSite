@@ -49,6 +49,35 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     public async Task GetCommentsByEpisodeMediaIdAsync_ShouldOnlyReturnCommentsWithEpisodeMediaId_WhenCommentsExist()
     {
         // Arrange
+        var users = TestData.GetTestUsers();
+        var comments = TestData.GetTestCommentsAsync();
+        
+        // itterate through comments and users to set the id from user to comment
+        foreach (var (comment, user) in comments.Zip(users))
+        {
+            comment.ApplicationUserId= user.Id;
+        }
+        
+        var expected = comments.Count - 1;
+        
+        await applicationDbContext.AddRangeAsync(users);
+        await applicationDbContext.Comments.AddRangeAsync(comments);
+        await applicationDbContext.SaveChangesAsync();
+
+        // Act
+        var actual = await _sut.GetCommentsByMediaIdAsync("3");
+
+        // Assert 
+        Assert.Equal(expected, actual.Count);
+    }
+    
+
+}
+
+internal class TestData
+{
+    public static List<ApplicationUser> GetTestUsers()
+    {
         var userIds = new[]
         {
             Guid.NewGuid(),
@@ -66,7 +95,12 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
             NormalizedEmail = $"{id}@example.com".ToUpperInvariant(),
             DisplayName = "Test User"
         });
-        
+        return users.ToList();
+    }
+    
+    
+    public static List<Comment> GetTestCommentsAsync()
+    {
         var comments = new List<Comment>
         {
             new()
@@ -74,7 +108,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
                 Id = Guid.NewGuid(),
                 Text = "Great episode!",
                 DateTime = DateTime.Now.AddMinutes(-20),
-                ApplicationUserId = userIds[0],
                 EpisodeMediaId = "3"
             },
             new()
@@ -82,7 +115,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
                 Id = Guid.NewGuid(),
                 Text = "The ending was amazing.",
                 DateTime = DateTime.Now.AddMinutes(-15),
-                ApplicationUserId = userIds[1],
                 EpisodeMediaId = "3"
             },
             new()
@@ -90,7 +122,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
                 Id = Guid.NewGuid(),
                 Text = "I cannot wait for the next episode.",
                 DateTime = DateTime.Now.AddMinutes(-10),
-                ApplicationUserId = userIds[2],
                 EpisodeMediaId = "3"
             },
             new()
@@ -98,23 +129,9 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
                 Id = Guid.NewGuid(),
                 Text = "The actors did a great job.",
                 DateTime = DateTime.Now.AddMinutes(-5),
-                ApplicationUserId = userIds[3],
                 EpisodeMediaId = "8"
             }
         };
-        var expected = comments.Count - 1;
-        await applicationDbContext.AddRangeAsync(users);
-        await applicationDbContext.Comments.AddRangeAsync(comments);
-        await applicationDbContext.SaveChangesAsync();
-
-        // Act
-        var actual = await _sut.GetCommentsByMediaIdAsync("3");
-
-        // Assert 
-        Assert.Equal(expected, actual.Count);
+        return comments;
     }
-    
-    
-
-
 }
