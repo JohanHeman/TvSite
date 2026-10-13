@@ -15,7 +15,7 @@
     {
         <div style="width: 12rem;">
             <a href="/tvshow?mediaid=@show.Id">
-                <img src="@show.Image"/>
+                <img src="@(string.IsNullOrWhiteSpace(show.Image) || show.Image == "https://image.tmdb.org/t/p/w154" ? "/images/img_not_available.png" : show.Image)" height="231"/>
                 <p>@show.Name</p>
             </a>
         </div>

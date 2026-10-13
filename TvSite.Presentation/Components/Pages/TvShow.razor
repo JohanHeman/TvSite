@@ -23,7 +23,7 @@
     <div>
         <h1>@_tvSeries.Name</h1>
         <p>@_tvSeries.Description</p>
-        <img src='@_tvSeries.MediaImage' class="mb-1" />
+        <img class="mb-1" src="@(string.IsNullOrWhiteSpace(_tvSeries.MediaImage) || _tvSeries.MediaImage == "https://image.tmdb.org/t/p/w154" ? "/images/img_not_available.png" : _tvSeries.MediaImage)" height="231"/>
     </div>
 
     <div>
@@ -78,7 +78,7 @@
                             </div>
 
                             <div class="mb-1 d-flex gap-2">
-                                <img src="@season.ImagePath" />
+                                <img src="@(string.IsNullOrWhiteSpace(season.ImagePath) || season.ImagePath == "https://image.tmdb.org/t/p/w92" ? "/images/img_not_available.png" : season.ImagePath)" height="138"/>
                                 <p>@season.Description</p>
                             </div>
                         </div>
