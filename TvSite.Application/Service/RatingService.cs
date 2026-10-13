@@ -42,7 +42,7 @@ namespace TvSite.Application.Service
             rating.Stars = Math.Clamp(stars, 1, 10);
             await _repository.UpdateRatingAsync(rating);
         }
-         
+
         public async Task<Rating?> GetRatingByIdAsync(string episodeMediaId, Guid userId)
         {
             if (string.IsNullOrWhiteSpace(episodeMediaId))
