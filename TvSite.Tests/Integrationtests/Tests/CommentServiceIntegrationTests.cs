@@ -11,12 +11,12 @@ namespace TvSite.Tests.Integrationtests.Tests;
 
 public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
 {
-    private readonly ICommentService _sut;
+    private readonly ICommentRepository _sut;
 
     public CommentServiceIntegrationTests(IntegrationTestFactory<Program> factory) : base(factory)
     {
         // gets required service (sut) from the registered Services for DI and registered dependencies are automatically injected 
-        _sut = scope.ServiceProvider.GetRequiredService<ICommentService>();
+        _sut = scope.ServiceProvider.GetRequiredService<ICommentRepository>();
     }
 
     [Fact]
@@ -27,9 +27,17 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         string episodeMediaId = "3";
         Guid userId = Guid.NewGuid();
         DateTime dateTime = DateTime.Now;
+        var newComment = new Comment()
+        {
+            Id = Guid.NewGuid(),
+            Text = text,
+            DateTime = dateTime,
+            ApplicationUserId = userId,
+            EpisodeMediaId = episodeMediaId,
+        };
 
         // Act
-        await _sut.CreateCommentAsync(text, episodeMediaId, userId, dateTime);
+        await _sut.CreateCommentAsync(newComment);
         var comment = applicationDbContext.Comments.Where(c => c.Text == text
         && c.EpisodeMediaId == episodeMediaId && c.ApplicationUserId == userId).FirstOrDefault();
         // Assert
@@ -98,7 +106,7 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         await applicationDbContext.SaveChangesAsync();
 
         // Act
-        var actual = await _sut.GetCommentsByEpisodeMediaIdAsync("3");
+        var actual = await _sut.GetCommentsByMediaIdAsync("3");
 
         // Assert 
         Assert.Equal(comments.Count, actual.Count);
