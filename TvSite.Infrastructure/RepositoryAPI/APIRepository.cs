@@ -19,6 +19,7 @@ public class APIRepository : IAPIRepository
         _client = httpFactory.CreateClient("TmdbApiClient");
     }
 
+    //searchresult get request
     public record TvShowSearchResultDTO([property: JsonPropertyName("results")] List<TvShowSearchResult> Results);
     public async Task<List<SearchResult>> GetTvShowsSearchResult(string title)
     {
@@ -51,6 +52,7 @@ public class APIRepository : IAPIRepository
         return searchResults;
     }
 
+    //homepage media get request
     public record DiscoverTvShowResultDTO([property: JsonPropertyName("results")] List<HomeScreenMediaDTO> Results);
     public async Task<List<DisplayMedia>> GetTvShowDiscoverListAsync()
     {
@@ -83,6 +85,7 @@ public class APIRepository : IAPIRepository
         return tvShows;
     }
 
+    //tv-show information get request
     public async Task<TvSeries> GetTvShowDetails(string mediaId)
     {
         var media = new TvSeries();

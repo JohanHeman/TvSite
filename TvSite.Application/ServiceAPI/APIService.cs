@@ -13,19 +13,15 @@ public class APIService : IAPIService
         _repository = repository;
     }
 
-
-    // Done
     public async Task<List<SearchResult>> GetTvShowsSearchResultByTitle(string title)
     {
         return await _repository.GetTvShowsSearchResult(title);
     }
 
-    // Done
     public async Task<List<DisplayMedia>> GetTvShowsFromDiscover()
     {
         return await _repository.GetTvShowDiscoverListAsync();
     }
-
 
     public async Task<TvSeries> GetTvShowDetailsById(string tvShowId)
     {
