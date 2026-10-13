@@ -13,83 +13,101 @@
 @rendermode InteractiveServer
 
 @* Navigation links *@
-@if (_tvEpisodeDetails != null)
-{
-    <a href="/">Home</a>
-    <a>/</a>
-    <a href="/tvShow?MediaId=@ShowId">Tv Show</a>
-    <a>/</a>
-    <a href="/tvshow/season?ShowId=@ShowId&SeasonNumber=@_tvEpisodeDetails.SeasonNumber">Season</a>
-}
-else
-{
-    <a href="/">Home</a>
-}
+<div class="mb-2">
+    @if (_tvEpisodeDetails != null)
+    {
+        <a href="/">Home</a>
+        <a>/</a>
+        <a href="/tvShow?MediaId=@ShowId">Tv Show</a>
+        <a>/</a>
+        <a href="/tvshow/season?ShowId=@ShowId&SeasonNumber=@_tvEpisodeDetails.SeasonNumber">Season</a>
+    }
+    else
+    {
+        <a href="/">Home</a>
+    }
+</div>
 
-<h3>TvEpisodeDetails</h3>
+
+<h2>Episode details</h2>
 @if (_tvEpisodeDetails != null)
 {
     // episode information
     <div>
-        <h3>
-            @_tvEpisodeDetails.Title
-        </h3>
+        <h3>@_tvEpisodeDetails.Title</h3>
+        <p class="mb-0">Ep: @_tvEpisodeDetails.EpisodeNumber</p>
         <div>
             <img src="@(string.IsNullOrWhiteSpace(_tvEpisodeDetails.ImagePath) || _tvEpisodeDetails.ImagePath == "https://image.tmdb.org/t/p/w300" ? "/images/img_not_available.png" : _tvEpisodeDetails.ImagePath)" height="169"/>
         </div>
 
         @* Add episode as watched buttons *@
-        <AuthorizeView>
-            <Authorized>
-                @{ string _btnWatchedText = _isWatchedEpisode ? "Watched" : "Not watched"; 
-                   string _btnWatchedClass = _isWatchedEpisode ? "btn btn-success" : "btn btn-outline-success"; }
-                
-                <button @onclick="async () => await CreateOrDeleteWatchedEpisode()" class="@_btnWatchedClass">@_btnWatchedText</button>
-            </Authorized>
-            <NotAuthorized>
-                <a href="/Account/Login" class="btn btn-outline-success">Login to mark as watched</a>
-            </NotAuthorized>
-        </AuthorizeView>
+        <div class="my-2">
+            <AuthorizeView>
+                <Authorized>
+                    @{
+                        string _btnWatchedText = _isWatchedEpisode ? "Watched" : "Not watched";
+                        string _btnWatchedClass = _isWatchedEpisode ? "btn btn-success" : "btn btn-outline-success";
+                    }
+
+                    <button @onclick="async () => await CreateOrDeleteWatchedEpisode()" class="@_btnWatchedClass">@_btnWatchedText</button>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/Account/Login" class="btn btn-outline-success">Login to mark as watched</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
 
         @* Display episode information *@
-        <div>
-            <p>Ep: @_tvEpisodeDetails.EpisodeNumber</p>
-            <p>Airdate: @_tvEpisodeDetails.AirDate</p>
+        <div class="mb-3">
+            <div>
+                <h4 class="mb-0">Airdate</h4>
+                <p>@_tvEpisodeDetails.AirDate</p>
+            </div>
+            
+            <div>
+                <h4 class="mb-0">Description</h4>
+                <p>@_tvEpisodeDetails.Description</p>
+            </div>
+            
             @if (_rating != null)
             {
                 <div>
-                    <p>Rating: @_rating</p>
+                    <p>User rating: @_rating</p>
                     <label class="form-label">Rating amount:</label>
-                    <InputNumber TValue="int" @bind-Value="_userStars" Placeholder="Enter amount" class="form-control"/>
+                    <InputNumber TValue="int" @bind-Value="_userStars" Placeholder="Enter amount" class="form-control mb-2" />
                     
-                    <button @onclick="async () => await CreateUserRatingAsync()">Rate</button>
+                    <button @onclick="async () => await CreateUserRatingAsync()" class="btn btn-primary">Rate</button>
                 </div>                
             }
         </div>
-        <div>
-            <p>Description</p>
-            <p>@_tvEpisodeDetails.Description</p>
-        </div>
+
     </div>
 }
     
 @* Add comment *@
-<AuthorizeView>
-    <Authorized>   
-        <div>
-            <input @bind="_comment"/>
-            <button @onclick=" async () => await CreateCommentAsync()"
-            >Add comment</button>
-        </div>
-    </Authorized>
-</AuthorizeView>
+<div class="mb-3">
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <input @bind="_comment" class="form-control form-text mb-2"/>
+                <button @onclick=" async () => await CreateCommentAsync()" class="btn btn-primary">
+                    Add comment
+                </button>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
+
 @* Draw comments *@
 @foreach (var comment in _comments)
 {
-    <div>
-        @comment.ApplicationUser.DisplayName
-        @comment.Text
-        @comment.DateTime
+    <div class="comment-bg p-1 my-2 border border-1 border-white">
+        <p class="m-0">@comment.DateTime.ToString("yyyy-MM-dd HH:mm")</p>
+        <p>
+            @comment.ApplicationUser.DisplayName:
+            @comment.Text
+        </p>
     </div>
 }
 

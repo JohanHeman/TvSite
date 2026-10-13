@@ -14,12 +14,15 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @* Navigation link *@
-<a href="/">Home</a>
+<div class="mb-2">
+    <a href="/">Home</a>
+</div>
+
 
 @* Display TvShow Details *@
 @if(_tvSeries != null && _tvSeries.Name != null)
 {
-    <h3>Details</h3>
+    <h3>Tv show details</h3>
     <div>
         <h1>@_tvSeries.Name</h1>
         <p>@_tvSeries.Description</p>
