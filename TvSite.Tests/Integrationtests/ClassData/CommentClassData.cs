@@ -5,8 +5,8 @@ namespace TvSite.Tests.Integrationtests.ClassData;
 
 public class CommentClassData : IEnumerable<object[]>
 {
-    
-    public IEnumerator<object[]> GetEnumerator() 
+
+    public IEnumerator<object[]> GetEnumerator()
     {
         yield return new object[]
         {

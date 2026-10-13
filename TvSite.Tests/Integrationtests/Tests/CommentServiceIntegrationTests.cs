@@ -51,15 +51,15 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         // Arrange
         var users = TestData.GetTestUsers();
         var comments = TestData.GetTestCommentsAsync();
-        
+
         // itterate through comments and users to set the id from user to comment
         foreach (var (comment, user) in comments.Zip(users))
         {
-            comment.ApplicationUserId= user.Id;
+            comment.ApplicationUserId = user.Id;
         }
-        
+
         var expected = comments.Count - 1;
-        
+
         await applicationDbContext.AddRangeAsync(users);
         await applicationDbContext.Comments.AddRangeAsync(comments);
         await applicationDbContext.SaveChangesAsync();
@@ -85,7 +85,7 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         var actual = await _sut.GetCommentsByMediaIdAsync("56");
 
         // Assert
-        Assert.Equal(0, actual.Count);
+        Assert.Empty(actual);
     }
 
     [Fact]
@@ -105,9 +105,9 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
             UserName = $"user-{comment.Id}",
             DisplayName = "Test User"
         };
-        
+
         comment.ApplicationUserId = user.Id;
-        
+
         await applicationDbContext.AddAsync(user);
         await applicationDbContext.Comments.AddAsync(comment);
         await applicationDbContext.SaveChangesAsync();
@@ -145,8 +145,8 @@ internal class TestData
         });
         return users.ToList();
     }
-    
-    
+
+
     public static List<Comment> GetTestCommentsAsync()
     {
         var comments = new List<Comment>
