@@ -24,7 +24,7 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     {
         await applicationDbContext.Database.EnsureDeletedAsync();
         await applicationDbContext.Database.EnsureCreatedAsync();
-        
+
         // Arrange
         string text = "comment text";
         string episodeMediaId = "3";
@@ -96,9 +96,9 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task GetCommentByIdAsync_ShouldReturnComment_WhenValidId()
     {
-        await  applicationDbContext.Database.EnsureDeletedAsync();
+        await applicationDbContext.Database.EnsureDeletedAsync();
         await applicationDbContext.Database.EnsureCreatedAsync();
-        
+
         // Arrange
         var comment = new Comment()
         {
