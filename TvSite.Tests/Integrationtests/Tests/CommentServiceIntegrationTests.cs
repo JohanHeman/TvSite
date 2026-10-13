@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using TvSite.Application.Service;
@@ -36,6 +37,72 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
 
     }
 
+    [Fact]
+    public async Task GetCommentsByEpisodeMediaIdAsync_ShouldReturnComments_WhenCommentsExist()
+    {
+        // Arrange
+        var userIds = new[]
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid()
+        };
+
+        var users = userIds.Select(id => new ApplicationUser
+        {
+            Id = id,
+            UserName = $"user-{id}",
+            NormalizedUserName = $"USER-{id}".ToUpperInvariant(),
+            Email = $"{id}@example.com",
+            NormalizedEmail = $"{id}@example.com".ToUpperInvariant(),
+            DisplayName = "Test User"
+        });
+        var comments = new List<Comment>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Text = "Great episode!",
+                DateTime = DateTime.Now.AddMinutes(-20),
+                ApplicationUserId = userIds[0],
+                EpisodeMediaId = "3"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Text = "The ending was amazing.",
+                DateTime = DateTime.Now.AddMinutes(-15),
+                ApplicationUserId = userIds[1],
+                EpisodeMediaId = "3"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Text = "I cannot wait for the next episode.",
+                DateTime = DateTime.Now.AddMinutes(-10),
+                ApplicationUserId = userIds[2],
+                EpisodeMediaId = "3"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Text = "The actors did a great job.",
+                DateTime = DateTime.Now.AddMinutes(-5),
+                ApplicationUserId = userIds[3],
+                EpisodeMediaId = "3"
+            }
+        };
+        await applicationDbContext.AddRangeAsync(users);
+        await applicationDbContext.Comments.AddRangeAsync(comments);
+        await applicationDbContext.SaveChangesAsync();
+
+        // Act
+        var actual = await _sut.GetCommentsByEpisodeMediaIdAsync("3");
+
+        // Assert 
+        Assert.Equal(comments.Count, actual.Count);
+    }
 
 
 }
