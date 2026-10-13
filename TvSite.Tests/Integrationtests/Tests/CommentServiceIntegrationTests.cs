@@ -70,7 +70,55 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         // Assert 
         Assert.Equal(expected, actual.Count);
     }
-    
+
+
+    [Fact]
+    public async Task GetCommentsByUserIdAsync_ShouldReturnEmptyList_WhenNoMatchingIds()
+    {
+        // Arrange
+        var users = TestData.GetTestUsers();
+        var comments = TestData.GetTestCommentsAsync();
+        await applicationDbContext.AddRangeAsync(users);
+        await applicationDbContext.Comments.AddRangeAsync(comments);
+
+        // Act
+        var actual = await _sut.GetCommentsByMediaIdAsync("56");
+
+        // Assert
+        Assert.Equal(0, actual.Count);
+    }
+
+    [Fact]
+    public async Task GetCommentByIdAsync_ShouldReturnComment_WhenValidId()
+    {
+        // Arrange
+        var comment = new Comment()
+        {
+            Id = Guid.NewGuid(),
+            Text = "Great episode!",
+            EpisodeMediaId = "3"
+        };
+
+        var user = new ApplicationUser()
+        {
+            Id = Guid.NewGuid(),
+            UserName = $"user-{comment.Id}",
+            DisplayName = "Test User"
+        };
+        
+        comment.ApplicationUserId = user.Id;
+        
+        await applicationDbContext.AddAsync(user);
+        await applicationDbContext.Comments.AddAsync(comment);
+        await applicationDbContext.SaveChangesAsync();
+        // Act
+        var actual = await _sut.GetCommentByIdAsync(comment.Id);
+
+        // Assert 
+        Assert.Equal(comment.Text, actual.Text);
+        Assert.Equal(comment.EpisodeMediaId, actual.EpisodeMediaId);
+        Assert.Equal(comment.Id, actual.Id);
+    }
 
 }
 
