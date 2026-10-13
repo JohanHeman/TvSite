@@ -6,16 +6,19 @@
 @inject IAPIService ApiService
 
 @* Navigation links *@
-@if (_season != null)
-{
-    <a href="/">Home</a>
-    <a>/</a>
-    <a href="/tvShow?MediaId=@ShowId">Tv Show</a>
-}
-else
-{
-    <a href="/">Home</a>
-}
+<div class="mb-2">
+    @if (_season != null)
+    {
+        <a href="/">Home</a>
+        <a>/</a>
+        <a href="/tvShow?MediaId=@ShowId">Tv Show</a>
+    }
+    else
+    {
+        <a href="/">Home</a>
+    }
+</div>
+
 
 @* Display Season details *@
 <h3>Season</h3>
