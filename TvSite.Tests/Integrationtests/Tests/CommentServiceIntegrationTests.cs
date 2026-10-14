@@ -1,11 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
-using TvSite.Infrastructure.Data;
 using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
