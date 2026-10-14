@@ -18,13 +18,11 @@ public class CommentServiceIntegrationTests : IClassFixture<IntegrationTestFacto
     {
         scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        applicationDbContext.Database.EnsureCreated();
 
         // gets required service (sut) from the registered Services for DI and registered dependencies are automatically injected 
         _sut = scope.ServiceProvider.GetRequiredService<ICommentRepository>();
         applicationDbContext.Database.EnsureDeleted();
         applicationDbContext.Database.EnsureCreated();
-
     }
 
     [Fact]
