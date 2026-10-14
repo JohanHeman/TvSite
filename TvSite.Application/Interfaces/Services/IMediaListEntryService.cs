@@ -5,7 +5,7 @@ using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
 
-namespace TvSite.Domain.Interfaces.Services
+namespace TvSite.Application.Interfaces.Services
 {
     public interface IMediaListEntryService
     {

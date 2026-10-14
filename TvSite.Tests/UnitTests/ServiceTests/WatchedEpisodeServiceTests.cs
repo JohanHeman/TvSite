@@ -1,10 +1,11 @@
 ﻿using Moq;
+using TvSite.Application.Interfaces.ApiService;
+using TvSite.Application.Interfaces.Services;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
-using TvSite.Domain.InterfacesAPI.Services;
 
 namespace TvSite.Tests.UnitTests.ServiceTests;
 

@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TvSite.Application.Interfaces.Services;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Entities.Display;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
-using TvSite.Domain.InterfacesAPI.Services;
+using TvSite.Application.Interfaces.Services;
+using TvSite.Application.Interfaces.ApiService;
 
 
 namespace TvSite.Application.Service;

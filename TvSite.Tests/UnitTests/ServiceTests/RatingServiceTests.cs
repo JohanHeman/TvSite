@@ -1,4 +1,5 @@
 using Moq;
+using TvSite.Application.Interfaces.Services;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;

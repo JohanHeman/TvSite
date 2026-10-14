@@ -1,6 +1,6 @@
 using TvSite.Domain.Entities.Api;
 
-namespace TvSite.Domain.InterfacesAPI.Services;
+namespace TvSite.Application.Interfaces.ApiService;
 
 public interface IAPIService
 {

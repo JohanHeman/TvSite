@@ -2,7 +2,7 @@
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Entities.Display;
 
-namespace TvSite.Domain.Interfaces.Services;
+namespace TvSite.Application.Interfaces.Services;
 
 public interface IWatchedEpisodeService
 {

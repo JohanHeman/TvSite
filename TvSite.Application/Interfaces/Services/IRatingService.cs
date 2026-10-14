@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TvSite.Domain.Entities.Database;
 
-namespace TvSite.Domain.Interfaces.Services
+namespace TvSite.Application.Interfaces.Services
 {
     public interface IRatingService
     {
