@@ -5,6 +5,7 @@ using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Domain.Interfaces.Services;
+using TvSite.Infrastructure.Data;
 using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
@@ -12,6 +13,7 @@ namespace TvSite.Tests.Integrationtests.Tests;
 public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
 {
     private readonly ICommentRepository _sut;
+    private readonly TestData _testData = new TestData();
 
     public CommentServiceIntegrationTests(IntegrationTestFactory<Program> factory) : base(factory)
     {
@@ -54,8 +56,8 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         await applicationDbContext.Database.EnsureDeletedAsync();
         await applicationDbContext.Database.EnsureCreatedAsync();
         // Arrange
-        var users = TestData.GetTestUsers();
-        var comments = TestData.GetTestCommentsAsync();
+        var users = _testData.GetTestUsers();
+        var comments = _testData.GetTestCommentsAsync();
 
         // itterate through comments and users to set the id from user to comment
         foreach (var (comment, user) in comments.Zip(users))
@@ -76,13 +78,12 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         Assert.Equal(expected, actual.Count);
     }
 
-
     [Fact]
     public async Task GetCommentsByUserIdAsync_ShouldReturnEmptyList_WhenNoMatchingIds()
     {
         // Arrange
-        var users = TestData.GetTestUsers();
-        var comments = TestData.GetTestCommentsAsync();
+        var users = _testData.GetTestUsers();
+        var comments = _testData.GetTestCommentsAsync();
         await applicationDbContext.AddRangeAsync(users);
         await applicationDbContext.Comments.AddRangeAsync(comments);
 
@@ -130,64 +131,3 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
 
 }
 
-internal class TestData
-{
-    public static List<ApplicationUser> GetTestUsers()
-    {
-        var userIds = new[]
-        {
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid()
-        };
-
-        var users = userIds.Select(id => new ApplicationUser
-        {
-            Id = id,
-            UserName = $"user-{id}",
-            NormalizedUserName = $"USER-{id}".ToUpperInvariant(),
-            Email = $"{id}@example.com",
-            NormalizedEmail = $"{id}@example.com".ToUpperInvariant(),
-            DisplayName = "Test User"
-        });
-        return users.ToList();
-    }
-
-
-    public static List<Comment> GetTestCommentsAsync()
-    {
-        var comments = new List<Comment>
-        {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Text = "Great episode!",
-                DateTime = DateTime.Now.AddMinutes(-20),
-                EpisodeMediaId = "3"
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Text = "The ending was amazing.",
-                DateTime = DateTime.Now.AddMinutes(-15),
-                EpisodeMediaId = "3"
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Text = "I cannot wait for the next episode.",
-                DateTime = DateTime.Now.AddMinutes(-10),
-                EpisodeMediaId = "3"
-            },
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Text = "The actors did a great job.",
-                DateTime = DateTime.Now.AddMinutes(-5),
-                EpisodeMediaId = "8"
-            }
-        };
-        return comments;
-    }
-}

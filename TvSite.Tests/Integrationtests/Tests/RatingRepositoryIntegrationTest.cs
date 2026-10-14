@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Infrastructure.Data;
 using TvSite.Presentation.Components;
 using TvSite.Tests.Integrationtests.Setup;
 
@@ -134,7 +135,11 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
         Assert.NotNull(rating);
     }
 
-    /* Test does not work. Not sure why? Because of DbContextFactory?
+
+    //Test does not work. Not sure why? Because of DbContextFactory?
+    //This test works on singel run but not when all tests run. hmmmmm
+    // Seems to be due to test running at the same time
+    /*
     [Fact]
     public async Task GetRatingsByEpisodeMediaId()
     {
