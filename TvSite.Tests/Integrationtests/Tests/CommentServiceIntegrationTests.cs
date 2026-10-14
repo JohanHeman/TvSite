@@ -24,9 +24,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task CreateCommentAsync_ShouldCreateComment_WhenCommentValid()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         string text = "comment text";
         string episodeMediaId = "3";
@@ -53,8 +50,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task GetCommentsByEpisodeMediaIdAsync_ShouldOnlyReturnCommentsWithEpisodeMediaId_WhenCommentsExist()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
         // Arrange
         var users = _testData.GetTestUsers();
         var comments = _testData.GetTestCommentsAsync();
@@ -97,9 +92,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task GetCommentByIdAsync_ShouldReturnComment_WhenValidId()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var comment = new Comment()
         {
@@ -128,6 +120,4 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         Assert.Equal(comment.EpisodeMediaId, actual.EpisodeMediaId);
         Assert.Equal(comment.Id, actual.Id);
     }
-
 }
-

@@ -12,6 +12,7 @@ namespace TvSite.Tests.Integrationtests.Setup;
 public class IntegrationTestFactory<T> : WebApplicationFactory<T> where T : class
 {
     //configure startup for test project when running integrationtests
+    private string _dbName = Guid.NewGuid().ToString();
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
@@ -19,7 +20,7 @@ public class IntegrationTestFactory<T> : WebApplicationFactory<T> where T : clas
         {
             services.AddDbContextFactory<ApplicationDbContext>(options =>
             {
-                options.UseInMemoryDatabase("InMemoryDbForTesting");
+                options.UseInMemoryDatabase(_dbName);
             });
         });
     }

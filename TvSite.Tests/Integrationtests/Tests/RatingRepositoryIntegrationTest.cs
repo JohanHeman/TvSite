@@ -20,9 +20,6 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
     [Fact]
     public async Task GetRatingByIdAsync_ShouldReturnRating_WhenValidIds()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var userId = Guid.NewGuid();
         var episodeMediaId = "mediaId";
@@ -58,10 +55,6 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
     [Fact]
     public async Task GetRatingByRatingIdAsync_ShouldReturnRating_WhenValidId()
     {
-
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var ratingId = Guid.NewGuid();
         var userId = Guid.NewGuid();
@@ -98,9 +91,6 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
     [Fact]
     public async Task GetRatingByRatingIdAsync_ShouldReturnNull_WhenIdDoesNotExistInDb()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Act
         var actualRating = await _sut.GetRatingByRatingIdAsync(Guid.NewGuid());
 
@@ -111,9 +101,6 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
     [Fact]
     public async Task CreateRatingAsync_ShouldCreateRating_WhenValidRating()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var ratingId = Guid.NewGuid();
         var newRating = new Rating()
@@ -135,21 +122,9 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
         Assert.NotNull(rating);
     }
 
-
-    //Test does not work. Not sure why? Because of DbContextFactory?
-    //This test works on singel run but not when all tests run. hmmmmm
-    // Seems to be due to test running at the same time
-    /*
     [Fact]
     public async Task GetRatingsByEpisodeMediaId()
     {
-        //Repo method
-        //await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        //return await dbContext.Ratings.Where(s => s.EpisodeMediaId == episodeMediaId).ToListAsync();
-
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var expectedAmount = 3;
         var epId = "epId";
@@ -195,5 +170,4 @@ public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
         // Assert
         Assert.Equal(expectedAmount, actual.Count);
     }
-    */
 }
