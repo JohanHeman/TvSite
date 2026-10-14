@@ -8,13 +8,21 @@ using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
 
-public class RatingRepositoryIntegrationTest : ApplicationTestBase<Program>
+public class RatingRepositoryIntegrationTest : IClassFixture<IntegrationTestFactory<Program>>
 {
     private readonly IRatingRepository _sut;
-
-    public RatingRepositoryIntegrationTest(IntegrationTestFactory<Program> factory) : base(factory)
+    private readonly TestData _testData = new TestData();
+    internal ApplicationDbContext applicationDbContext;
+    internal readonly IServiceScope scope;
+    public RatingRepositoryIntegrationTest(IntegrationTestFactory<Program> factory)
     {
+        scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        applicationDbContext.Database.EnsureCreated();
         _sut = scope.ServiceProvider.GetRequiredService<IRatingRepository>();
+
+        applicationDbContext.Database.EnsureDeleted();
+        applicationDbContext.Database.EnsureCreated();
     }
 
     [Fact]

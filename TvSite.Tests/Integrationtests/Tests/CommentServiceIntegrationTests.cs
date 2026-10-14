@@ -1,19 +1,30 @@
 using Microsoft.Extensions.DependencyInjection;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
+using TvSite.Infrastructure.Data;
 using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
 
-public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
+public class CommentServiceIntegrationTests : IClassFixture<IntegrationTestFactory<Program>>
 {
     private readonly ICommentRepository _sut;
     private readonly TestData _testData = new TestData();
+    internal ApplicationDbContext applicationDbContext;
+    internal readonly IServiceScope scope;
 
-    public CommentServiceIntegrationTests(IntegrationTestFactory<Program> factory) : base(factory)
+
+    public CommentServiceIntegrationTests(IntegrationTestFactory<Program> factory)
     {
+        scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        applicationDbContext.Database.EnsureCreated();
+
         // gets required service (sut) from the registered Services for DI and registered dependencies are automatically injected 
         _sut = scope.ServiceProvider.GetRequiredService<ICommentRepository>();
+        applicationDbContext.Database.EnsureDeleted();
+        applicationDbContext.Database.EnsureCreated();
+
     }
 
     [Fact]
