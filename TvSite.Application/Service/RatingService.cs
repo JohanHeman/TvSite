@@ -53,7 +53,7 @@ namespace TvSite.Application.Service
 
         public async Task<double> GetAverageRatingByEpisodeMediaIdAsync(string mediaId)
         {
-            var ratings = await _repository.GetAverageRating(mediaId);
+            var ratings = await _repository.GetRatingsByEpisodeMediaId(mediaId);
             if (ratings.Count == 0) return 0;
             return Math.Round(ratings.Average(r => r.Stars), 1);
         }

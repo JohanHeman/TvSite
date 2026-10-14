@@ -25,7 +25,7 @@ public class RatingServiceTests
     {
         var ratings = stars.Select(star => new Rating { Stars = star }).ToList();
         var expected = ratings.Average(r => r.Stars);
-        _mockrepo.Setup(r => r.GetAverageRating("56")).ReturnsAsync(ratings);
+        _mockrepo.Setup(r => r.GetRatingsByEpisodeMediaId("56")).ReturnsAsync(ratings);
         // Arrange
         var actual = await _sut.GetAverageRatingByEpisodeMediaIdAsync("56");
         // Assert
@@ -70,14 +70,14 @@ public class RatingServiceTests
             }
         };
 
-        _mockrepo.Setup(r => r.GetAverageRating(mediaId)).ReturnsAsync(ratings);
+        _mockrepo.Setup(r => r.GetRatingsByEpisodeMediaId(mediaId)).ReturnsAsync(ratings);
         var expected = ratings.Average(r => r.Stars);
         // Act
         var actual = await _sut.GetAverageRatingByEpisodeMediaIdAsync(mediaId);
 
 
         // Assert
-        _mockrepo.Verify(r => r.GetAverageRating(mediaId), Times.Once);
+        _mockrepo.Verify(r => r.GetRatingsByEpisodeMediaId(mediaId), Times.Once);
         Assert.Equal(expected, actual);
     }
 
