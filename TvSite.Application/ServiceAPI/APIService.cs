@@ -1,6 +1,6 @@
+using TvSite.Application.Interfaces.ApiService;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.InterfacesAPI.Repositories;
-using TvSite.Domain.InterfacesAPI.Services;
 
 namespace TvSite.Application.ServiceAPI;
 

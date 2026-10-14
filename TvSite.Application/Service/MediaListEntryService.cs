@@ -1,10 +1,11 @@
-﻿using TvSite.Domain.Entities.Api;
+﻿using TvSite.Application.Interfaces.Services;
+using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Enums;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
-using TvSite.Domain.InterfacesAPI.Services;
+using TvSite.Application.Interfaces.Services;
 using static TvSite.Domain.Enums.ListStateEnum;
+using TvSite.Application.Interfaces.ApiService;
 
 namespace TvSite.Application.Service
 {

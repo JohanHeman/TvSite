@@ -1,10 +1,10 @@
 ﻿using Moq;
+using TvSite.Application.Interfaces.ApiService;
+using TvSite.Application.Interfaces.Services;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Api;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
-using TvSite.Domain.InterfacesAPI.Services;
 
 namespace TvSite.Tests.UnitTests.ServiceTests;
 
@@ -27,9 +27,6 @@ public class WatchedEpisodeServiceTests
     [MemberData(nameof(IsWatchedEpisodeByUserData))]
     public async Task IsWatchedEpisodeByUserAsync_ReturnsFalse_WhenIdsAreInvalid(string? episodeMediaId, Guid userId)
     {
-        // Arrange
-        bool expected = false;
-
         // Act
         var act = await _sut.IsWatchedEpisodeByUserAsync(episodeMediaId!, userId);
 
