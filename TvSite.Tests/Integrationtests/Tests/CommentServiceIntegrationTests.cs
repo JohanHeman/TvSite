@@ -1,11 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
-using TvSite.Infrastructure.Data;
 using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
@@ -24,9 +19,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task CreateCommentAsync_ShouldCreateComment_WhenCommentValid()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         string text = "comment text";
         string episodeMediaId = "3";
@@ -53,8 +45,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task GetCommentsByEpisodeMediaIdAsync_ShouldOnlyReturnCommentsWithEpisodeMediaId_WhenCommentsExist()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
         // Arrange
         var users = _testData.GetTestUsers();
         var comments = _testData.GetTestCommentsAsync();
@@ -97,9 +87,6 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
     [Fact]
     public async Task GetCommentByIdAsync_ShouldReturnComment_WhenValidId()
     {
-        await applicationDbContext.Database.EnsureDeletedAsync();
-        await applicationDbContext.Database.EnsureCreatedAsync();
-
         // Arrange
         var comment = new Comment()
         {
@@ -128,6 +115,4 @@ public class CommentServiceIntegrationTests : ApplicationTestBase<Program>
         Assert.Equal(comment.EpisodeMediaId, actual.EpisodeMediaId);
         Assert.Equal(comment.Id, actual.Id);
     }
-
 }
-
