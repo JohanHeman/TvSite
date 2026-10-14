@@ -3,7 +3,6 @@ using TvSite.Application.Interfaces.Services;
 using TvSite.Application.Service;
 using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
-using TvSite.Domain.Interfaces.Services;
 
 namespace TvSite.Tests.UnitTests.ServiceTests;
 
