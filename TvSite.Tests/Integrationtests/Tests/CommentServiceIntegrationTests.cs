@@ -24,7 +24,7 @@ public class CommentServiceIntegrationTests : IClassFixture<IntegrationTestFacto
         _sut = scope.ServiceProvider.GetRequiredService<ICommentRepository>();
         applicationDbContext.Database.EnsureDeleted();
         applicationDbContext.Database.EnsureCreated();
-        
+
     }
 
     [Fact]

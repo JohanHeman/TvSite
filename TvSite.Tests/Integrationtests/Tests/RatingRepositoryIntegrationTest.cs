@@ -20,7 +20,7 @@ public class RatingRepositoryIntegrationTest : IClassFixture<IntegrationTestFact
         applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         applicationDbContext.Database.EnsureCreated();
         _sut = scope.ServiceProvider.GetRequiredService<IRatingRepository>();
-        
+
         applicationDbContext.Database.EnsureDeleted();
         applicationDbContext.Database.EnsureCreated();
     }
