@@ -9,12 +9,12 @@ using TvSite.Domain.Entities.Database;
 using TvSite.Domain.Interfaces.Repositories;
 using TvSite.Application.Interfaces.Services;
 using TvSite.Domain.InterfacesAPI.Repositories;
-using TvSite.Domain.InterfacesAPI.Services;
 using TvSite.Infrastructure.Data;
 using TvSite.Infrastructure.Repositories;
 using TvSite.Infrastructure.RepositoryAPI;
 using TvSite.Presentation.Components;
 using TvSite.Presentation.Components.Account;
+using TvSite.Application.Interfaces.ApiService;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
