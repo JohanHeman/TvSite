@@ -6,7 +6,7 @@ using TvSite.Tests.Integrationtests.Setup;
 
 namespace TvSite.Tests.Integrationtests.Tests;
 
-public class CommentServiceIntegrationTests : IClassFixture<IntegrationTestFactory<Program>>
+public class CommentRepositoryIntegrationTests : IClassFixture<IntegrationTestFactory<Program>>
 {
     private readonly ICommentRepository _sut;
     private readonly TestData _testData = new TestData();
@@ -14,7 +14,7 @@ public class CommentServiceIntegrationTests : IClassFixture<IntegrationTestFacto
     internal readonly IServiceScope scope;
 
 
-    public CommentServiceIntegrationTests(IntegrationTestFactory<Program> factory)
+    public CommentRepositoryIntegrationTests(IntegrationTestFactory<Program> factory)
     {
         scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
