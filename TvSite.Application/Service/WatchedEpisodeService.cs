@@ -109,7 +109,7 @@ public class WatchedEpisodeService : IWatchedEpisodeService
         var watchedEpisodes = await _repository.GetWatchedEpisodesByUserIdAsync(userId);
         foreach (var episode in watchedEpisodes)
         {
-            // Get episode from db
+            // Get episode from api
             var tvSeriesEpisode = await _APIService.GetEpisodeDetails(episode.TvSeriesId, episode.SeasonNumber, episode.EpisodeNumber);
 
             if (tvSeriesEpisode != null)
