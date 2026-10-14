@@ -20,11 +20,13 @@ namespace TvSite.Application.Service
             _APIService = APIService;
         }
 
+        // Get MediaList
         public async Task<List<MediaListEntry>> GetMediaListByUserIdAsync(Guid userId, ListStateEnum.ListState listState)
         {
             return await _repository.GetMediaListByUserIdAsync(userId, listState);
         }
 
+        // Add TvShow to list if not already in the list
         public async Task CreateMediaListEntryAsync(MediaListEntry userMediaListEntry)
         {
             // Get userList to see if the tvshow already is added
@@ -40,6 +42,7 @@ namespace TvSite.Application.Service
             await _repository.CreateMediaListEntryAsync(userMediaListEntry);
         }
 
+        // Get TvShows from user list
         public async Task<List<TvSeries>> GetTvShowsFromUserListAsync(Guid userId, ListStateEnum.ListState listState)
         {
             var tvShows = new List<TvSeries>();
@@ -48,6 +51,7 @@ namespace TvSite.Application.Service
 
             foreach (var mediaListEntry in mediaListEntries)
             {
+                // Get details from API
                 var tvShow = await _APIService.GetTvShowDetailsById(mediaListEntry.MediaId);
                 tvShows.Add(tvShow);
             }
@@ -55,6 +59,7 @@ namespace TvSite.Application.Service
             return tvShows;
         }
 
+        // Delete TvShow from user list
         public async Task DeleteMediaListEntryAsync(Guid userId, string mediaId, ListStateEnum.ListState listState)
         {
             var mediaList = await _repository.GetMediaListByUserIdAsync(userId, listState);
